@@ -1,0 +1,118 @@
+\chapter{Future Work}
+\label{future_work}
+\dictum[Martin Fowler -- an author, speaker and consultant on software development]
+{\flushright{}Any fool can write code that a computer can understand. Good programmers write code that humans can understand.}
+
+Reaching the goal of developing an intelligent framework which understands the
+behavior of the learner still needs a lot of work, but with this work we are one
+step closer. This chapter mentiones some thoughts how this work should be carried
+on, concluding with a small excursus to a project which could be a perfect
+platform for the framework (see \ref{olpc}: One Laptop Per Child).
+
+\section{Extending the Framework}
+This work describes a conceptual framework for the problem detection in non-linear
+serious games. The prototypical implementation covers only a part of the described
+framework, due to time restrictions. To provide a more realistic implementation,
+new strategies for dealing with problems can be added.
+
+\section{Interaction Patterns}
+In this work, the interaction patterns are described with regular expressions (see
+chapter \ref{object_design}). In future work, it should be evaluated if other
+formal languages are more appropriate to describe the patterns which can occur during
+the process of learning. Methods need to be implemented to create, load and store
+interaction patterns at runtime.
+
+\section{Artificial Intelligence}
+As already suggested in \ref{core_framework}, the \textbf{Problem Detector} subsystem
+would be the perfect place to introduce artificial intelligence. In this subsystem,
+an artificial intelligence component could be used to improve problem detection.
+Extensive research is needed to determine how artificial intelligence can be used for problem
+detection.
+%~During this work, a language was mentioned to describe interaction patterns
+%~(see chapter \ref{object_design}). A closer investigation is needed to define
+%~this language and develop a method to create, load and store interaction
+%~patterns at runtime. The language needs to express every possible patterns
+%~which can occur during the process of learning.
+
+\section{Games using the Framework}
+The framework was designed using examples from games which already exist.
+Once the framework is completed, a game needs to be developed or extended, which uses the
+framework and implements a concrete pedagogical agent. The game should be a
+non-linear serious game where the actions are clear and interactions, patterns
+and problems can easily be defined. Defining these structures requires a close
+collaboration with a psychologist and maybe a small experiment is needed to
+pick out a good set of interactions, patterns and problems.
+
+\section{Evaluation}
+After the full framework is implemented and a game has been developed, the
+system should be evaluated and data about the efficiency of the
+framework needs to be collected. Empirical studies can prove or disprove that the framework
+is able to provide a deeper and better learning experience. After the
+evaluation, the framework could be refined to feature a better set of
+interactions, interaction patterns, problems and support strategies.
+
+\section{One Laptop Per Child}
+\label{olpc}
+This section is dedicated to the One Laptop Per Child
+project\footnote{www.laptop.org}. The OLPC project was started at MIT Media
+Lab with the goal to develop a laptop which costs only \${100} and is robust
+enough to operate in the most remote places on earth. What the OLPC tries to
+achieve is to provide the children of this world with the tools to learn and
+to share their ideas. The device which was developed to suit the needs of the
+project was called XO and shipped to many developing countries. The XO would be
+the perfect target device for this framework, because the platform was
+explicitly designed to teach and the framework could reach many children
+playing and learning with a XO. At the moment, the mass production of the
+second version of the laptop is starting: the XO1.5. The XO1.5 comes with the same body as the
+original XO but is much faster. The original XO was fast enough for developing
+countries, but it seemed too slow for the needs of other countries. With the
+XO1.5 this barrier is broken and the hope is big that we will see many devices also around
+Europe in the near future.
+
+%~\input{tex/future}
+%~\input{tex/evaluation}
+%~\input{tex/implementation}
+%~\input{tex/backlog}
+
+\chapter{Conclusion}
+\dictum[Bertholdt Brecht -- German poet]
+{\flushright{}...it is simplicity that is difficult to make.}
+What was proposed in this work is a framework which watches the learner
+during a non-linear serious game and detects problems during the learning
+process. The overall idea and vision behind this work is to develop a
+framework which understands the behavior of the learner.
+
+The framework was designed and some of the key functionalities were addressed
+in detail. The work should lay the foundation for future research and serve as
+a starting point for other theses. The work presented a solution for the
+complex relationships between actions, interactions and problems. This
+solution needs to be tested and adapted, if the results show that it is not
+yet suitable for the application domain.
+%~The vision behind this work is to develop a framework which fully understands
+%~the learner. I think the framework presented in this thesis lies a good
+%~foundation on how this problem can be solved. Anyways I have to accept that
+%~the framework is not perfect and has several parts which need to
+%~be completed in future work. This thesis should be an inspiration for future research and projects,
+%~because I believe that we can reach the goal of a behavior aware learning
+%~application.
+
+The proposed framework shows how detecting problems of a learner
+during the learning experience is possible. An evaluation is needed to decide
+if the approach this work chose is valid or should be adapted. Detecting problems is the first step, but in
+order to fully understand the learner more steps are needed. Thats the point where
+the collaboration with psychologists is essential to define which parts of human
+behavior are most important for learning.
+
+I see a lot of potential in this field of research, because the
+education of our children is the greatest good we have and there are several
+ways how we can support it. We should work hard to
+improve the learning experience we provide to our children. The One Laptop Per Child (OLPC)
+project\footnote{www.laptop.org} is very ambitious about that: they work hard to bring education to the poorest children on this
+planet, because they believe that it is the only way to solve the problems of
+tomorrow.
+%~
+%~\begin{itemize}
+%~\item befor or after future work?
+%~\item my opinion about the system and the work that needs to be done
+%~\item possible advantages in schools everyday
+%~\end{itemize}

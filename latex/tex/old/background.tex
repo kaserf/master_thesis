@@ -1,0 +1,261 @@
+\chapter{Pedagogical Background}
+
+\dictum[Marc Prensky -- founder and CEO of Games2train]
+{\flushright{}Today's students are no longer the people our educational system was designed to teach.}
+
+In this chapter, some findings from the fields of psychology and
+pedagogics will be presented. These findings explain the necessity of intelligent support in
+non-linear games and deliver insight into the techniques that should be used
+in state of the art serious games.
+
+\section{Achievement Motivation}
+\label{achievement_motivation}
+Motivation and self-efficacy are important factors for education and learning
+\cite{Pintrich1990a}.
+This is the conclusion of several studies conducted by some of the most
+influential psychologists of the last century like Bandura \cite{Bandura1977a, Bandura1991a}
+and Zimmerman \cite{Zimmerman1990a, Zimmerman1992a}.
+
+Achievement motivation (AM) is a sub-part of the motivational studies conducted by
+Bandura, Zimmerman and many more. AM consists of several theories which have
+been summarized in \cite{Blanchard2004b}. These theories appear throughout the
+field of psychology, not only in the study of education but also in social
+psychology and others. The following list contains some of the most important
+theories of achievement motivation:
+
+\begin{description}
+\item[Attribution Theory] is concerned with the impact
+of different events on the personality of a person, especially those events the
+person itself is responsible for. Outcomes of the actions a person takes can be
+attributed internally or externally. Usually, people attribute success
+internally (dispositional) and failure externally (situational). The most
+famous example is about an exam at school or university: if a student
+passes the exam, they usually attribute the success internally by
+saying (or thinking) ``I learned so much for the exam
+and was well prepared, that is why I passed!''. On the other hand, if a
+student fails to pass the test they will attribute the failure externally: ``The
+exam was harder then usual, the professor is to blame for the questions which were too difficult!''.
+\item[Controls Theories] try to describe what impact the feeling of
+self-control (control of the own achievement) has. In education it means: is
+there  a positive correlation between self-control and learning outcome?
+\item[Intrinsic Motivation Theories] distinguish between activities carried
+out ``for their own sake'' \cite{Blanchard2004b} and activities with an
+external reward (extrinsic). According to Eccles et al., the difference between
+intrinsic and extrinsic motivation ``is assumed to be fundamental throughout
+the motivation literature'' \cite{Blanchard2004b}. Blanchard states that the
+self-determination theory of Ryan and Deci \cite{Ryan2000a} is probably the
+most important intrinsic motivation theory.
+\item[Theories of Self-Regulation] are theories researching how people
+regulate their actions and their behavior in order to fulfill a task.
+Self-observation, self-judgment and self-reaction are the processes identified
+by Zimmerman \cite{Zimmerman1989a}.
+\item[Academic Help Seeking] is a theory which emphasizes the importance of
+``when'' and ``how much'' help is provided. Providing help in situations the
+learner has never faced before can result in work-avoidant behavior, because
+the learner is not sufficiently challenged.
+\end{description}
+
+\subsection{Most Important AM Factors According to Blanchard:}
+\begin{description}
+\item[Individual Goals] According to Eccles et al. \cite{Eccles1998}, there
+are three different types of goals: ego-involved goals (aim at a positive
+image through a good evaluation), task-involved goals (solve a task to aqcuire
+competencies) and work-avoiding goals (minimize workload).
+\item[Social Environment] The social environment has a strong influence on
+self-belief, which is directly related to motivation. Especially ego-involved
+goals are connected to the social environment, because the people who measure
+and evaluate the performance of the learner are usually parents, peers or
+teachers.
+\item[Emotions] Emotions and motivation influence each other mutually.
+Positive emotions can foster motivation in learning activities and negative
+emotions cause the learner to lose interest and motivation. The
+motivation on the other hand has also some influence over the emotion.
+\item[Intrinsic Interest for an Activity] Intrinsic motivation means that the
+learner is not motivated by external rewards. Blanchard states that there are
+individual differences in intrinsic motivation of a learner: one learner may
+show high interest in very hard and challenging tasks, the motivation of
+another student may be curiosity and a third will search for tasks to enhance
+its competencies.
+\item[Self-Beliefs] Self-efficacy and expected outcome are some of the many
+self-beliefs identified by Bandura \cite{Bandura1977a}. Self-beliefs describe
+how much the learner believes in a positive outcome of the learning activity,
+and are an important influence in reaching a goal: A learner who thinks that
+the expected outcomes of an activity are low may not even try to perform the
+activity.
+\end{description}
+
+\section{Adaptation Approaches}
+\label{adaptation}
+In the history of e-Learning various approaches to adapt learning have been
+researched and categorized. The four main approaches according to
+M\"{o}dritscher et al. \cite{Modritscher2004} are: the macro-adaptive approach, the
+micro-adaptive approach, the aptitude-treatment interaction approach and
+the constructivistic-collaborative approach. The following is a short summary of
+these approaches, mostly from M\"{o}dritscher's work in \cite{Modritscher2004}
+and \cite{Modritscher2006a}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/adaptation.pdf}
+    \caption[Different Adaptation Approaches (UML class diagram)]
+    {Different Adaptation Approaches (UML class diagram)}
+\end{figure}
+
+\subsection{The Macro-Adaptive Approach}
+Macro-adaptation mostly involves the change of learning objectives, levels of detail, delivery
+system, etc \cite{Modritscher2004}. According to Corno et al. \cite{Corno1986}
+the adaptation depends on the learning objectives and student aptitudes. It
+makes a difference if the task should teach a new skill or compensate eventual
+shortcomings. Student aptitudes inklude learning styles, motivation, previous
+knowledge, personality etc. The macro-adaptive approach is mostly about the
+sequencing of learning objects in respect to some of the factors named above
+and can thus be implemented with the sequencing rules of SCORM (Sharable
+Content Object Reference Model) \cite{Modritscher2006a}.
+
+\subsection{The Micro-Adaptive Approach}
+Micro-adaptation adapts instruction to the students needs during a task and
+not only during a whole course. This makes it necessary to monitor the student
+in-depth during a task to understand the behavior and act with respect to his
+performance. The point is to use on-task measures instead of
+pre-task measures other approaches use: it collects more detailed and more
+dynamic information about the learner than pre-task measures do. The
+information can then be used to adapt the instructions and provide a tailored
+learning experience.
+
+Existing models like the mathematical model, the trajectory model, the
+Bayesian model, etc. allow micro adaptation to a series of instructional
+variables such as the amount of content or the sequence of the content
+\cite{Modritscher2004}. A promising implementation of the Bayesian model in
+adaptive instruction has been presented in \cite{Rothen1978a}.
+
+Micro-adaptation is divided into two processes: first the diagnostic process
+which assesses the learners characteristics and properties of the task itself.
+Useful information contains the prior knowledge, preferences, aptitudes
+and content structure, difficulty level, conceptual model, etc.
+\cite{Modritscher2004}. The second process is the prescriptive process
+where the real adaptation happens. The goal is to optimize the interaction
+between the learner and the task, with respect to learners' aptitudes and recent
+performance (see Figure \ref{processes}).
+
+%~According to M\"{o}dritscher, another important aspect of micro-adaptive
+%~instruction is the response sensitivity.
+Recent technological improvements allow to
+collect even more data with technologies like eye-trackers or facial
+recognition. This information leads to a more detailed
+knowledge about the learner. It goes so far that researchers can measure and
+categorize the emotional response of a student interacting with e-Learning software.
+State of the art face recognition and eye tracker software can successfully
+detect whether the student is motivated, bored, confused, etc. Knowing about
+the emotional response of the learner is important, because the system can react
+accordingly. An example: the system recognizes high frustration of a student
+and adapts the lessons in order to make them easier and not so frustrating for
+the student. When the negative emotions decrease, the system can increase the
+difficulty of the lessons again. Emotions affect the motivation and poor
+motivation results in a poor learning session \cite{Blanchard2004b, Blanchard2009,
+DeVicente2003, D'Mello2007b}.
+
+The last important factor in micro-adaptation is interactive communication.
+The need for a well structured communications model, with special focus on the
+interactions between the learner and the system (e.g. a virtual tutor), leads to
+a model with two different communication channels: the teaching channel to provide content
+and the assessment channel to monitor the learning process
+\cite{Modritscher2004}. The two separate processes are highly correlated to
+the two processes of micro-adaptation: the diagnostic and the prescriptive
+process (see Figure \ref{processes}).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/micro_processes.pdf}
+    \caption[The Two Processes of Micro-Adaptation (UML activity diagram)]
+    {The Two Processes of Micro-Adaptation (UML activity diagram)}
+    \label{processes}
+\end{figure}
+
+The micro-adaptive approach is very similar to what researchers developed as the
+Experience Sampling Method (ESM). In experience sampling, participants of a
+study are asked repeatedly over the time of a study to write down their
+feelings and the actual situation. Proponents of this method argue that it
+gives researchers the possibility to better understand the behavior, because
+it allows to induce the behavior from the sampling data. Other methods deduce the
+behavior from post-task measured data. The validity
+and reliability of this method has been studied in the work of Mihaly
+Csikszentmihalyi and Reed Larson \cite{Csikszentmihalyi1987a}.
+
+\subsection{The Aptitude-Treatment Interaction Approach}
+This approach adapts the instruction according to the students aptitude and
+special characteristics. Aptitude Treatment Interaction (ATI) suggests the
+usage of different types of instruction and different types of media for each
+student. Important factors which determine the type of instruction and the
+type of media are according to M\"{o}dritscher: intellectual abilities,
+cognitive styles, learning styles, prior knowledge, anxiety, achievement
+motivation and self-efficacy \cite{Modritscher2004}.
+
+The special importance for e-Learning lies in the number of students that
+usually should learn with e-Learning software. In school classes the size is
+limited, because one teacher cannot teach more then 20-30 people.\footnote{In fact this
+number should be much lower, but there are simply not enough teachers to
+realize it.} In e-Learning the number of students who use a system is not
+limited at all, thus it should support a variety of different learning styles,
+instruction methods and media representations.
+
+An important aspect of ATI is the user's control over his own learning
+process. According to Snow, there exist three levels of control: complete
+independence, partial control within a given task and fixed tasks with control
+of pace \cite{Snow1980}. Studies have shown that students with
+little prior knowledge should have limited control. This means the success of
+the learners level of control is strongly dependent on his aptitudes
+\cite{Modritscher2004}.
+
+\subsection{The Constructivistic-Collaborative Approach}
+The last approach addresses something that has been criticized very often by
+e-Learning opponents: the lack of collaboration in e-Learning and the missing
+social interaction. This approach follows the constructivistic learning theory
+with special focus on collaboration. In this theory the learner plays an
+important and active role in the learning process. M\"{o}dritscher quotes
+\cite{Akhras2000} that ``constructivistic learning may benefit from a system's
+intelligence including mechanisms of knowledge representation, reasoning and
+decision making'' \cite{Modritscher2004}.
+
+This approach features new pedagogic theories and tries to
+understand how knowledge acquisition works. The collaborative aspect of
+learning has been praised in the last years by pedagogues and has also been
+proven to be very effective. Soller identified in her work \cite{Soller2001}
+five characteristics of effective collaboration learning: participation,
+social behavior, performance analysis, group processing and conversation
+skills, and primitive interaction. With these characteristics in mind, the way
+is open to take the step from individual e-Learning software to collaborative
+e-Learning experiences.
+
+\section{Scaffolding}
+\label{scaffolding}
+The principle of scaffolding is simple: a tutor, teacher or peer should take
+over parts of the task which are too complex for the learner to carry out
+alone from the beginning. This means the learner initially has to do only the tasks
+of which they have prior experience, and that over time the load increases until
+the learner is capable of doing all the work without intervention. The idea
+behind scaffolding is to confront the learner
+with big and complex tasks, too complex to be solved alone. The complexity of
+such tasks is very engaging, argue supporters of the scaffolding principle.
+
+Scaffolding is based on Vygotsky's zone of proximal development (ZPD), which is one
+of the leading theories in constructivist learning. The  ZPD describes the
+difference between the problem solving skills of a child during an actual task
+without guidance and the potential level a child could reach with the support
+of adult guidance and interaction with more experienced peers. According to
+ZPD a interpersonal level of learning is needed first, before the things
+a child learned in interaction with others can be internalized \cite{Roehler1997a}.
+
+Brian Reiser presented a study where he researched how scaffolding can be used in
+software tools. He states in his work about scaffolding in software: ``Software tools can
+help structure the learning task, guiding learners through key components and
+supporting their planning and performance'' \cite{Reiser2004a}. His work shows
+many promising ideas for scaffolding with software tools.
+
+%~\begin{itemize}
+%~\item get the good stuff summarized from \cite{Blanchard2004b}
+%~\item pedagogical agents (?)
+%~
+%~\item scaffolding (?)
+%~\item goal based scenarios
+%~\item experience learning in an open environment 
+%~\end{itemize}

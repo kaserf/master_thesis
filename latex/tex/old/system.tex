@@ -1,0 +1,448 @@
+\chapter{Proposed System}
+\label{proposed_system_chapter}
+\dictum[A High School Student]
+{\flushright{}Why do I have to learn about Caesar?\\
+Hell, I'm building Rome every afternoon!}
+
+%~After the problem was introduced in the previous chapters and some related
+%~work was presented, the focus of this chapter is on the proposed solution. The
+%~overview section gives a short introduction of the system and the requirements
+%~of the system will follow in the next section. Usually the requirements are
+%~elicited with the client and define the outcome of the system. In this case
+%~the requirements are defined without a client.
+
+%~problem solution. In
+%~order to design a system it is essential to understand the related domain and
+%~to elicit the requirements for such a system. This chapter will introduce a
+%~framework to support serious non-linear games. A raw overview is presented in
+%~the first section, followed by functional requirements the framework should
+%~fulfill.
+
+\section{Overview}
+%~I propose to use pedagogical agents (see \ref{pedagogical_agents}) to support students
+%~with their problems. A pedagogical agent is a feedback system backed up with
+%~artificial intelligence. The agent is a non-player character (NPC) in the
+%~game. In order to detect problems and to learn about the behaviour of the
+%~child, the agent has to listen to all the actions of the child. The agents
+%~support should follow the various principles developed by pedagogues, with
+%~the overall goal to support the learner in a way that he can solve the problem
+%~himself. One example is scaffolding: it gives only the support for the skills that are beyond the
+%~capabilities of the learner. In past research only hard scaffolding (static)
+%~was used in computer games because of the lack of intelligence \cite{Brush2002b}. With an intelligent system
+%~the use of soft scaffolding (dynamic) could be possible. A paedagogical agent
+%~which can monitor the progress of the learner and understand his behavior can support
+%~him individually, not only generally like hard scaffolding does. Understanding
+%~the learner is an ambitious task and has many facets.
+
+I propose a framework to support the learning process in serious non-linear
+games. This framework should collect data about the interactions of a player
+during the game and analyze the data. The theory is that we can learn a lot only
+by monitoring the interactions between the player and the game, and understand
+the behavior of the learner at a certain degree. The framework needs to learn about
+the interactions between the learner and the game and about problems which may occur
+during the learning process.
+
+A system that understands the behavior of a student in a learning environment
+can effectively adapt the system to the learner and support the learner
+individually. Only with behavior awareness a system can be designed to come as
+close as possible to human face-to-face instruction, which is definitely the
+most effective way to teach \cite{Skinner1984a}.
+
+The framework should provide feedback for the game and the game should use the
+information to adapt itself. I suggest using an intelligent pedagogical
+agent (which has been introduced in the visionary scenario in section
+\ref{visionary_scenario}) to support the learner during the game. A
+pedagogical agent is a feedback system backed up with
+artificial intelligence. The proposed framework would pull the strings of the
+pedagogical agent, just like a puppeteer pulls the strings of his puppet. The agents
+support should follow the various principles developed by pedagogues, with
+the overall goal to support the learner in a way that they can resolve the problem
+themselves. One example is scaffolding: it gives only the support for the skills that are beyond the
+capabilities of the learner. In past research only hard scaffolding (static)
+was used in computer games because of the lack of intelligence
+\cite{Brush2002b}. With an intelligent framework
+the use of soft scaffolding (dynamic) could be possible. A pedagogical agent
+which can monitor the progress of the learner and understand their behavior can support
+them individually, not only generally like hard scaffolding does.
+
+%~Figure \ref{stack} shows
+%~a rough overview how the framework, the game engine, the pedagogical agent and
+%~the game user interface are arranged.
+
+%~completes the software stack which contains the game itself with the agent as a part of
+%~the game and the framework as the intelligent foundation for the game.
+
+%~\begin{figure}
+    %~\centering
+    %~\includegraphics[width=\textwidth]{diagrams/stack.pdf}
+    %~\caption[Software Stack]
+    %~{Software Stack}
+    %~\label{stack}
+%~\end{figure}
+
+The following important functionality should be supported by the framework: the problem detection (see \ref{Problem
+Detection}), the adaptation (see \ref{adaptation}) and the support (see
+\ref{Supporting the learner}). The fact that for each part of the system
+several approaches are possible, requires a modular and extensible system with
+exchangeable modules. This allows to add more pedagogic principles,
+adaptation strategies and support systems in the future.
+
+%~In order to understand the learner, we need to organize the collected data and
+%~categorize actions, interactions, activities and problems. For now I will
+%~start with static categories, but in future such a system should be able to
+%~handle new categories too, if the categorization is not possible.
+
+%~The next sections contain meta models to understand the relationship between
+%~actions, interactions, activities and problems. The models are very abstract
+%~and far from implementation, but they help understand the domain and the
+%~difficulties of the framework. After the meta models the requirements of the
+%~framework will be presented.
+
+%~The system I propose is a framework which aggregates information captured in a
+%~serious non-linear game and analyzes the data. With this data its possible to
+%~control a pedagogical agent which is built into the game. This means the
+%~framework only handles the information provided by the game and pulls the
+%~strings of the pedagogical agent like a puppeteer. The intended function of
+%~the framework is to be the brain of the game. The game can of course be played
+%~alone, but the framework provides the intelligence to adapt to the learner and
+%~individualize the learning experience.
+
+%~gives the game feedback according to the data. The
+%~game can use the responses from the framework to control a pedagogical agent
+%~build 
+
+\section{Functional Requirements}
+This section deals with the functional requirements of the proposed system.
+The functional requirements define the basic functionalities of the system.
+Those key functionalities are: 
+%~Functional requirements are important to define some fix points a system should
+%~have. The system can be realized around those fix points, but they help to
+%~stay on track during the development. This section deals with the functional
+%~requirements of the proposed framework.
+%~This section describes the key functionalities the
+%~system should provide. The focus lies on non-linear games, but the system
+%~still has to cover some other important functionalities in order to provide
+%~good learning support. The key aspects are:
+%~\begin{itemize}
+%~\item Intelligent Support
+%~\item Minimal Invasive Support \textit{ Note to myself:(Scaffolding)}
+%~\item Learner Centric
+%~\end{itemize}
+
+%~\subsection*{Monitor the Learner}
+%~The system has to monitor the learner closely and watch his actions. The
+%~actions can be classified and used to choose the right support for the learner.
+
+\subsection{Learner-Centric}
+Good support cannot happen without a learner-centric environment. The system
+needs to store static information about the learner, such as age, gender,
+cultural group, etc., and dynamic information about the learner, which would
+be the learning history, media representation preferences, disabilities, etc. The
+information is needed to provide a personalized learning experience with
+individual support.
+
+\subsection{Individual Support}
+The most effective way of teaching is one-to-one human interaction. The
+teacher or tutor can detect problems during a learning process and react
+according to the personality of the learner. The system should provide
+individually tailored support to harvest the positive factors of computer-based learning
+as much as possible, without forgetting important principles of teaching.
+Individual support gives the learner more control over the system and they feel
+more immersed when the feedback given by the system is personalized.
+
+\subsection{Adaptive Learner Model}
+The representation of the learner in the system should not be static, but
+dynamic instead. The system needs to learn about the student while the student
+learns. The information gathered about the student leads to a better
+support by the system. The system has to monitor the actions of the learner
+constantly and categorize them in order to understand what the learner is up
+to and react accordingly, just like a human tutor would react to changes in
+the behavior of their student during the learning process.
+
+\subsection{Task Independent Problem Detection}
+The whole point of this thesis is to develop a framework which can enhance
+serious non-linear games. The fact that non-linear games do not need to be
+structured with clear tasks and missions, brings this requirement into play.
+The framework needs to detect problems without making the game linear.
+Problems have to be detected constantly even when there is no clear task to be
+fulfilled.
+
+%~\subsection*{Domain Knowledge}
+%~Knowing about the domain is essential for the system, in order to understand
+%~the current task, what the learner is doing and what the learner should do to
+%~fulfill the task or to learn in general. Domain knowledge means that the
+%~system knows the concepts related to a domain, which should be learned during
+%~the game.
+
+%~There are several approaches and a lot of research papers about representing
+%~the domain in computer based learning environments (elearning or ITS
+%~\footnote{Intelligent Tutoring System}) \cite{Koper2004a} \cite{Koper2004c}
+%~\cite{Laforcade2005a}.
+
+%~\subsection*{Peer Knowledge}
+%~This takes into account the other peers of a class playing on the same task.
+%~The system should consider previous solutions to a problem and compare the
+%~actions of the current player with the actions of others, which led to success
+%~or failure.
+
+%~\textit{Note to myself: the solution can be in real time (monitor the actions of
+%~the peers in the class, before they are even finished) or semi real time
+%~(consider only those action-sets which have led to a valid solution, maybe
+%~valid solutions would have to be flagged so by the teacher)}
+
+%~\subsection*{Allow Errors}
+%~The agent has to allow some errors, because the player can learn from them.
+%~This makes it difficult to draw a line: when should the agent step in and
+%~when should the agent allow the player to fail?
+
+%~\subsection*{Detect Frustration}
+%~The system needs to detect whether the player is failing and still learning
+%~from its errors or is getting frustrated and the learning outcome stagnates.
+
+%~\subsection*{Learner Centric}
+%~The system has to focus on the learner and collect as many information about
+%~the learner as possible, in order to understand the behavior of the learner
+%~and help him with its problems.
+
+%~\subsection*{Pedagogic Intelligence}
+%~The agent has to follow strict principles from the field of pedagogics. This
+%~optimizes the learning outcome from practice sessions.
+
+%~\subsection*{Agent Diversity}
+%~The system should offer more agents than only one. When the child can choose
+%~its agent of choice the immersion of the child is deeper and the agent is more
+%~effective.
+
+%~\textit{Note to myself: find a citation backing this up}
+
+%~\subsection*{Humanoid Agents}
+%~The pedagogical agents have to be humanoid. They can be alien as well but not
+%~some things like a paperclip or a talking printer or something. Studies have
+%~shown that the learning effect is much higher with humanoid agents.
+
+%~\textit{Note to myself: citation!}
+
+%~\subsection*{Support Vocal and Textual Feedback}
+%~Only textual feedback can be bad if the player is a slow reader or maybe
+%~cannot read at all because of its age. The other way around, only vocal
+%~feedback, is not ideal either, because it could be that the player is not
+%~focused on the agent when the feedback is given and thus misses important
+%~information.
+
+%~\subsection*{Support Collaboration}
+%~This is an optional requirement. It should be possible to support
+%~collaboration. This means the system has to distinguish between the different
+%~users working together and map the actions to a specific user. This could be a
+%~good field of research: evaluate if its better to treat the group of users
+%~working on one worksatation as one and give support as it would be one person
+%~or if its better to distinguish them.
+
+%~backlog:
+%~collaborative
+%~(very visionary ;) ), knowledge of the peers (learning speed and progress
+%~of other peers in one class or school or previous classes), agent
+%~has to be humanoid, voice / text feedback
+
+
+\section{Non Functional Requirements}
+\label{non-functional-requirements}
+%~\subsection*{Exchangeable Pedagogic Backends}
+%~Depending on a single pedagogic principle is never good for a framework. The
+%~choice of the teaching method often depends on many factors, among them you can
+%~find the domain to be thought and the target group. The framework should be
+%~usable for many games of many different domains with many different audiences.
+%~This requirement is a double-edged blade, because it increases the complexity
+%~of the system a lot, but there already some solutions (e.g. strategy pattern)
+%~with which this can be achieved.
+
+\subsection{Usability}
+It is essential for a framework to be  documented thoroughly, so other
+developers can easily use the framework for their games. Many game
+developers do not know what aspects are important to guarantee a pedagogical
+sound learning game. The documentation should not only describe how the framework
+can be used, but also which requirements
+need to be fulfilled by the game in order to provide a good learning
+experience. This could be a set of guidelines a game developer has to follow, in order
+to fully harvest the advantages of the framework. A clear
+API\footnote{Application programming interface} is important to allow future extensions
+for the framework.
+
+\subsection{Reliability}
+The frameworks' requirements in terms of reliability are to detect problems
+immediately (thats actually more a \textbf{Performance} requirement, see
+\ref{performance}) and if the problem detection takes too much time, the
+system should note the problem but not trigger the pedagogical agent. The time
+between the action of the learner and the reaction of the pedagogical agent
+cannot exceed a certain limit. This limit needs to be defined in evaluations
+with the system in use, but it is definitely in the range of seconds, not
+minutes.
+%~The framework should learn from the learner and thus
+%~understand the learner after some time of initial learning. At the beginning
+%~the problem detection may be not so good, but during the process of learning
+%~the problem detection should be improved.
+
+If the framework can detect a problem only to a certain degree of likelihood,
+the feedback should be designed accordingly: if a problem is uncertain, the
+agent needs to be very careful, not to interrupt the learner during learning.
+Uncertain problems may result in questions by the agent, which can be seen as
+part of the learning. When a unmistaken problem has been detected, the agent may
+interrupt the learner before they get too frustrated.
+
+\subsection{Performance}
+\label{performance}
+The problem detection needs to happen in real time, everything else is not
+really useful for the learner. After the initial learning period, the
+framework should detect the problems soon enough to trigger the pedagogical
+agent and react in time to support the learner. The learning mode for the
+framework could be externally triggered, where a teacher or a learner
+themselves can tell the framework that they have a problem. When the framework is not
+in learning mode it should detect problems in real time.
+
+\subsection{Supportability}
+Depending on a single pedagogic principle is never good for a framework. The
+choice of the appropriate teaching method depends on many factors, among them
+the domain to be thought and the target group. The framework should be
+usable for many games of many different domains with many different audiences.
+The framework needs to provide interfaces to add new pedagogic strategies in
+an easy way.
+
+\section{System Models}
+To explain how the framework works, some use case models and a sequence
+diagram is shown in this section. The models and diagrams focus on the
+problem detection purpose of the system, which is the part this work has focused on.
+
+\subsection{Use Cases}
+The identified use cases are subject of this section. After a short overview,
+the flow of events will be described more in detail for each major use case.
+For the relevant use cases of the framework, following actors are important:
+\begin{description}
+\item[The Learner] The learner is the user playing the game and learning the
+concepts of a domain while playing. For now, it is not important whether the
+learner is a child, young adult or adult, but for the choice of the pedagogic
+strategy which supports the learner this information may be essential.
+\item[The Game] Since the framework is independent from the game, the game is an
+external actor for the framework.
+\item[The Pedagogical Agent] The agent should be part of the game and can be seen
+as an actor for the use cases of the framework. The pedagogical agent is a
+piece of software which interacts with the learner during the game. The
+pedagogical agent replaces in some ways a human tutor, they give feedback and
+support the learner. The pedagogical agent is the most important
+interface between learner and game.
+\end{description}
+
+Figure \ref{usecase_overview} shows an overview of the most important use cases
+and their relation between each other and the actors. The following sections will
+describe each major use case in detail.
+
+\begin{figure}
+    \centering
+    %~\includegraphics[width=\textwidth]{diagrams/use_cases_overall.pdf}
+    \includegraphics[width=\textwidth]{diagrams/use_cases_overall.pdf}
+    \caption[Some of the Use Cases of the Framework in an Overview (UML use case diagram)]
+    {Some of the Use Cases of the Framework in an Overview (UML use case diagram)}
+    \label{usecase_overview}
+\end{figure}
+
+\subsubsection{Detect Problem}
+\textbf{Detect Problem} describes the use case where the framework
+detects a problem during the learning process. This use case is not initiated
+directly by an actor, only indirectly with the use case \textbf{Monitor
+Actions} which \textbf{Detect Problem} extends. The only direct participator is the
+\textbf{Learner}, the \textbf{Game} participates indirectly via
+\textbf{Monitor Actions}.
+
+The \textbf{Learner} plays the game and executes some actions during the
+course of the game. The \textbf{Game} notifies the framework about these
+actions and the framework monitors them. When a series of actions lead to a
+problem, the framework can detect the problem. An easy example may be, when the
+\textbf{Learner} clicks many times in a row on the
+same object without any effect.
+
+%~The problem is categorized by the framework and
+%~leads to a combination of the three use cases which extend the \textbf{Detect
+%~Problem} use case. \textbf{**** pre post conditions? *****}
+
+\subsubsection{Categorize Problem}
+The \textbf{Categorize Problem} use case is part of \textbf{Detect
+Problem}. Each problem that occurs during the \textbf{Game} is categorized by
+the framework. Figure \ref{cat_problem} shows the relation between
+\textbf{Detect Problem} and \textbf{Categorize Problem}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/categorize_problem_usecase.pdf}
+    \caption[The Relation between the Use Cases Categorize Problem and Detect
+    Problem (UML use case diagram)]
+    {The Relation between the Use Cases Categorize Problem and Detect
+    Problem (UML use case diagram)}
+    \label{cat_problem}
+\end{figure}
+
+\subsubsection{Monitor Actions}
+\textbf{Monitor Actions} describes the use case where the system watches
+closely which actions have been performed by the \textbf{Learner}. This is a
+continuous task of the framework and is initially triggered by the
+\textbf{Game}. The \textbf{Learner} initiates the \textbf{Execute Action} use case,
+which is part of the \textbf{Monitor Actions} use case. The \textbf{Game}
+provides the needed contextual information and the actions which need to be monitored.
+
+\subsubsection{Give Support}
+\textbf{Give Support} is initiated by the \textbf{Pedagogical Agent} and is
+not related to a problem in the first place. The \textbf{Game} can offer
+support through the \textbf{Pedagogical Agent} also without any specific
+problem (See scaffolding \ref{scaffolding}, where the \textbf{Learner} is
+supported from the beginning on). In order to give support the framework needs
+to decide what the best support strategy is, regarding recent actions
+performed by the \textbf{Learner} and eventual preferences and personality
+aspects.
+
+\subsubsection{Resolve Problem}
+Resolving a problem is a special case of \textbf{Give Support}, where the
+support actually lead to a problem solution. The \textbf{Resolve Problem} use
+case includes detecting a problem in the use case \textbf{Detect Problem}. It has
+no direct actors because it extends \textbf{Give Support} which has the
+participating actors \textbf{Learner} and \textbf{Game} and the the initiating
+actor \textbf{Pedagogical Agent}.
+
+%~\begin{table}
+%~\caption[Detecting a Problem Use Case]
+%~{Detecting a Problem Use Case}
+%~\centering
+%~\begin{tabular}{>{\it}ll}
+    %~\thickhline
+    %~Name & Detecting a Problem \\
+    %~\hline
+    %~Participating\\actors & blub\\
+    %~\thickhline
+%~\end{tabular}
+%~\label{table:detecting_a_problem}
+%~\end{table}
+
+\subsection{Flow of Events}
+Figure \ref{flow_of_events} shows an exemplary flow of events. It shows how
+the framework should be connected with the game. The game and the pedagogical
+agent were actors in the use cases presented in the previous section, now they
+are boundary objects. This should not confuse the reader, because they were
+actors in the use cases to show that the game and the pedagogical agent are
+external systems which interact with the framework. To show the flow of events
+the system consist of the \textbf{Game}, the \textbf{Pedagogical Agent} and the \textbf{Framework}, which
+leaves the \textbf{Learner} as only actor. The game and the pedagogical agent have been defined
+as boundary objects, because they represent the interface to
+the learner.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/flow_of_events.pdf}
+    \caption[Exemplary Flow of Events (UML sequence diagram)]
+    {Exemplary Flow of Events (UML sequence diagram)}
+    \label{flow_of_events}
+\end{figure}
+
+%~backlog:
+%~\begin{itemize}
+%~\item object model (maybe use some models from barwin/simballo/magadi, strategy
+%~patterns for agent or feedback system and pedagogical principles and
+%~intelligent framework)
+%~\item dynamic models
+%~\item mock ups (pedagent mockups, PHUN mockups with agent)
+%~\end{itemize}

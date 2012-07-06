@@ -1,0 +1,115 @@
+\chapter{Scenarios}
+\dictum[John Dewey -- American philosopher, psychologist and educational reformer]
+{\flushright{}Education is not preparation for life; education is life itself.}
+
+\section{Problem Scenario}
+In this section I would like to describe a scenario as it could happen in one
+of the schools around the world. This scenario is the AS IS or problem
+scenario, because it shows the problems I want to solve with the proposed
+system which will be presented in chapter \ref{proposed_system_chapter}.
+
+\begin{quote}
+Lisa is a physics teacher at high school. She wants to use Phun \footnote{Phun
+is a physics simulation game which is available for free at
+http://www.phunland.com} with
+her class to teach physics, especially Newton's laws of motion. After
+a short introduction in Phun her pupils get a simple task: build an
+inclined plane to accelerate a ball and let the ball crash into a
+stack of boxes. The pupils should study the behavior of the boxes
+and the ball and write their observations down. Some of her students
+have been very fast in building the inclined plane, especially those
+with some experience in similar applications (e.g. drawing applications).
+But not all of her students are fluent in creating the right scenery
+for the experiment. Bob has a problem in finding the right tools to
+draw the inclined plane and gets more and more frustrated. At this
+point his teacher Lisa joins him at his desk and helps him to resolve
+his problem. In the meantime Martin has another Problem with his setup:
+the inclined plane is too small and the ball cannot gain enough speed
+to bring down the boxes. After Lisa has solved Bob's problem she goes over
+to Martin in order to help him with his problem. Just after she has finished explaining
+him the first steps to change the size of the plane the bell rings
+and class is over.
+\end{quote}
+
+The problem is obvious: there is not enough time to support every
+student with their individual problems. Martin cannot finish his work
+in time because he gets stuck at some point and his teacher Lisa is
+occupied helping someone else. The problem could be solved in a traditional
+way by expanding the lessons and giving Lisa more time to support the children,
+but that would only annoy the fast pupils. Another traditional way to solve this problem is to make smaller
+classes or assign more teachers to one class. This would be really nice but is
+not applicable in our schools because there are not enough teachers to make
+smaller classes. A quite new and innovative solution for the problem would be
+if the game (Phun in this case) itself could detect
+Bob's and Martin's problems and support them in a way that they can
+solve their problems themselves. Lisa could focus on more important
+problems and Bob and Martin could finish their setup in time to make
+some evaluations. 
+
+%~backlog:
+%~\begin{itemize}
+%~\item as is scenario
+%~\item describe the special problem related to the scenario, more detailed
+%~then problem statement which is general
+%~\item are there special actors: learner, peers, teacher, parents (?)
+%~\end{itemize}
+
+\section{Visionary Scenario}
+\label{visionary_scenario}
+The following scenario tells the same story as the Problem Scenario, but with the
+improvements I would like to achieve using the proposed system. The scenario
+describes an intelligent system built into the game that can help a child
+with their problems. In terms of software engineering we can say that we have
+one more actor in this scenario: the pedagogical agent. The pedagogical agent
+is a non-player character (NPC) in the game which uses an intelligent
+framework to understand the behavior of the learner (read more about pedagogical
+agents in section \ref{pedagogical_agents}).
+
+\begin{quote}
+Lisa is a physics teacher at high school. [...]
+Bob has a problem in finding the right tools to draw the inclined
+plane and gets more and more frustrated. At this point the pedagogical
+agent, Alice, who is Bob's agent of choice, pops
+up after recognizing that Bob did not make any progress for some time.
+Alice ``knows'' about the task as well and thus she highlights the
+``plane tool'' to draw infinite planes and
+displays the hint for that tool: ``When creating the
+plane, hold down SHIFT to rotate it in 15 degree intervals, or just keep
+the mouse close to the origin of rotation.'' Bob did
+not notice the plane tool and is now aware of it and can use it.
+At the same time somewhere else in the classroom Martin gets confronted
+with his problem about the inclined plane being too small. Robert,
+Martin's pedagogical agent, pops up because he noticed that Martin
+tried the same setup over and over again and did not seem to be satisfied
+with the outcome. Robert is aware of the problem situation because
+he ``knows'' that the ball should bring down the boxes. Thus Robert brings
+up a lecture about Newton's Laws of motion with the suggestion to either make
+the ball bigger and heavier to have more mass or to make the inclined
+plane bigger. Because for both solutions the ``resize
+tool'' is needed, Robert highlights the tool in the toolbar.
+\end{quote}
+
+During the same amount of time, in which Lisa was able to help only one student (or even less),
+the individual pedagogical agents helped both Martin and Bob with
+their problems, and they are able to evaluate their setup in time to
+write a short essay before the lesson is over. Of course the support of the pedagogical
+agent will never be as good as the support of a human tutor, but it can still improve
+the learning experience when used as an addition to a human teacher. In order to provide the
+described support, the agent needs to understand the learner and know the goal of the
+lesson and how it can be achieved.
+
+%~The agents provided
+%~soft scaffolding for both the students with different problems. Soft
+%~scaffolding is only possible if the agents follow every action a student
+%~performs and knows about the current lesson: what should be learned
+%~and how it can be learned.
+
+%~backlog:
+%~\begin{itemize}
+%~\item describe the hypothesis and the goal of the system, what makes the
+%~scenario visionary
+%~\item how to improve the problem scenario
+%~\item what are the pedagogical and psychological principles behind the vision
+%~\item what are the computer science principles
+%~\item back up the vision with these principles
+%~\end{itemize}

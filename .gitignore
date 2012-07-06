@@ -1,0 +1,10 @@
+#ignore generated files
+*.aux
+*.bbl
+*.blg
+*.lof
+*.toc
+*.log
+*.out
+*.pdf
+*.lot

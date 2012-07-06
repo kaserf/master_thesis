@@ -1,0 +1,159 @@
+% Initial idea based on
+% http://blog.barisione.org/2007-09/torino-a-pretty-theme-for-latex-beamer/
+% 
+% Copyright Christoph Flake (Christoph.Flake@gmail.com)
+% 2010
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% General Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% base themes
+\useoutertheme[footline=authortitle,subsection=true]{miniframes}
+\useinnertheme{circles}
+\usecolortheme{whale}
+
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% additional info
+\newcommand{\additionaltext}[1]{\def\insertadditionaltext{#1}}
+\additionaltext{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Colors and Fonts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% base theme color
+\definecolor{dconthemecolor}{rgb}{0.137,0.366,0.541} %default - dark blue
+\DeclareOptionBeamer{basergb}{\definecolor{dconthemecolor}{rgb}{#1}}
+\DeclareOptionBeamer{baseRGB}{\definecolor{dconthemecolor}{RGB}{#1}}
+\ProcessOptionsBeamer
+
+% inner colors (from tex/latex/beamer/themes/color/beamercolorthemeorchid.sty)
+\setbeamercolor{block title}
+	{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block title alerted}
+	{use=alerted text,fg=white,bg=alerted text.fg!75!black}
+\setbeamercolor{block title example}
+	{use=example text,fg=white,bg=example text.fg!75!black}
+\setbeamercolor{block body}
+	{parent=normal text,use=block title,bg=block title.bg!20!bg}
+\setbeamercolor{block body alerted}
+	{parent=normal text,use=block title alerted,bg=block title alerted.bg!20!bg}
+\setbeamercolor{block body example}
+	{parent=normal text,use=block title example,bg=block title example.bg!20!bg}
+% element colors
+\setbeamercolor{structure}{fg=dconthemecolor}
+\setbeamercolor{titlelike}{parent=structure}
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{title}{fg=black}
+\setbeamercolor{item}{fg=black}
+
+\setbeamerfont{date}{size=\tiny}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Headbar %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{headline}{%
+  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
+  \end{beamercolorbox}
+  \begin{beamercolorbox}{section in head/foot}
+    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
+  \end{beamercolorbox}%
+  \ifbeamer@theme@subsection%
+    \begin{beamercolorbox}[colsep=1.5pt]{middle separation line head}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,leftskip=.3cm,
+    		rightskip=.3cm plus1fil]{subsection in head/foot}
+	      \usebeamerfont{subsection in head/foot}\insertsubsectionhead
+      % add page numbering
+      \hfill{\insertpagenumber}
+    \end{beamercolorbox}%
+  \fi%
+  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
+  \end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% lengths of decoration bars
+\newlength{\baruno}
+\setlength{\baruno}{.01\paperheight}
+\newlength{\barduo}
+\setlength{\barduo}{.01\paperheight}
+
+\setbeamertemplate{title page}{
+% set with page 0 on title
+\setcounter{page}{0}
+% 
+{\parskip0pt\offinterlineskip%
+  \hbox{\hskip0em\hbox{\vbox{%
+ % title
+\begin{beamercolorbox}[wd=\paperwidth,ht=.5\paperheight,center]
+		{palette tertiary}
+  \usebeamerfont{title}\inserttitle\par%
+  \ifx\insertsubtitle\@empty%
+  \else%
+    \vskip0.15em%	
+    \rule{.6\paperwidth}{0.2mm}
+    \vskip0.2em%
+    {\usebeamerfont{subtitle}\insertsubtitle\par}%
+  \fi%     
+  \vspace{.15\paperheight}%
+\end{beamercolorbox}%
+\vbox{}\vskip-\baruno%
+ % 1st line.
+\hbox{%
+\begin{beamercolorbox}[wd=.1\paperwidth,ht=\baruno,dp=0pt]{}%
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.9\paperwidth,ht=\baruno,dp=0pt]{block title}%
+\end{beamercolorbox}%
+}%
+ % 2nd line.
+\hbox{%
+\begin{beamercolorbox}[wd=.5\paperwidth,ht=\barduo,dp=0pt]{}%
+\end{beamercolorbox}%
+\begin{beamercolorbox}[wd=.5\paperwidth,ht=\barduo,dp=0pt]{palette primary}%
+\end{beamercolorbox}%
+}%
+}}}}
+% right lower info text
+\begin{columns}
+	\column{.5\textwidth}
+	\begin{centering}
+		  \vbox{}\vfill
+		  \vskip0.6em
+		  \inserttitlegraphic
+		  \vfill
+	\end{centering}
+	\column{.5\textwidth}
+	\vskip1em\par
+	\begin{beamercolorbox}[sep=8pt,center]{author}
+  	\usebeamerfont{author}\insertauthor
+  \end{beamercolorbox}
+  \ifx\insertadditionaltext\@empty
+  \else
+  	  \begin{beamercolorbox}[sep=6pt,center]{additionaltext}
+  	  	\insertadditionaltext
+  	  \end{beamercolorbox}
+  \fi
+  \begin{beamercolorbox}[sep=6pt,center]{institute}
+    \usebeamerfont{institute}\insertinstitute
+  \end{beamercolorbox}
+  \begin{beamercolorbox}[sep=8pt,center]{date}
+    \usebeamerfont{date}\insertdate
+  \end{beamercolorbox}
+\end{columns}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+
+\mode<all>
+
+

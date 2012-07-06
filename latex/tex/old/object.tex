@@ -1,0 +1,93 @@
+\chapter{Object Design}
+\label{object_design}
+
+\dictum[Bertrand Russell -- British philosopher]
+{\flushright{}The greatest challenge to any thinker is stating the problem in a way that will allow a solution.}
+
+This chapter covers the object design. Due to the limited time of the thesis,
+only the most important part will be presented in this chapter. The presented
+models are mainly extracted from the \textbf{Problem Detector} subsystem, which
+represents the focus of this work. The first section will explain the
+details of recognizing interaction patterns which are a essential part of
+problem detection. The second section goes one step further and shows details
+about how problems are actually detected.
+
+\section{Matching Interactions to InteractionPatterns}
+
+\textbf{InteractionPatterns} are a series of interactions which can be defined either
+by hand or during the initial learning period of the framework. The first idea was to 
+use regular expressions to define patterns. This is a simple concept which should do
+the trick for the moment, but in future more advanced languages could be put in place.
+The \textbf{InteractionPatterns} are stored in the \textbf{InteractionPatternStore} (which should
+persist) and can be modeled as finite state machines, because they can be described
+by regular expressions. When a new \textbf{Interaction} is classified and stored in the
+\textbf{InteractionStore} by the \textbf{Action Monitor} subsystem, each
+\textbf{InteractionPattern} gets notified (observer pattern).
+The \textbf{InteractionPatternStore} knows which patterns exist and
+instantiates the patterns at the startup of the system. The
+\textbf{InteractionPatternStore} has to keep the information about the
+patterns persistent, not in which state they are but which of them
+exist. Each pattern starts with the default initial state of the state machine.
+
+The \textbf{InteractionPattern} has to check if the newly classified \textbf{Interaction}
+is a valid ``input character'' for the current state of the state machine.
+If the \textbf{Interaction} is valid and leads to a transition, the state of
+the pattern changes. Otherwise the state machine resets to the initial state. Once the state machine
+reaches a final state, the observers which implement the
+\textbf{PatternObserver} interface need to be notified
+about the occurrence of a pattern. The
+\textbf{PatternMatcher}, which represents the facade for the pattern matching,
+does nothing else (for now) then relay the registration requests from observers to the
+concrete \textbf{InteractionPattern} classes.
+The \textbf{PatternMatcher} needs to store in a map, which observer is registered
+to which \textbf{InteractionPattern}, to unregister the observers if needed.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/InteractionPatterns.pdf}
+    \caption[Matching Interactions to InteractionPatterns (UML class diagram)]
+    {Matching Interactions to InteractionPatterns (UML class diagram)}
+    \label{matching_interactions}
+\end{figure}
+
+Figure \ref{matching_interactions} shows the object design of this part of the
+framework. The classes shown in figure \ref{matching_interactions} are all part of
+the \textbf{Problem Detector} subsystem, except the
+\textbf{InteractionObserver} interface and the \textbf{ActionMonitorFacade},
+which represent the interface to the \textbf{Action Monitor} subsystem.
+
+\section{Detecting a Problem}
+This section covers the part where actually the problems are detected. Until
+now, we only handled abstract interactions and interaction patterns. To make
+the problem detection as agile as possible, the framework uses the strategy
+pattern to keep the various problem detection strategies exchangeable.
+
+In figure \ref{problem_detection} the classes responsible for detecting a
+problem are shown. The \textbf{Problem} class gets notified by the
+\textbf{PatternMatcher} about any \textbf{InteractionPatterns} which matched
+the current sequence of \textbf{Interactions} performed by the learner. When
+the \textbf{Problem} gets notified about a new pattern, it executes the
+current strategy which evaluates the context. The context of a
+\textbf{Problem} are the \textbf{InteractionPatterns} which are related to the
+\textbf{Problem}. A problem can be manifested in many different
+\textbf{InteractionPatterns} and thus needs to keep a list of the
+patterns which express the \textbf{Problem}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/problemDetection.pdf}
+    \caption[Problem Detection with Strategy Pattern (UML class diagram)]
+    {Problem Detection with Strategy Pattern (UML class diagram)}
+    \label{problem_detection}
+\end{figure}
+
+The strategies which implement the interface \textbf{ProblemStrategy}, need to
+implement the method which takes the context as argument and produces a
+boolean output which tells the caller, whether the actual context triggered the
+problem or not. The strategy which is presented in figure
+\ref{problem_detection} is an example strategy which rates each of the related
+patterns with a probability factor. The probability factor determines to which
+degree this pattern manifests the problem. The \verb=execute()= method sums up
+the related patterns which have been detected recently. If the sum of the
+probability values exceeds a limit, which can be defined in the \verb=trigger=
+field, the method evaluates to true.

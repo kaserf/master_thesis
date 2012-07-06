@@ -1,0 +1,364 @@
+\chapter{Introduction}
+
+\dictum[James Gee -- Member of the National Academy of Education]
+{\flushright{}The biggest thing limiting games in education in my view is
+the lack of good artificial intelligence to generate good and believable
+conversations and interactions\dots{} We need games with expert systems built
+into characters and the interactions players can engage in with the environment.
+We need our best artificial tutoring systems built inside games, as well\dots{}
+Then we will get games where the line between education and entertainment
+is truly erased.}
+%~\renewcommand*{\chapterpagestyle}{scrheadingstitle}
+%~\pagestyle{scrheadings}
+
+Political leaders have tried over and over again to discredit video and
+computer games, although there is no scientific evidence supporting their
+point of view. As a matter of fact most of the scientific findings lead
+to a different outcome: video games are important for learning and can
+be used at different academic levels \cite{DeAguilera2003}.
+One of the advantages of games is the intrinsic motivation many teachers
+would love to see with their students. Combining the motivation to
+play games with teaching makes a powerful combination: intrinsically motivated
+students.
+
+The current digital gaming business is a \${10} billion per year industry
+\cite{VanEck2006} with high expectations \cite{Susi2007}. Ben Sawyer, co-funder
+of the ``Serious Games Initiative'', stated that the serious games market is
+now at about \${20} million \cite{Susi2007}. This gives the whole gaming
+in education concept a completely new perspective: business. In 2003 the global
+education and training market was estimated at \${2} trillion \cite{Susi2007}.
+
+To increase the learning effect of educational games, a recent study
+tried to adapt the game to the gamer and in this case the learner
+\cite{Kickmeier-Rust2006}. The researched aspects most often only cover
+classic computer games, where the learner has to fulfill missions or
+tasks in order to proceed and to finish the game. The focus of this work is on completely
+different games. They can be called sandbox games or non-linear games,
+which means that a player is completely free to explore and do what
+they want to without being bond to a strict storyline. In these
+kind of games it is difficult to monitor the learning effect and the
+progress a learner makes. Examples for such games are physics simulations
+like ``Phun''\footnote{http://www.phunland.com} or
+``Physics''\footnote{http://wiki.laptop.org/go/Physics} and open-world health
+games like ``Fatworld''\footnote{http://www.fatworld.org}. Open-world games for education are
+inspired by some of the most successful computer games on the market like
+the ``Grand Theft Auto'' (GTA) or ``Assasins Creed'' series.
+
+
+Skinner already noted in his work ``The shame of American education''
+\cite{Skinner1984a} that the
+best learning outcome for a student can only be if the student
+can proceed at individual speed. The optimal way to do this in school
+classes would be if every student had their own teacher or at least
+a tutor to help them \cite{Skinner1984a}. To make this possible, learning
+games can be used to support the teacher: fast learners do not need
+much help and can proceed alone, slower learners can have more
+attention of the teacher because the teacher has more time for them.
+In order to provide a good learning experience, the learning game should be
+backed up by an intelligent framework. The intelligent framework I propose
+later in this work is a framework which tries to understand the learners
+behavior and support the learner accordingly. The crucial part is the problem
+detection, once a problem is identified it can easily be overcome.
+%~With an intelligent framework behind the game the goal is to understand
+%~what the learner is up to and what its dificulties are. Once a problem
+%~is identified it can easily be overcome.
+
+
+\section{Serious Games}
+
+Serious games (SG) have a higher purpose than pure entertainment: education. The term
+refers to all kind of games: not only digital or computer games, but also
+classic board games or outdoor games with educational purposes (see figure
+\ref{taxonomy_games}). The term
+``Serious Games'' first appeared as the title of Clark Abt's book,
+which was originally published in 1970 by Viking Press \cite{Abt1987}. At the
+time, serious games were mostly used by the military and health care sector to
+provide training for soldiers and medical personnel.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/games_taxonomy.pdf}
+    \caption[Taxonomy of Games (UML class diagram)]
+    {Taxonomy of Games (UML class diagram)}
+    \label{taxonomy_games}
+\end{figure}
+
+Although the term ``serious game'' was in use long before video and computer games
+became popular, since 2002 it has been used in connection with electronic
+games. The release of ``Americas Army'', a game produced by the US
+Army for recruiting purposes, changed the ordinary use of the term. From that
+moment on, ``serious games'' was used more often, mostly when a new game with a
+learning background was to be promoted. In the same year of the release of
+``Americas Army'' the ``Serious Games Initiative'' was
+founded at the Woodrow Wilson International Center for Scholars.
+
+In 2005 Michael Zyda proposed a definition of modern serious games: ``a mental
+contest, played with a computer in accordance with specific rules, that uses
+entertainment to further government or corporate training, education, health,
+public policy, and strategic communication objectives.'' \cite{Zyda2005} This
+definition applies to a vast field of concepts, which all have the same, or at
+least similar, meanings: edutainment, e-Learning, game based learning and digital
+game based learning \cite{Susi2007}. The difference between these concepts is
+a topic of its own. Especially the difference between serious games (SG) and
+(digital) games based learning (DGBL) is not clear, thus I choose to follow
+Kevin Corti's example and use only the term serious game \cite{Corti2006}.
+
+%~The difference between serious games (SG) and (digital) game based learning
+%~(DGBL) is a topic with a lot of space to argue. Thus I choose to follow Kevin
+%~Corti's example and use only the term serious games instead of making a
+%~difference between SG and DGBL \cite{Corti2006}.
+
+The concept of SG tries to keep the balance between learning outcome and gaming
+experience. To distinguish itself from traditional e-Learning software, SG uses
+state of the art computer game technology in combination with educational
+sound concepts from the area of pedagogics and psychology to ensure the best
+learning outcome. Both parts are equally important: a game that is fun but
+is not able to educate the player is of no use for SG and in return a ``game''
+that is not fun cannot be called a serious game either. Motivation is a
+key factor in education. Serious games try to use the general motivation for
+computer games to keep students playing and thus learning. Computer games as a
+platform are used not only to harness the high motivational factors, they also
+provide a powerful platform for children to develop a sense of autonomy and an
+awareness of consequentiality \cite{Barab2005}. They also represent a good
+opportunity to enlarge the so-called ``exploration space'' for
+children, which has been continuously reduced over the last decades
+\cite{Barab2005}.
+
+%~Computer games in general are very good motivators. The proof for that is
+%~nearly every teenager: useful to motivate children and learners in general, but not only that:
+%~computer games also provide a powerful platform for children to develop a
+%~sense of autonomy and an awareness of consequentiality \cite{Barab2005}. They
+%~also represent a good opportunity to enlarge the so called ``exploration
+%~space'' for children which has been continuously reduced over the last
+%~decades \cite{Barab2005}.
+
+%~\subsection{The Fun Factor}
+
+
+%~SG don't focus on education only but also on fun. Fun is a key factor to keep the motivation
+%~of the players - in this case learners or students - high, thus GBL
+%~uses a powerful way to keep the learners playing the game and actually learning
+%~things in the meantime.
+
+%~Computer games are useful to motivate children and learners in general, but not only that:
+%~computer games also provide a powerful platform for children to develop a
+%~sense of autonomy and an awareness of consequentiality \cite{Barab2005}. They
+%~also represent a good opportunity to enlarge the so called ``exploration
+%~space'' for children which has been continuously reduced over the last
+%~decades \cite{Barab2005}.
+
+
+\section{Non-linear Games}
+
+Non-linear is an adjective used for games with non-linear game play. Games
+with linear game-play have a very clear story, which is better described as an interactive
+video with missions which are aligned strictly. The player has few choices
+to alter the flow and these choices only affect the success or failure of a
+mission, but the order in which the missions can be completed is mostly
+untouchable or can be adapted only slightly. Games that are non-linear give the
+users exactly such choices, which allow them to alter the overall sequence of
+events.
+
+The term non-linear is ambiguous and due to the lack of a clear definition of
+(serious) games, nearly every researcher uses other words which have a similar
+or the same meaning as non-linear. Other terms which can be found in papers
+and publications are \textbf{Open-World Games}, \textbf{Open-Ended
+Games} or \textbf{Sandbox Games} and with a more educational background:
+\textbf{Exploratory Learning Environment}. Drawing a line between these terms
+makes little sense and hereafter the term non-linear games will be used,
+which can be seen as a generalization of all the terms.
+
+Non-linear games bring one big advantage over linear games: the player is even
+more immersed in the game play, because they have the full freedom to explore
+and control the ``virtual world'' they play in. This gives the player the feeling of ``being
+there'' \cite{Psotka1995a}. Immersion is important in two different
+aspects: first the educational aspect of immersion and then the motivational
+factor that comes with immersive computer games. In recent studies, a high
+correlation between immersion and addiction or high engagement in
+computer games has been detected \cite{Seah2008a}.
+
+With educational focus, there is another big advantage of non-linear games:
+the adaptability of the game. Adaptation is important in order to focus on the
+learner and give every student a personalized learning experience. The
+importance of adaptation will be explained in more detail in Chapter 2, see
+\ref{adaptation}. A non-linear game gives the player a lot more freedom and
+thus the overall self-efficacy is higher, which can be very positive on
+motivation and the learning outcome \cite{Zimmerman2000a}.
+
+\section{Motivation}
+\dictum[Ian S. Bruce -- Technology Editor of Sunday Herald]
+{\flushright{}It’s Official: Video Games Are Bad for Your Brain. \cite{Bruce2002}}
+Lately, the use of computer games to enhance learning has increased
+significantly, but many educational games are very weak in terms of a good gaming
+experience. They may be full with pedagogic principles, but they simply are not
+entertaining or get boring quickly. On the other hand,
+good games engage the player for many hours, which has worried some parents.
+This lead to discussions
+whether the influence of computer games on children is positive or negative
+\cite{Southwell2004a}. The pipe dream of all teachers is to see
+their pupils learning with the same motivation and engagement they play their
+computer games at home.
+
+I believe that this is not a dream, but creating good learning games can only
+be successful if game developers, pedagogues and psychologists cooperate.
+Educators as well as game developers have to combine their expertise to create games
+which follow pedagogic principles and harvest the motivational factors of
+cutting edge computer games. The most important thing is to optimize the game
+over these two variables: fun (and as a direct result: motivation) and
+pedagogical effectiveness. 
+
+Non-linear games are very powerful for educational use, because they already
+fulfill the factors Kiili has identified as most important in games: ``Games
+should provide possibilities for reflectively exploring phenomena, testing
+hypotheses and constructing objects.'' \cite{Kiili2005a}
+
+%Educators from all over the world can only dream of what computer game
+%developers have managed to accomplish: highly motivated children spend an
+%awful lot of time with their products.
+%Although many people have come to the conclusion that modern technology
+%can enhance learning, the wide usage of such tools is still
+%rare. There are a lot of tools available to support education, but the quality
+%and effectiveness of such tools is too often very poor. There
+%seems to be a very common problem in applied computer science: developers make
+%software for educational purposes without enough knowledge off the pedagogic
+%principles behind effective learning. This problem applies also to other
+%fields of computer science, not only education. This results in tools
+%with poor pedagogic background which fail to support traditional learning. A
+%close collaboration with psychologists and pedagogues has to be established
+%for every piece of software concerning education. 
+
+
+
+\section{Problem Statement}
+\label{problem_statement}
+The problem with software in general and educational software or educational
+games in special is that it always follows the principle of designers: Design
+for the average user. Back in 1982, an experiment was conducted to study
+whether this principle makes any sense or not \cite{Bailey1982}. In the
+experiment, Bailey started with
+4063 males selected randomly from the population of the USA. The scientist
+measured the ten most characterizing physical features and reduced the sample
+after each round. After the first round, only 1055 of the original 4063 males
+(25.9{\%}) were close enough to the average standing height to continue the
+experiment. When it came to the tenth round, only 2 subjects were left in the
+sample and even they got eliminated in this last round. This shows that design
+for the average is maybe good in theory, but in reality it does not make
+much sense.
+
+The trend in educational software (games and other tools) is developing towards an
+adaptive system that focuses on the learner and adapts itself to
+individual needs \cite{Shute2003b}. Classic computer games can be adapted quite
+easily, if the system knows about the student model, the domain model and the
+pedagogic model (see figure \ref{adaptive_game}). The adaptation mostly focuses on
+changing the storyline and thus the presentation of the different learning
+objects. Non-linear games cannot be adapted that easily though, because usually
+there is no storyline that can be altered. Some non-linear games are task
+based, which means that there are some tasks that can be fulfilled during the game,
+without removing the exploration factor from the game. During the initial
+research, some questions arose which had to be resolved in order to define what
+intelligent support for non-linear serious games actually is:
+\begin{itemize}
+\item How can the computer detect if there was a problem during the game, if there
+are no explicit tests?
+\item Are the actions of the learner enough information to understand his
+behavior, at least to a certain degree?
+\item Can the game be adapted to the learner without taking the non-linear
+element out of it? 
+%~\item How can be we decide from the interactions with the game only, if the
+%~learner has a problem with the current task?
+%~\item When is the appropriate moment to give active support?
+\end{itemize}
+Summarized, the problem is to provide a good learning experience. In order to
+do so, the above questions have to be examined closely and answers need to be
+found to understand what the learner does in the game and support them
+during their activities.
+%~This thesis tries to get a grasp of the problem by analyzing and organizing the structure of
+%~the application domain and provide an exemplary solution for the problem.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{diagrams/adaptive_game_uml.pdf}
+    \caption[Components of an Adaptive Game (UML class diagram)]
+    {Components of an Adaptive Game (UML class diagram)}
+    \label{adaptive_game}
+\end{figure}
+
+%~My focus lies on educational games, to be
+%~more specific on non-linear games. In order to adapt a game to the
+%~player (learner), the game needs to be aware of the domain knowledge related
+%~to the topic to be taught and of course it needs to understand the learner
+%~itself. 
+%~The key to good educational software is adaptability. The game has to adapt
+%~itself to the learner and focus on the special needs of every single child.
+
+%~The field of Game Based Learning (GBL) can be partitioned into two
+%~big parts: linear and non-linear games. Linear
+%~games have a clear plot and the learner follows the plot to reach
+%~higher levels of knowledge. Non-linear games instead, give the learner
+%~full freedom to explore a digital world. The learner becomes the explorer and
+%~is immersed in the game.In non-linear games the learner is more a explorer and
+%~learns things during the exploration. One of the most used examples
+%~are physics games like {}``Phun'' or {}``Physics'' where you can
+%~create objects and see manipulate them following physical rules (spin,
+%~move, drop, explode, ...). I would like to focus on non-linear games
+%~because for classic serious games there already exist a lot of solutions
+%~for the problems I am about to address.
+
+%~Non-linear games usually don't check what knowledge or skills the
+%~learner acquired. This makes it difficult to adapt the game itself
+%~or to help the learner with a topic.
+
+%~The game should understand what the user and learner is about to do
+%~and why he wants to do it. This is exactly what teachers do or at
+%~least should do: anticipate the direction where the student is going
+%~and guide him if he follows wrong leads. Most of the serious games
+%~on the market cannot do that. They may have several plots which can
+%~be adapted and lessons can be repeated, but what 
+
+%~The problem with most serious games is that they do not adapt 
+
+%~Current educational games capture the learning progress of the gamers
+%~and learners with challenges (tests) the learners must face in order
+%~to reach a higher level of the game or to fulfill the game. In non-linear
+%~games it's not so easy to track what the learner already learned.
+
+
+\section{Outline}
+This section summarizes how this work is structured and what each chapter contains.
+After the introductory first chapter, the next chapter provides a short summary
+of several pedagogic principles behind the work: motivation, adaptation and
+scaffolding support.
+
+The third chapter presents some related projects which had a big influence on this
+work. The projects presented are: ELEKTRA, MAGADI and weMakeWords. The chapter should
+introduce the reader to a promising field of research which concentrates on the most
+precious thing we have: education, the future of our children and our world. The presented
+projects are intended as an appetizer for further reading.
+
+After the related pedagogical principles and related projects have been presented, chapter
+four contains two scenarios which show the need for better software tools to enhance
+learning. The first part of chapter four presents a problem scenario (as-is situation)
+and the second part of the chapter contains a visionary scenario which shows the
+possibilities for improvement.
+
+After the problems have been described, chapter five presents a solution to those problems.
+In the fifth chapter I propose a system to address the problems of current educational
+software systems, especially games. The chapter contains the functional and
+non-functional requirements of the proposed system, use-cases for the system and
+an exemplary flow of events.
+
+Chapter six analyzes the application domain. The analysis helps the reader to understand
+some of the decisions taken in later chapters. The concepts discussed in the analysis
+chapter face the research questions presented at the end of the problem statement
+\ref{problem_statement}.
+
+The system design in chapter seven concentrates on the technical aspects of the
+proposed system. Design goals are presented and the system is divided into major
+subsystems. The chapter also describes the important aspects of the persistance
+of some objects and presents a global flow through the subsystems identified in the
+chapter.
+
+Chapter eight covers the object design, where an extract of the complete
+object model will be presented. The focus of the extracted section lies on
+problem detection. After the object design, the last chapter covers the
+conclusion and the future work parts.

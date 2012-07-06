@@ -1,0 +1,40 @@
+\linespread{1.25} % die berühmten anderthalb Zeilen Abstand
+\parskip1.5ex                   % Absatzabstand
+
+\setlength{\headheight}{1.5cm}
+\setlength\emergencystretch{1em}
+
+% Redefine plain page style
+\fancypagestyle{plain}{
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[LE,RO]{\thepage}
+}
+
+\setcounter{secnumdepth}{3} %tiefe der numerierung
+
+\setcounter{tocdepth}{3} %tiefe des inhaltsverzeichnisses
+
+% Code for creating empty pages
+% No headers on empty pages before new chapter
+\makeatletter
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
+    \hbox{}
+    \thispagestyle{plain}
+    \newpage
+    \if@twocolumn\hbox{}\newpage\fi\fi\fi}
+\makeatother \clearpage{\pagestyle{plain}\cleardoublepage}
+
+% Define pagestyle
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\chaptermark}[1]{\markboth{ \emph{#1}}{}}
+\fancyhead[LO]{}
+\fancyhead[RE]{\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+%~\hypersetup{%
+%~pdftitle    = {Intelligent support for serious non-linear games},
+%~pdfsubject = {Bachelor Thesis},
+%~pdfauthor = {Felix Kaser}, colorlinks  = false, linkcolor   = blue,
+%~urlcolor = red, breaklinks  = true, } \pdfcompresslevel=9
