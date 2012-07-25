@@ -5,6 +5,11 @@
 \usepackage{scrpage2}
 \pagestyle{scrheadings}
 \usepackage{graphicx}
+\usepackage{subfigure}
+
+%create pdf hyperlinks with a color box (will not be printed)
+\usepackage{hyperref}
+\hypersetup{colorlinks=false}
 
 \begin{document}
 \input{tex/preface}
@@ -21,5 +26,5 @@
 \include{tex/conclusion}
 
 \appendix
-%\include{tex/sources}
+\include{tex/sources}
 \end{document}

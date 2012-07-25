@@ -1,4 +1,5 @@
 #ignore generated files
+*~
 *.aux
 *.bbl
 *.blg
