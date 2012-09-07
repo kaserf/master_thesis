@@ -28,7 +28,7 @@
 \usepackage{graphicx}
 
 \title{\LARGE \bf
-A flexible visual framework for debugging complex robotic systems
+A flexible visual framework for debugging complex robotic systems [should this be the same title as my thesis or maybe a different one?]
 }
 
 %\author{ \parbox{3 in}{\centering Huibert Kwakernaak*
@@ -89,9 +89,9 @@ One approach to address this issue is to keep two separated controllers: a low l
 
 Another approach has come up in the past and it is more thorough: the concept of tracepoints is used to debug a robot application without interrupting the execution but analysing the trace post-mortem (and more recently also viewing the results live \cite{Gumbley2009}). Using tracepoints to debug a program is a highly instrumented way of debugging and does not require to modify the source code. However the tracepoints approach is quite complex and pre-execution configuration takes a substantial effort and skill, which many developers won't like to take upon them. [badly written, rewrite, no proof]
 
-[write a paragraph about AR debugging? ---> AR Debugging covers the perception of the gobal state as seen by the robot. ROSDashboard tackles the local state of algorithms]
+[write a paragraph about AR debugging? ---> AR Debugging covers the perception of the gobal state as seen by the robot. ROSDashboard tackles the local state of algorithms ---> this probably belongs to related work]
 
-Because of the problems stated above many developers still use printf-debugging. It is something they can use with the skills they already have, without learning a new toolset and setting up a tracing or debugging chain[proof?]. One major downside of printf-style-debugging is the text-only representation of data. Although the developers might be used to look at (and interpret) numbers scrolling down in a console, it is not a very natural representation of the data. In this paper we [we or I?] present a new approach to improve printf-style-debugging with a special tool: ROSDashboard. The tool was developed to give developers the chance to visualize data collected with a printf-style approach how they want to. The developer can arrange widgets on a dashboard that visualize the debugged data in a more natural way. The developer can choose which visualization he prefers and suits his mental model of the data best. [unnecessary?: While printf-debugging has its downsides, there are also benefits to printf-debugging. The developer knows exactly where the printf-statements are and this makes it easy to understand the flow of a program.]
+Because of the problems stated above many developers still use printf-debugging [proof?]. It is something they can use with the skills they already have, without learning a new toolset and setting up a tracing or debugging chain[proof?]. One major downside of printf-style-debugging is the text-only representation of data. Although the developers might be used to look at (and interpret) numbers scrolling down in a console, it is not a very natural representation of the data. In this paper we [we or I?] present a new approach to improve printf-style-debugging with a special tool: ROSDashboard. The tool was developed to give developers the chance to visualize data collected with a printf-style approach how they want to. The developer can arrange widgets on a dashboard that visualize the debugged data in a more natural way. The developer can choose which visualization he prefers and suits his mental model of the data best. [unnecessary?: While printf-debugging has its downsides, there are also benefits to printf-debugging. The developer knows exactly where the printf-statements are and this makes it easy to understand the flow of a program.]
 
 ROS (Robot Operating System) was chosen as the platform for for this tool. It is currently one of the biggest players in the sea of robot development frameworks and has a big community backing the project. The developed tool represents the first step in more research to understand how robot development works and can be improved. The tool enables future work to evaluate the underlying debugging methodology.
 
@@ -118,15 +118,18 @@ The ROS client libraries currently fully support Python and C++, client librarie
 
 \subsection{LabView}
 
-[Todo: look for papers to cite and write subection]
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features a concept called \emph{Front Panels} which allows you to add widgets to a so called panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel a element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays).
 
-LabView has similar draggable widgets to make the development of systems easier.
+LabVIEW's front panel feature allows developers to easily create their own interfaces for a program. This feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. The researchers concluded that the front panel (among other features) could be responsible for a large share of LabVIEW's impact, but more research is needed \cite{Whitley2001}.
 
 \subsection{Tracepoints?}
 
-[this subsection probably needs to go. I should write about AR debugging and point out the global world view AR tries to tackle and the local algorithm view rosdashboard targets -- maybe both?]
+[this subsection probably needs to go.]
 
 Are tracepoints still that relevant to my work to list it here?
+
+\subsection{Augmented Reality Debugging}
+To understand how the robot perceives his surroundings and reacts to an AR (augmented reality) tool was developed by Collet and MacDonald \cite{Collett2010}. The augmented reality approach to debugging helps the developer to understand the \emph{global} state in which the robot currently is. The tool presented in this work mainly focuses on the \emph{local} state of a robot application or a specific algorithm. In the future those two tools could be combined to create a better debugging tool that helps the developer on a \emph{global} as well as a \emph{local} scale. [is this more future work?]
 
 \subsection{Related ROS tools}
 
@@ -145,11 +148,22 @@ Design, approach, integration, ROS philosophy...
 
 \end{itemize}
 
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.35]{images/rosdashboard_screenshot.png}
+  }  
+  \caption{Screenshot of ROSDashboard in action. [where should this figure go? introduction?]}
+  \label{screenshot}
+\end{figure}
+
 \subsection{Overview}
 ROSDashboard is a new tool in the ROS environment. It is built to allow developers easy visualization of data streams. It is built around a central dashboard where developers can add visualization widgets with drag and drop from a toolbox. Currently there are only the most basic widgets implemented to visualize data. In future there should be added more and more widgets. This effort could come from the robot developers themselves through a simple plugin mechanism. The developers know best what widgets they need to visualize their data.
 
 \subsection{Requirements}
 Requirements (easy to install and use, simple to extend, base tool for further development and evaluation)
+
+[the requirements below are all quite high-level. should I add requirements like distributed debugging, uninterrupted debugging? they affected the design but distributed debugging is completely in ROS hands (it still affected the decision to go with ROS)]
 
 \subsubsection{Openness}
 One of the requirements is to be open. Open in terms of Open Source but also regarding the other requirements like extendibility and adaptability. Openness helps to spread the word and gain a higher user base faster. [citation?] [badly written. rewrite]
@@ -204,10 +218,6 @@ The object model was designed to make it easy to extend ROSDashboard with more w
 
 The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class as well. The main reason is to hide the technical details away from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget needs and needs to implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the whole properties part and not re-use the default implementation from \texttt{DashboardWidget}.
 
-\subsection{Open Issues}
-
-[drop this section ---> future work]
-
 \section{THEORETICAL CONCEPT}
 
 This section probably is nonsense. I wanted to get into detail about the fast feedback loop, small changes to the code, how it affects the debugging and development style in general, small product increments, ...
@@ -224,13 +234,13 @@ This section probably is nonsense. I wanted to get into detail about the fast fe
 
 \end{itemize}
 
-The next steps for ROSDashboard are to integrated it into RQT and add a plugin framework to allow third parties to write widgets for ROSDashboard. A more long term plan for the project is to implement a parser that can extract data from text-based topics through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. One could have widgets that change settings of the robot and trigger special functions (a remote control for robots if you wish). [badly written, needs to be structured, extended and improved in general --> maybe split RQT integration and plugin framework into separate paragraphs]
+The next steps for ROSDashboard are to integrate it into RQT and add a plugin framework to allow third parties to write widgets for ROSDashboard. A more long term plan for the project is to implement a parser that can extract data from text-based topics through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. One could have widgets that change settings of the robot and trigger special functions (a remote control for robots if you wish). [badly written, needs to be structured, extended and improved in general --> maybe split RQT integration and plugin framework into separate paragraphs]
 
 The tool presented in this paper should be used in future to evaluate this new approach to robot debugging. It originates in printf-debugging but tries to address some of the issues of printf-debugging to increase developer productivity and make it easier to debug robot software. [add more to this paragraph and rephrase]
 
 \section{CONCLUSIONS}
 
-Do I need this section? What should I conclude about? Alternative approach to debugging? Fast feedback prototyping? (There was no evaluation so this section might be obsolete)
+Do I need this section? What should I conclude about? Alternative approach to debugging? Fast feedback prototyping? More studies to be conducted in this area to evaluate the methodology and the tool? (There was no evaluation so this section might be obsolete)
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
