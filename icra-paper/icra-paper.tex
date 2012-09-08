@@ -28,7 +28,7 @@
 \usepackage{graphicx}
 
 \title{\LARGE \bf
-A flexible visual framework for debugging complex robotic systems [should this be the same title as my thesis or maybe a different one?]
+A flexible visual framework for debugging complex robotic systems [should this be the same title as my thesis or maybe a different one? ** could be the same but it may be good to have a different one; I suggest delete ``complex'' or something like that. or simplify more eg A visual framework for debugging robotic systems.]
 }
 
 %\author{ \parbox{3 in}{\centering Huibert Kwakernaak*
@@ -46,11 +46,11 @@ A flexible visual framework for debugging complex robotic systems [should this b
 %         {\tt\small pmisra@cs.wright.edu}}
 %}
 
-\author{Felix Kaser$^{1}$, Bruce MacDonald$^{2}$% <-this % stops a space
+\author{Felix Kaser$^{1}$, Bruce A.~MacDonald$^{2}$% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$F. Kaser is a student in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München. [Add University of Auckland connection?]
+\thanks{$^{1}$F. Kaser is a student in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München. [Add University of Auckland connection? ** can probably just mention it in the acknowledgements]
         {\tt\small kaserf at in.tum.de}}%
-\thanks{$^{2}$B. MacDonald is an Associate Professor at the Department of Electrical Engineering, University of Auckland,
+\thanks{$^{2}$B. MacDonald is an Associate Professor at the Department of Electrical and Computer Engineering, University of Auckland,
         New Zealand
         {\tt\small b.macdonald at auckland.ac.nz}}%
 }
@@ -71,6 +71,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla hendrerit nulla e
 \end{abstract}
 
 
+** I put my comments with double asterisks. 
+
+** One general comment: about the style of the writing, it needs to be a bit more formal, less use of qualitative adjectives and cut out the words that are not adding to the key meaning of the sentence; some of the editing I did was for that ** 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
@@ -83,17 +87,19 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla hendrerit nulla e
 
 \end{itemize}
 
-Debugging complex robotic systems has proven to be more difficult than debugging normal (still complex) systems [check citation!] \cite{Collett2010}. One of the biggest problems when debugging robotic systems is the non-interruptible nature of robotic applications. Sometimes it is hard or even impossible to interrupt the execution of a robot without being a threat to the robot hardware, the people and the equipment in the environment where the robot is operating. For example you can not just interrupt a quad-copter in mid-flight to step through the algorithm to find a bug. [citation? rewrite? drop the example?]
+Debugging robotic systems has proven to be more difficult than debugging generic computer systems [check citation!] \cite{Collett2010}. One of the biggest problems when debugging robotic systems is the non-interruptible nature of robotic applications. Sometimes it is hard or even impossible to interrupt the execution of a robot without being a threat ** need to be more specific than ``threat''; what exactly do you mean? ** to the robot hardware, the people and the equipment in the environment where the robot is operating. For example you can not just interrupt a quad-copter in mid-flight to step through the algorithm to find a bug. [citation? rewrite? drop the example?]
 
-One approach to address this issue is to keep two separated controllers: a low level controller that keeps the essential parts of the robot running (e.g. keep the quad-copter flying) and a high level controller that runs the application logic code which is debugged. This only solves part of the problem because developing the low level controller is still not interruptible. [citation?]
+One approach is to design two separate controllers: a low level controller that keeps the essential parts of the robot running (e.g. keep the quad-copter flying) and a high level controller that runs the application logic code which is debugged. This only solves part of the problem because developing the low level controller is still not interruptible. [citation?] and because the application logic may need to respond to external inputs at any time.
 
-Another approach has come up in the past and it is more thorough: the concept of tracepoints is used to debug a robot application without interrupting the execution but analysing the trace post-mortem (and more recently also viewing the results live \cite{Gumbley2009}). Using tracepoints to debug a program is a highly instrumented way of debugging and does not require to modify the source code. However the tracepoints approach is quite complex and pre-execution configuration takes a substantial effort and skill, which many developers won't like to take upon them. [badly written, rewrite, no proof]
+Another approach is the concept of tracepoints for debugging a robot application without interrupting the execution but analysing the trace either after the application finishes, or viewing the results live \cite{Gumbley2009}). Tracepoints are a highly instrumented way of debugging and do not require modifications to the source code. However the tracepoint approach is complex and pre-execution configuration takes a substantial effort and skill, which many developers won't like to take upon them. [badly written, rewrite, no proof** I tried to improve the writing; however I agree there is no proof of the substantial effort and I don't believe it either! need to be more precise and exact about the issues]
 
 [write a paragraph about AR debugging? ---> AR Debugging covers the perception of the gobal state as seen by the robot. ROSDashboard tackles the local state of algorithms ---> this probably belongs to related work]
 
-Because of the problems stated above many developers still use printf-debugging [proof?]. It is something they can use with the skills they already have, without learning a new toolset and setting up a tracing or debugging chain[proof?]. One major downside of printf-style-debugging is the text-only representation of data. Although the developers might be used to look at (and interpret) numbers scrolling down in a console, it is not a very natural representation of the data. In this paper we [we or I?] present a new approach to improve printf-style-debugging with a special tool: ROSDashboard. The tool was developed to give developers the chance to visualize data collected with a printf-style approach how they want to. The developer can arrange widgets on a dashboard that visualize the debugged data in a more natural way. The developer can choose which visualization he prefers and suits his mental model of the data best. [unnecessary?: While printf-debugging has its downsides, there are also benefits to printf-debugging. The developer knows exactly where the printf-statements are and this makes it easy to understand the flow of a program.]
+Because of the problems stated above many developers still use printf-debugging [proof?] It is something they can use with the skills they already have, without learning a new toolset and setting up a tracing or debugging chain[proof?]. One major downside of printf-style-debugging is the text-only representation of data. Although the developers might be used to looking at and interpreting numbers scrolling down in a console window, it is not a very natural representation of the data. This paper [we or I? ** neither unless its important to the argument; just stick with the info to be presented, as I changed it to **] presents a new approach to improve printf-style-debugging with a new tool: ROSDashboard. The tool visualizes data collected with a printf-style approach and the developer can arrange widgets on a dashboard that visualize the debugged data in a more natural way. The developer can choose which visualization he or she prefers and best suits his or her mental model of the data. [unnecessary?: While printf-debugging has its downsides, there are also benefits to printf-debugging. The developer knows exactly where the printf-statements are and this makes it easy to understand the flow of a program.]
 
-ROS (Robot Operating System) was chosen as the platform for for this tool. It is currently one of the biggest players in the sea of robot development frameworks and has a big community backing the project. The developed tool represents the first step in more research to understand how robot development works and can be improved. The tool enables future work to evaluate the underlying debugging methodology.
+ROS (Robot Operating System) was chosen as the platform for for this tool. It is currently one of the most popular robot development frameworks and has a significant community backing the project **citation**. The developed tool represents the first step in more research to understand robot development and how it can be improved. This paper is about the design and development of the tool and will enable future work to evaluate the underlying debugging methodology.
+
+** Goal of the work needs to be stated concretely and specifically; something clear and strong. Did the proposal provide that? Else there is nothing to hang the background and requirements on **
 
 \section{RELATED WORK}
 
@@ -108,17 +114,28 @@ ROS (Robot Operating System) was chosen as the platform for for this tool. It is
 \subsection{ROS - Robot Operating System}
 [should this subsection be shorter?]
 
-The Robot Operating System (ROS) is an Open Source framework for complex robotic systems. The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
+** Suggest this is a background about debugging in robotics; what is the history there? it isn't coming through here. Does Collett have anything to say about it? **
 
+ROS **introduce abbreviations at only the first occurrence ** is an Open Source framework for complex robotic systems. 
+
+** this next bit is not really relevant to the paper; why not talk about its debugging capabilities **
+The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
+** previous bit is not so relevant here **
+
+** This paragraph is more relevant I think. I think it needs some addition to explain why its relevant and how it relates to debugging **
 ROS was built to abstract from the hardware of the robot and create modular robot software, which can run on different robots and on different machines. This makes it easier to write software for robots and distribute the work to different teams, each team focusing on one part of the robot. The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that your software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
 
-The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is really flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
+** again, state the relevance to debugging **
+The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
 
+** relevance? **
 The ROS client libraries currently fully support Python and C++, client libraries for Java and other languages are currently under development. ROS runs on Linux and Ubuntu is the main target distribution where it is well tested and most developers can offer support.
 
 \subsection{LabView}
 
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features a concept called \emph{Front Panels} which allows you to add widgets to a so called panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel a element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays).
+** need to include more about the relevance **
+
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays).
 
 LabVIEW's front panel feature allows developers to easily create their own interfaces for a program. This feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. The researchers concluded that the front panel (among other features) could be responsible for a large share of LabVIEW's impact, but more research is needed \cite{Whitley2001}.
 
@@ -128,8 +145,10 @@ LabVIEW's front panel feature allows developers to easily create their own inter
 
 Are tracepoints still that relevant to my work to list it here?
 
+** Well you mentioned them above?? In any case, the background section should explain the background to robot debugging, so that we know what it is all about. Did you have more in the proposal; I can't remember? **
+
 \subsection{Augmented Reality Debugging}
-To understand how the robot perceives his surroundings and reacts to an AR (augmented reality) tool was developed by Collet and MacDonald \cite{Collett2010}. The augmented reality approach to debugging helps the developer to understand the \emph{global} state in which the robot currently is. The tool presented in this work mainly focuses on the \emph{local} state of a robot application or a specific algorithm. In the future those two tools could be combined to create a better debugging tool that helps the developer on a \emph{global} as well as a \emph{local} scale. [is this more future work?]
+To understand how the robot perceives his surroundings and reacts to an AR (augmented reality) tool was developed by Collet \cite{Collett2010}. The AR approach to debugging helps the developer to understand the \emph{global} state of the robot. The tool presented in this work mainly focuses on the \emph{local} state of a robot application or a specific algorithm. In the future those two tools could be combined to create a better debugging tool that helps the developer on a \emph{global} as well as a \emph{local} scale. [is this more future work?]
 
 \subsection{Related ROS tools}
 
@@ -153,7 +172,7 @@ Design, approach, integration, ROS philosophy...
   \framebox{
     \includegraphics[scale=0.35]{images/rosdashboard_screenshot.png}
   }  
-  \caption{Screenshot of ROSDashboard in action. [where should this figure go? introduction?]}
+  \caption{Screenshot of ROSDashboard in action. [where should this figure go? introduction? ** no should be where you talk about the design and implementation.]}
   \label{screenshot}
 \end{figure}
 
@@ -161,12 +180,14 @@ Design, approach, integration, ROS philosophy...
 ROSDashboard is a new tool in the ROS environment. It is built to allow developers easy visualization of data streams. It is built around a central dashboard where developers can add visualization widgets with drag and drop from a toolbox. Currently there are only the most basic widgets implemented to visualize data. In future there should be added more and more widgets. This effort could come from the robot developers themselves through a simple plugin mechanism. The developers know best what widgets they need to visualize their data.
 
 \subsection{Requirements}
+** Section is pretty weak. Maybe refer back to the proposal and give clear and strong list of requirements; and they should be argued from the original goals of the work. And so the goal needs to be stated clearly and strongly above at the start.**
+
 Requirements (easy to install and use, simple to extend, base tool for further development and evaluation)
 
-[the requirements below are all quite high-level. should I add requirements like distributed debugging, uninterrupted debugging? they affected the design but distributed debugging is completely in ROS hands (it still affected the decision to go with ROS)]
+[the requirements below are all quite high-level. should I add requirements like distributed debugging, uninterrupted debugging? they affected the design but distributed debugging is completely in ROS hands (it still affected the decision to go with ROS) ** yes, somewhere list them and say that ROS provides them. It is important here to explain the options and reasoning for design decisions. ** ]
 
 \subsubsection{Openness}
-One of the requirements is to be open. Open in terms of Open Source but also regarding the other requirements like extendibility and adaptability. Openness helps to spread the word and gain a higher user base faster. [citation?] [badly written. rewrite]
+One of the requirements is to be open. Open in terms of Open Source but also regarding the other requirements like extendibility and adaptability. Openness helps to spread the word and gain a higher user base faster. [citation?] [badly written. rewrite. ** yes need to be clear and precise and relevant. ]
 \subsubsection{Low configuration overhead}
 The goal was to create a useful tool that is easy to use and can be used by anyone without much configuration, setup or learning overhead. This contributes to a high user acceptance and a low entrance barrier [better wording?] for new users.
 \subsubsection{Extendibility and adaptability}
@@ -180,6 +201,9 @@ Different developers prefer to visualize their data differently and every projec
 
 
 \subsection{Design}
+
+** needs to be tied to requirements in part and then other decisions. **
+
 Python was chosen for ROSDashboard as target language, because it is a good match for fast prototyping and iterative development. Python's duck typing [reference] turned out to be a big help for topic introspection (see implementation details \ref{topic introspection}). Qt is used for the graphical part of the tool which also reflects the general policy in the ROS community (before Qt wxWidgets was the graphical toolkit of choice). [as of 2012, look for a reference in the wiki?]
 
 Although the current software does not support third party widgets (in form of plugins) yet, the structure of the internal widgets is aligned to allow easy integration of such a feature in the near future. For now if a third party wants to have specialized widgets, it needs to modify the source code and add the code for widgets directly to the source tree.
@@ -187,6 +211,9 @@ Although the current software does not support third party widgets (in form of p
 ROSDashboard was developed as Open Source from the very beginning to allow external contributions and feedback. The source code is hosted on Github\footnote{http://github.com/kaserf/rosdashboard}. A prototype was announced to the ROS community and valuable feedback was gathered and documented. One of the most valuable feedback was to make ROSDashboard more generic and allow to visualize topics that publish String messages which are parsed to get the data for the visualization. This would make it possible to use ROSDashboard with existing projects that already contain extensive logging (but in text form). [move the feedback to future work section, it is not really something for the design section]
 
 \subsection{Implementation details}
+
+** Jumps in to details that the reader cannot see relevance for completely. The details looks good and I think this could be a strong section; just needs to be related to the sections above, goal, requirements etc. Should be derived from the design section. You could have an architecture diagram, and tie it together with that. Probably start above with the ROS model, and discuss how the debugging tool requirements fit with it. Currently these things are not clear. **
+
 \subsubsection{Topic introspection}
 \label{topic introspection}
 ROS topics were originally not designed and developed as something the user or developer chooses graphically. Topics are usually set up in the code. ROSDashboard exposes the topic setup in a graphical user interface and this turned out to become a challenge since one of the requirements is to have a low configuration overhead (see requirements section [add reference]). Normally you have to select a topic name and a message data type. The data type can be one of the standard message types (wrapping the basic types like Float, Integer, String and Boolean) or a more complex message type. To access one data element of a message the "datafield" field was introduced in the graphical interface. Figure \ref{topic setup screenshot} shows an exemplary topic setup configuration to access the linear velocity of the \emph{/turtlesim/Velocity} message published to the topic \emph{/turtle1/command\_velocity}. Using Pythons duck typing and the \emph{rostopic} module it was possible to avoid the complexity of dynamically binding message types during runtime and detect the message type automatically. If a topic is not yet published (and thus the message type is not defined yet) the call to \emph{rostopic} blocks until the message type becomes known. To avoid blocking of the user interface a listener thread was implemented to wait until a topic (message type) becomes available. Avoiding to manually ask the user for a message type makes the configuration of widgets easier and faster for the user and also keeps the implementation simpler (no dynamic binding of message type classes during runtime).
@@ -248,6 +275,7 @@ The tool presented in this paper should be used in future to evaluate this new a
 \section{CONCLUSIONS}
 
 Do I need this section? What should I conclude about? Alternative approach to debugging? Fast feedback prototyping? More studies to be conducted in this area to evaluate the methodology and the tool? (There was no evaluation so this section might be obsolete)
+** You need enough evaluation to say that your tool works. There is so far nothing in here that indicates that the software is written even. A full evaluation is not planned of course, however you need to show it doing some things. And then you have some kind of conclusion to make. And the conclusion should make some kind of statement about the extent to which the goals were achieved. **
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
