@@ -90,6 +90,8 @@ Nowadays many developers and researchers develop their own debugging tools that 
 
 ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication\cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots **citation** [can I cite ROS community metrics?\footnote{http://www.ros.org/wiki/Metrics}].
 
+[I still need to bring the visualization part in. Right now I am only talking about a tool for debugging, not what makes the visualization aspect important. Here can be argued that numbers are hard to understand if they are only text, thus a visualization to make it easier for the developer --> mental model, natural representation of data]
+
 %[this should go to the conclusion.] The developed tool represents the first step in more research to understand robot development and how it can be improved. This paper is about the design and development of the tool and will enable future work to evaluate the underlying debugging methodology.
 
 
@@ -141,14 +143,24 @@ ROSDashboard, the tool presented in this paper, is designed for robot developmen
 
 ** Suggest this is a background about debugging in robotics; what is the history there? it isn't coming through here. Does Collett have anything to say about it? **
 
-ROS **introduce abbreviations at only the first occurrence ** is an Open Source framework for complex robotic systems. 
-
-** this next bit is not really relevant to the paper; why not talk about its debugging capabilities **
-The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
-** previous bit is not so relevant here **
+%** this next bit is not really relevant to the paper; why not talk about its debugging capabilities **
+%The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
+%** previous bit is not so relevant here **
 
 ** This paragraph is more relevant I think. I think it needs some addition to explain why its relevant and how it relates to debugging **
-ROS was built to abstract from the hardware of the robot and create modular robot software, which can run on different robots and on different machines. This makes it easier to write software for robots and distribute the work to different teams, each team focusing on one part of the robot. The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that your software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
+ROS is an Open Source framework for complex robotic systems. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier because it can be divided amongst different developers or development teams. This also allows it to exchange only small parts of a complex system, without the need to redeploy build and re-deploy the whole system.
+The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that your software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
+
+When an application is not running as expected, this is usually due to a problem in the composition of the modules or a local problem in one of the modules. For both categories there are several tools that allow developers to investigate the problem:
+\begin{itemize}
+\item rxgraph [is a graphical tool based on the command line tool rosgraph. It visualizes how modules are connected to each other and with which topics they communicate.]
+\item rostopic [is a command line tool to monitor topics and emit messages to topics.]
+\item rxplot [can plot data from one or more topic fields on a cartesian coordinate system.]
+\item rxconsole [displays logging messages that have been emitted on the special purpose topic /rosout.]
+\item rviz [is probably the most sophisticated and biggest tool in the ROS ecosystem. It renders models of the robot in 3d and visualizes current robot movements.]
+\end{itemize}
+
+rviz was created because it is extremely hard to understand what is going on in the robots environment by only looking at numbers. --> point out that more abstract data is not visualized at all, thus the need for rosdashboard.
 
 ** again, state the relevance to debugging **
 The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
