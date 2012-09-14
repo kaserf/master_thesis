@@ -286,19 +286,20 @@ The object model was designed to make it easy to extend ROSDashboard with more w
 
 The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class as well. The main reason is to hide the technical details away from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget needs and needs to implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the whole properties part and not re-use the default implementation from \texttt{DashboardWidget}.
 
-\section{FUTURE WORK}
 
+\section{CONCLUSION AND FUTURE WORK}
+
+% conclusion
+ROSDashboard, the tool presented in this paper is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging or robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
+
+The modular design and open source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process. The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
+
+% future work
 The presented tool is fully functional and is ready to be released. On a software side of things further work can be done to improve the number of available widgets. Ultimately this should be done through a plugin engine where third party developers can easily add widgets for new and more complex kind of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine. A more long term plan for the project is to implement a parser that can extract data which is embedded in text-based messages through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
 
 RQT is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
 
 ROSDashboard provides a good base to conduct research on the impact of visualizations during debugging of robotic applications. Future research can evaluate how visualizations affect the developer during debugging, especially if it decreases the cognitive load and thus makes debugging with visualizations faster and more productive.
-
-\section{CONCLUSIONS}
-
-ROSDashboard, the tool presented in this paper is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging or robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
-
-The modular design and open source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process. The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
