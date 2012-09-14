@@ -95,9 +95,7 @@ Another problem when debugging robots is that existing debugging tools often don
 
 [should I mention the specifics like ros topics and that our tool connects logging statements in the source code with a visualization widgets on a dashboard? I've tried not to dig into details already, but it might not explain what we are exactly doing (yet)]
 
-ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a visualization tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots **citation** [can I cite ROS community metrics?\footnote{http://www.ros.org/wiki/Metrics}].
-
-
+ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a visualization tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots \cite{Foote2012}.
 
 %Developers face a different set of challenges when developing and debugging robotic systems instead of traditional software systems \cite{Collett2010, Collett2006, Gumbley2009}. Debugging is a complex task that generally consists of data acquisition and data visualization.
 %In traditional software systems the data visualization is mostly rendered text. Although it might not be the best representation for data, text definitely is the most unified representation and is therefore a good choice for traditional software systems that deal with every kind of data.
@@ -309,13 +307,13 @@ The modular approach followed during the design of the tool makes it easy to ext
 
 \section*{ACKNOWLEDGMENT}
 
-This work is part of the final project in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München. It was conducted at the Department of Electrical and Computer Engineering, University of Auckland, New Zealand.
+This work is part of the final project in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München\footnote{www.studieren.se}. It was conducted at the Department of Electrical and Computer Engineering, University of Auckland, New Zealand.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%% references %%%%%
 \bibliographystyle{IEEEtranBST/IEEEtran}
-\bibliography{bibtex/Master_Thesis}
+\bibliography{bibtex/Master_Thesis,bibtex/manual}
 
 \end{document}
