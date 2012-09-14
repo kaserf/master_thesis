@@ -148,7 +148,7 @@ The problem with 3d visualization tools is that abstract data often does not fit
 
 [what is ros and how can we make use of logging and topics]
 
-\subsection{ROS - Robot Operating System}
+\section{ROS - Robot Operating System}
 
 ** Suggest this is a background about debugging in robotics; what is the history there? it isn't coming through here. Does Collett have anything to say about it? **
 
@@ -183,11 +183,12 @@ The ROS communication structure is used by ROSDashboard to connect the logging s
 
 \subsection{LabVIEW}
 
-** need to include more about the relevance **
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined widgets like string displays, sliders and progress bars, which can be used to create a dedicated user interface for a application. This user interface can be used to control the application as well as debug the application.
+%LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
 
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays). LabVIEW's proprietary license makes it hard to adapt to different scenarios and use cases, but the front panel feature demonstrates the possibilities of a flexible tool for visualization of abstract data in form of graphical widgets.
+%LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
 
-The front panel feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. The researchers concluded that the front panel (among other features) could be responsible for a large share of LabVIEW's impact, but more research is needed \cite{Whitley2001}. While this does not justify the development of a visualization tool, it shows the potential of such a feature and shows that more research needs to be done to evaluate the benefits of a visualization tool for simple abstract data.
+The front panel feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. It would be possible to design concrete front panels also for the purpose of debugging a specific application. This however requires integrating each front panel element directly into the visual program and is thus highly intrusive. Though a more transparent debugging possibility would be desirable, LabVIEW shows the possibilities of a flexible tool for visualization of abstract data in form of graphical widgets.
 
 \subsection{Tracepoints}
 
@@ -199,6 +200,9 @@ Tracepoints have been investigated as a new way of collecting data during debugg
 
 \section{ROSDASHBOARD}
 
+%\subsection{Overview}
+ROSDashboard is a new tool in the ROS environment. It is built to allow developers easy visualization of data streams. It is built around a central dashboard where developers can add visualization widgets with drag and drop from a toolbox. Currently there are only the most basic widgets implemented to visualize data. In future there should be added more and more widgets. This effort could come from the robot developers themselves through a simple plugin mechanism. The developers know best what widgets they need to visualize their data.
+
 \begin{figure}[thpb]
   \centering
   \framebox{
@@ -207,9 +211,6 @@ Tracepoints have been investigated as a new way of collecting data during debugg
   \caption{Screenshot of ROSDashboard in action. [where should this figure go? introduction? ** no should be where you talk about the design and implementation.]}
   \label{screenshot}
 \end{figure}
-
-\subsection{Overview}
-ROSDashboard is a new tool in the ROS environment. It is built to allow developers easy visualization of data streams. It is built around a central dashboard where developers can add visualization widgets with drag and drop from a toolbox. Currently there are only the most basic widgets implemented to visualize data. In future there should be added more and more widgets. This effort could come from the robot developers themselves through a simple plugin mechanism. The developers know best what widgets they need to visualize their data.
 
 \subsection{Requirements}
 \label{requirements}
