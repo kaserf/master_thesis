@@ -48,7 +48,7 @@ ROSDashboard: a visual debugging tool for robotics
 
 \author{Felix Kaser$^{1}$, Bruce A.~MacDonald$^{2}$% <-this % stops a space
 %\thanks{*This work was not supported by any organization}% <-this % stops a space
-\thanks{$^{1}$F. Kaser is a student in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München. [Add University of Auckland connection? ** can probably just mention it in the acknowledgements]
+\thanks{$^{1}$F. Kaser is a student in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München.
         {\tt\small kaserf at in.tum.de}}%
 \thanks{$^{2}$B. MacDonald is an Associate Professor at the Department of Electrical and Computer Engineering, University of Auckland,
         New Zealand
@@ -64,7 +64,9 @@ ROSDashboard: a visual debugging tool for robotics
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 
-Data collected during debugging is traditionally rendered as text. In object oriented languages objects are often rendered as such with their respective properties, but the final representation of data instances is still text. This might have worked out well when normal software systems were developed, which mostly focused on user input processing. The special application field of robotics faces problems with this approach. A typical robotic system constantly gathers data from the surrounding environment through sensors. Robotic applications are also hard to interrupt during debugging, since robots generally don't run in a deterministic and suspendable environment. This paper introduces a new tool to support debugging of robotic applications. It takes into account the special needs for such a tool in a robotic development environment, especially the uninterrupted rendering of debugging data and the need for better visualization of data to support a faster interpretation of data. The goal is to support the developers understanding of data collected through the robots sensors during the development of robotic applications. A graphical user interface was developed where developers can choose their favourite visualizations for different data types.
+Data collected during debugging is traditionally rendered as text. In object oriented languages objects are often rendered as such with their respective properties, but the final representation of data instances is still text. This might have worked out [better wording] well when normal software systems were developed, which mostly focused on user input processing. The special application field of robotics faces problems with this approach. A typical robotic system constantly gathers data from the surrounding environment through sensors. Robotic applications are also hard to interrupt during debugging, since robots generally don't run in a deterministic and suspendable environment. This paper introduces a new tool to support debugging of robotic applications. It takes into account the special needs for such a tool in a robotic development environment, especially the uninterrupted rendering of debugging data and the need for better visualization of data to support a faster interpretation of data. The goal is to support the developers understanding of data collected through the robots sensors during the development of robotic applications. A graphical user interface was developed where developers can choose their favourite visualizations for different data types.
+
+%Debugging robotic systems is particularly complex due to the nature of data that is debugged. There is a gap between a high level data visualization tool like rviz and a low level message logging tool like rosconsole. The high level rviz tool is specialized for 3d visualization of complex data like robot arm movement, laser range data and point cloud data. rviz was not designed to visualize abstract data that is handled during the execution of a robot. Such data is often used to debug algorithms. To capture the data most developers use a printf-debugging style, often also logging frameworks. In ROS this can be achieved by using the core logging API, which sends messages containing the data to the special /rosout topic. Tools like rosconsole or rxconsole can be used to display those messages. While this data does not need complex 3d visualizations, it can still be useful to visualize the data in some way.
 
 \end{abstract}
 
@@ -82,15 +84,18 @@ Data collected during debugging is traditionally rendered as text. In object ori
 
 %Data acquisition has been addressed in previous work by Gumbley, where a framework was introduced to gather debugging data without interrupting the execution of a robot application\cite{Gumbley2009}.
 
-Current debugging tools for robotics are mostly based on debugging techniques and interfaces developed for traditional non-robotic applications. Those techniques and interfaces were developed specifically to suit the requirements of traditional systems: handling arbitrary and abstract data. Since then the computing world has changed, but many developers still have to use tools which were developed under different circumstances and based on different requirements. One popular example is parallelism, a relatively recent evolution of the field which made many tools useless and new tools have to be developed. The same counts for debugging robotic systems: robotic applications are different from traditional systems, because the data they handle are not as arbitrary and abstract as in traditional systems. Robots need to handle data that closely relates to the real world and the perception of the robot. The main data source for robots are its sensors which provide a continuous data stream whereas in many traditional systems the data is discrete and based on user input.
+Current debugging tools for robotics are mostly based on debugging techniques and interfaces developed for traditional non-robotic applications. Those techniques and interfaces were developed specifically to suit the requirements of traditional systems: handling arbitrary and abstract data. Since then the computing world has changed, but many developers still have to use tools which were developed under different circumstances and based on different requirements. Especially robotic applications are different from traditional systems, because the data they handle are not as arbitrary and abstract as in traditional systems. Robots need to handle data that closely relates to the real world and the perception of the robot. The main data source for robots are its sensors which provide a continuous data stream whereas in many traditional systems the data is discrete and based on user input. This raises new requirements for debugging tools and makes many traditional tools hard to use within the field of robotics.
 
-We need better debugging tools to handle the special kind of data in robotics. Traditional debugging tools usually render data collected during debugging as text. Under the debugging circumstances of a traditional system this was not a big problem, because the execution of the program was interrupted and the developer had enough time to interpret and understand the data. When debugging robotic applications this can be a problem, because of the nature of the application. Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and the situation in which the application was debugged changed. This paper presents an approach to solve this problem by visualizing the data collected during debugging. Visualization has been successfully used to reduce the cognitive effort to understand a computer program \cite{Tudoreanu2003}. [next part is experimental] The tool presented in this paper tries to apply the same principles to debugging. [Hypothesis:] Visualizing data in a way that fits the developers expectations and mental model reduces the cognitive effort needed to understand the data [cite!]. Using visualizations during the debugging process can help developers to interpret and understand the data much faster [this is actually the hypothesis, still to be evaluated in the future], without the need of interrupting the execution of a robot application.
+We need better debugging tools to handle the special kind of data in robotics. Traditional debugging tools usually render data collected during debugging as text. Under the debugging circumstances of a traditional system this was not a big problem, because the execution of the program was interrupted and the developer had enough time to interpret and understand the data. When debugging robotic applications this can be a problem, because of the nature of the application: Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and the situation in which the application was debugged changed. Some technical solutions have been presented in recent years \cite{Gumbley2009}, but many developers still rely on printf-style debugging or other logging mechanisms to collect data without interrupting the execution of the program. The problem with data collected this way is the text-only nature of data, which requires the developer to constantly parse and interpret logging messages which often contain more complex content like numbers.
 
-Existing debugging tools often don't support developers and researchers of robotic applications enough. As a result many develop their own tools that suit their application area and problem statement best \cite{Collett2006}. Developing your own debugging tool is extremely time consuming and the developed tools are often one-time-only tools, because they don't fit the use case of other applications and are too hard to adapt to a new project.
+While most of the currently available visualization tools focus on spacial data to help understand the robot and the runtime environment \cite{Collett2010, Collett2007, Collett2006, Quigley2009}, rendering of abstract data is still uncommon. This paper presents a tool to visualize abstract data to support the developer with problem detection and debugging. In past research visualization has been successfully used to reduce the cognitive effort to understand the structure of a computer program \cite{Tudoreanu2003}, with the tool presented in this paper a first step towards the evaluation of the impact of data visualization on the cognitive effort during debugging has been made.
+% [next part is experimental] The tool presented in this paper tries to apply the same principles to debugging. [Hypothesis:] Visualizing data in a way that fits the developers expectations and mental model reduces the cognitive effort needed to understand the data [cite!]. Using visualizations during the debugging process can help developers to interpret and understand the data much faster [this is actually the hypothesis, still to be evaluated in the future], without the need of interrupting the execution of a robot application.
 
-ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a visualization tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he thinks visualize the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication\cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots **citation** [can I cite ROS community metrics?\footnote{http://www.ros.org/wiki/Metrics}].
+Another problem when debugging robots is that existing debugging tools often don't support developers and researchers of robotic applications enough. As a result many develop their own tools that suit their application area and problem statement best \cite{Collett2006}. Developing your own debugging tool is extremely time consuming and the developed tools are often one-time-only tools, because they don't fit the use case of other applications and are too hard to adapt to a new project.
 
-%[this should go to the conclusion.] The developed tool represents the first step in more research to understand robot development and how it can be improved. This paper is about the design and development of the tool and will enable future work to evaluate the underlying debugging methodology.
+[should I mention the specifics like ros topics and that our tool connects logging statements in the source code with a visualization widgets on a dashboard? I've tried not to dig into details already, but it might not explain what we are exactly doing (yet)]
+
+ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a visualization tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots **citation** [can I cite ROS community metrics?\footnote{http://www.ros.org/wiki/Metrics}].
 
 
 
@@ -128,16 +133,7 @@ ROSDashboard, the tool presented in this paper, is designed for robot developmen
 
 \section{RELATED WORK}
 
-\begin{itemize}[Related work:]
-
-\item ROS
-\item LabView
-\item tracepoints?
-
-\end{itemize}
-
 \subsection{ROS - Robot Operating System}
-[should this subsection be shorter?]
 
 ** Suggest this is a background about debugging in robotics; what is the history there? it isn't coming through here. Does Collett have anything to say about it? **
 
@@ -149,58 +145,50 @@ ROSDashboard, the tool presented in this paper, is designed for robot developmen
 ROS is an Open Source framework for complex robotic systems. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier because it can be divided amongst different developers or development teams. This also allows it to exchange only small parts of a complex system, without the need to redeploy build and re-deploy the whole system.
 The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that your software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
 
-When an application is not running as expected, this is usually due to a problem in the composition of the modules or a local problem in one of the modules. For both categories there are several tools that allow developers to investigate the problem:
-\begin{itemize}
-\item rxgraph [is a graphical tool based on the command line tool rosgraph. It visualizes how modules are connected to each other and with which topics they communicate.]
-\item rostopic [is a command line tool to monitor topics and emit messages to topics.]
-\item rxplot [can plot data from one or more topic fields on a cartesian coordinate system.]
-\item rxconsole [displays logging messages that have been emitted on the special purpose topic /rosout.]
-\item rviz [is probably the most sophisticated and biggest tool in the ROS ecosystem. It renders models of the robot in 3d and visualizes current robot movements.]
-\end{itemize}
+%When an application is not running as expected, this is usually due to a problem in the composition of the modules or a local problem in one of the modules. For both categories there are several tools that allow developers to investigate the problem:
+%Several tools have been developed for ROS to assist developers during debugging. Some of the tools are console based and can be used to inspect the various messages transmitted on topics. Other tools are graphical tools to visualize 
+ROS comes with several tools to assist the developers during the development and debugging of a robot. The tools most relevant to this work are:
+\begin{description}[\setlabelwidth{rxconsole}]
+%\item[rxgraph] is a graphical tool based on the command line tool rosgraph. It visualizes how modules are connected to each other and with which topics they communicate.
+\item[rostopic] a command line tool to monitor topics and emit messages to topics.
+\item[rxplot] a graphical tool which plots data from one or more topic fields on a cartesian coordinate system.
+\item[rxconsole] displays logging messages that have been emitted on the special purpose topic /rosout.
+\item[rviz] renders models of the robot in 3d and visualizes spacial data like point clouds, robot poses and trajectories, etc. \cite{Quigley2009}.
+\end{description}
 
-rviz was created because it is extremely hard to understand what is going on in the robots environment by only looking at numbers. --> point out that more abstract data is not visualized at all, thus the need for rosdashboard.
+The tool presented in this paper fills the gap between a textual representation of data (rostopic, rxconsole) and a highly sophisticated 3d visualization of spacial data (rviz). rxplot is already positioned in between the textual and 3d visualization tools, but it offers only one form of visualization: a time graph.
+
+%rostopic and rxconsole display logging messages as text. Their purpose is not to visualize data but to assist the developer during the development as a logging framework. rxplot is designed to visualize data on a cartesian coordinate system, which is mostly useful for measurements and not for data visualization. rx
+%rviz was created because it is extremely hard to understand what is going on in the robots environment by only looking at numbers. --> point out that more abstract data is not visualized at all, thus the need for rosdashboard.
 
 ** again, state the relevance to debugging **
 The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
 
-** relevance? **
-The ROS client libraries currently fully support Python and C++, client libraries for Java and other languages are currently under development. ROS runs on Linux and Ubuntu is the main target distribution where it is well tested and most developers can offer support.
+The ROS communication structure is used by ROSDashboard to connect the logging statements in the source code with the visualization on the dashboard. This allows to re-use existing data streams published on topics without introducing changes to the source code. If new data needs to be collected, the source code needs to be modified to publish the data on a topic.
 
-\subsection{LabView}
+\subsection{LabVIEW}
 
 ** need to include more about the relevance **
 
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays).
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as controls (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. This makes it easy to connect data source widgets (e.g. buttons) with the program and also program data with corresponding data sink widgets (e.g. graph displays). LabVIEW's front panel feature allows developers to easily create their own interfaces for a program, including visualization of abstract data in form of graphical widgets.
 
-LabVIEW's front panel feature allows developers to easily create their own interfaces for a program. This feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. The researchers concluded that the front panel (among other features) could be responsible for a large share of LabVIEW's impact, but more research is needed \cite{Whitley2001}.
+The front panel feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. The researchers concluded that the front panel (among other features) could be responsible for a large share of LabVIEW's impact, but more research is needed \cite{Whitley2001}. While this does not justify the development of a visualization tool, it shows the potential of such a feature and shows that more research needs to be done to evaluate the benefits of a visualization tool for simple abstract data.
 
-\subsection{Tracepoints?}
+\subsection{Tracepoints}
 
-[this subsection probably needs to go.]
+[this subsection either needs to become better or needs to go, it is not really relevant but I mentioned tracepoints in the introduction]
 
-Are tracepoints still that relevant to my work to list it here?
+Tracepoints have been investigated as a new way of collecting data during debugging \cite{Gumbley2009}. Although tracepoints could be a data provider for a visualization tool like ROSDashboard, for the scope of the first iteration of the tool we decided to use logging statements to collect data. The existing ROS logging framework was used to collect data, because no configuration overhead is needed.
 
 ** Well you mentioned them above?? In any case, the background section should explain the background to robot debugging, so that we know what it is all about. Did you have more in the proposal; I can't remember? **
 
-\subsection{Augmented Reality Debugging}
-To understand how the robot perceives his surroundings and reacts to an AR (augmented reality) tool was developed by Collet \cite{Collett2010}. The AR approach to debugging helps the developer to understand the \emph{global} state of the robot. The tool presented in this work mainly focuses on the \emph{local} state of a robot application or a specific algorithm. In the future those two tools could be combined to create a better debugging tool that helps the developer on a \emph{global} as well as a \emph{local} scale. [is this more future work?]
+\subsection{ARDev}
 
-\subsection{Related ROS tools}
+ARDev is an augmented reality (AR) debugging system, developed to provide AR visualization of data during robot development \cite{Collett2010, Collett2007, Collett2006}. The AR approach to debugging helps the developer to understand the \emph{global} state of the robot by augmenting a video feed of the robot with information of the robots' perception. Initial evaluation studies were promising that the visualization can help developers significantly during debugging \cite{Collett2010}. Visualizing abstract data was identified as a potential extension to ARDev \cite{Collett2010}.
 
-[write about some graphical ros tools, especially the ones that allow you to select a topic, since the topic selection is different in rosdashboard]
+% ROSDashboard mainly focuses on the \emph{local} state of a robot application or a specific algorithm. In the future those two tools could be combined to create a better debugging tool that helps the developer on a \emph{global} as well as a \emph{local} scale.
 
 \section{ROSDASHBOARD}
-
-Design, approach, integration, ROS philosophy...
-
-\begin{itemize}
-
-\item design (requirements)
-\item approach
-\item integration
-\item ROS philosophy
-
-\end{itemize}
 
 \begin{figure}[thpb]
   \centering
@@ -288,32 +276,19 @@ The object model was designed to make it easy to extend ROSDashboard with more w
 
 The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class as well. The main reason is to hide the technical details away from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget needs and needs to implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the whole properties part and not re-use the default implementation from \texttt{DashboardWidget}.
 
-\section{THEORETICAL CONCEPT}
-
-This section probably is nonsense. I wanted to get into detail about the fast feedback loop, small changes to the code, how it affects the debugging and development style in general, small product increments, ...
-
 \section{FUTURE WORK}
 
-\begin{itemize}
+The presented tool is fully functional and is ready to be released. On a software side of things further work can be done to improve the number of available widgets. Ultimately this should be done through a plugin engine where third party developers can easily add widgets for new and more complex kind of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine. A more long term plan for the project is to implement a parser that can extract data which is embedded in text-based messages through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
 
-\item plugin structure
-\item integrate into RQT
-\item more widgets
-\item widget designer (small python snippets?)
-\item evaluation in real project
+RQT is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
 
-\end{itemize}
-
-The next steps for ROSDashboard are to integrate it into RQT and add a plugin framework to allow third parties to write widgets for ROSDashboard. A more long term plan for the project is to implement a parser that can extract data from text-based topics through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. One could have widgets that change settings of the robot and trigger special functions (a remote control for robots if you wish). [badly written, needs to be structured, extended and improved in general --> maybe split RQT integration and plugin framework into separate paragraphs]
-
-The tool presented in this paper should be used in future to evaluate this new approach to robot debugging. It originates in printf-debugging but tries to address some of the issues of printf-debugging to increase developer productivity and make it easier to debug robot software. [add more to this paragraph and rephrase]
+ROSDashboard provides a good base to conduct research on the impact of visualizations during debugging of robotic applications. Future research can evaluate how visualizations affect the developer during debugging, especially if it decreases the cognitive load and thus makes debugging with visualizations faster and more productive.
 
 \section{CONCLUSIONS}
 
-The presented tool has been implemented according to the specifications based on the requirements. It successfully demonstrates a new way of debugging complex robotic systems. The tool is the foundation for future evaluations looking into visualization of debugging data and developer performance.
+ROSDashboard, the tool presented in this paper is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging or robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
 
-Do I need this section? What should I conclude about? Alternative approach to debugging? Fast feedback prototyping? More studies to be conducted in this area to evaluate the methodology and the tool? (There was no evaluation so this section might be obsolete)
-** You need enough evaluation to say that your tool works. There is so far nothing in here that indicates that the software is written even. A full evaluation is not planned of course, however you need to show it doing some things. And then you have some kind of conclusion to make. And the conclusion should make some kind of statement about the extent to which the goals were achieved. **
+The modular approach followed during the design of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process. The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
 
 \addtolength{\textheight}{-12cm}   % This command serves to balance the column lengths
                                   % on the last page of the document manually. It shortens
@@ -334,7 +309,7 @@ Do I need this section? What should I conclude about? Alternative approach to de
 
 \section*{ACKNOWLEDGMENT}
 
-Thank everyone :)
+This work is part of the final project in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München. It was conducted at the Department of Electrical and Computer Engineering, University of Auckland, New Zealand.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
