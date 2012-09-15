@@ -95,8 +95,6 @@ While most of the currently available visualization tools focus on spacial data 
 
 Another problem when debugging robots is that existing debugging tools often don't support developers and researchers of robotic applications enough. As a result many develop their own tools that suit their application area and problem statement best \cite{Collett2006}. Developing your own debugging tool is extremely time consuming and the developed tools are often one-time-only tools, because they don't fit the use case of other applications and are too hard to adapt to a new project.
 
-[should I mention the specifics like ros topics and that our tool connects logging statements in the source code with a visualization widgets on a dashboard? I've tried not to dig into details already, but it might not explain what we are exactly doing (yet)]
-
 ROSDashboard, the tool presented in this paper, is designed for robot development in general and not specific to one application area. The goal was to create a visualization tool that can be used for many different robot applications and is easy to adapt, in case developers want to use it for a specific use case where the default implementation is not sufficient. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}. ROS has a significant community backing the project and supports many of the currently available robots \cite{Foote2012}.
 
 %Developers face a different set of challenges when developing and debugging robotic systems instead of traditional software systems \cite{Collett2010, Collett2006, Gumbley2009}. Debugging is a complex task that generally consists of data acquisition and data visualization.
@@ -133,24 +131,38 @@ ROSDashboard, the tool presented in this paper, is designed for robot developmen
 
 \section{RELATED WORK}
 
-[what visualization tools are there? name playerv, rviz, ardev]
 \subsection{Visualization Tools}
 Most of the currently available robot frameworks have their own tools for data visualization. The Player/stage system \cite{Gerkey2003} contains a tool called playerv, ORCA \cite{Makarenko2006} has the tools OrcaView2d and OrcaView3d, CARMEN \cite{Montemerlo2003} features a graphical interface called robotgui that allows to control the robot and visualize data collected through sensors. All of these tools focus on visualization of pre-defined data collected from known interfaces such as laser sensors, mapping algorithms and computer vision modules. They were not developed to visualize arbitrary and abstract data a developer often wants to visualize.
 
-ROS has two tools to visualize data. The simpler one is rxplot, which plots values as a time series on a cartesian coordinate system. rviz is a more complex tool to visualize spacial data in 3d. It was designed to render 3d models of robots together with data from sensors and algorithms: point cloud data, laser data, marker positions, arm postures, planned paths, etc. rviz has a plugin system which can be used to add further visualizations and modules.
+ROS has two tools to visualize data. The simpler one is rxplot, which plots values as a time series on a cartesian coordinate system. rviz is a more complex tool to visualize spacial data in 3D. It was designed to render 3D models of robots together with data from sensors and algorithms: point cloud data, laser data, marker positions, arm postures, planned paths, etc. rviz has a plugin system which can be used to add further visualizations and modules.
 
 ARDev is an augmented reality (AR) debugging system based on the Player/Stage system \cite{Collett2010, Collett2007, Collett2006}. The AR approach to debugging helps the developer to understand the global state of the robot by augmenting a video feed of the robot with information of the robots' perception. It also focuses on pre-defined data such as laser sensors and the like, visualizing abstract data has been identified as possible future work \cite{Collett2010}. Initial evaluation studies were promising that the visualization can help developers significantly during debugging \cite{Collett2010}.
 
-The problem with 3d visualization tools is that abstract data often does not fit into the 3-dimensional rendering and in case of augmented reality can hide important information from the real world \cite{Collett2010}.
+3D visualizations like rviz and ARDev are really useful to understand the robot-view of the world. Both of them need a substantial amount of work to set up. For rviz a 3D model of the robot needs to be created, which has the exact proportions of the real robot. ARDev requires an even more complex setup for the augmented reality part. During the development of the tool an intelligent debugging space (IDS) was permanently installed in a laboratory \cite{Collett2010}, where the robot under development was constantly tracked with markers and cameras. This setup is often unavailable, especially in outdoor situations, and is also often not needed for debugging tasks where only abstract data is available. A general problem with 3D visualization tools is that abstract data often does not fit into the 3-dimensional rendering and in case of augmented reality can hide important information from the real world \cite{Collett2010}.
 
-[what are the ways of getting data? roslogging and tracepoints?]
+\subsection{LabVIEW}
+
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined widgets like string displays, sliders and progress bars, which can be used to create a dedicated user interface for a application. This user interface can be used to control the application as well as debug the application.
+%LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
+
+%LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
+
+The front panel feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. It would be possible to design concrete front panels also for the purpose of debugging a specific application. This however requires integrating each front panel element directly into the visual program and is thus highly intrusive. Though a more transparent debugging possibility would be desirable, LabVIEW shows the possibilities of a flexible tool for visualization of abstract data in form of graphical widgets.
+
 \subsection{Data Collection}
+[what are the ways of getting data? roslogging and tracepoints?]
 
 [what is ros and how can we make use of logging and topics]
 
-\section{ROS - Robot Operating System}
+\subsubsection{Tracepoints}
 
-** Suggest this is a background about debugging in robotics; what is the history there? it isn't coming through here. Does Collett have anything to say about it? **
+[this subsection either needs to become better or needs to go, it is not really relevant but I mentioned tracepoints in the introduction]
+
+Tracepoints have been investigated as a new way of collecting data during debugging \cite{Gumbley2009}. Although tracepoints could be a data provider for a visualization tool like ROSDashboard, for the scope of the first iteration of the tool we decided to use logging statements to collect data. The existing ROS logging framework was used to collect data, because no configuration overhead is needed.
+
+** Well you mentioned them above?? In any case, the background section should explain the background to robot debugging, so that we know what it is all about. Did you have more in the proposal; I can't remember? **
+
+\section{ROS - Robot Operating System}
 
 %** this next bit is not really relevant to the paper; why not talk about its debugging capabilities **
 %The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
@@ -160,11 +172,8 @@ The problem with 3d visualization tools is that abstract data often does not fit
 ROS is an Open Source framework for complex robotic systems. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier because it can be divided amongst different developers or development teams. This also allows it to exchange only small parts of a complex system, without the need to redeploy build and re-deploy the whole system.
 The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that your software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
 
-%When an application is not running as expected, this is usually due to a problem in the composition of the modules or a local problem in one of the modules. For both categories there are several tools that allow developers to investigate the problem:
-%Several tools have been developed for ROS to assist developers during debugging. Some of the tools are console based and can be used to inspect the various messages transmitted on topics. Other tools are graphical tools to visualize 
 ROS comes with several tools to assist the developers during the development and debugging of a robot. The tools most relevant to this work are:
 \begin{description}[\setlabelwidth{rxconsole}]
-%\item[rxgraph] is a graphical tool based on the command line tool rosgraph. It visualizes how modules are connected to each other and with which topics they communicate.
 \item[rostopic] a command line tool to monitor topics and emit messages to topics.
 \item[rxplot] a graphical tool which plots data from one or more topic fields on a cartesian coordinate system.
 \item[rxconsole] displays logging messages that have been emitted on the special purpose topic /rosout.
@@ -179,24 +188,11 @@ The tool presented in this paper fills the gap between a textual representation 
 ** again, state the relevance to debugging **
 The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
 
-The ROS communication structure is used by ROSDashboard to connect the logging statements in the source code with the visualization on the dashboard. This allows to re-use existing data streams published on topics without introducing changes to the source code. If new data needs to be collected, the source code needs to be modified to publish the data on a topic.
-
-\subsection{LabVIEW}
-
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allows a developer to add widgets to a panel. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on the front panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined widgets like string displays, sliders and progress bars, which can be used to create a dedicated user interface for a application. This user interface can be used to control the application as well as debug the application.
-%LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
-
-%LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
-
-The front panel feature was described as ``LabVIEW's `biggest advantage', its `best feature', or its `main power' '' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. It would be possible to design concrete front panels also for the purpose of debugging a specific application. This however requires integrating each front panel element directly into the visual program and is thus highly intrusive. Though a more transparent debugging possibility would be desirable, LabVIEW shows the possibilities of a flexible tool for visualization of abstract data in form of graphical widgets.
-
-\subsection{Tracepoints}
-
-[this subsection either needs to become better or needs to go, it is not really relevant but I mentioned tracepoints in the introduction]
-
-Tracepoints have been investigated as a new way of collecting data during debugging \cite{Gumbley2009}. Although tracepoints could be a data provider for a visualization tool like ROSDashboard, for the scope of the first iteration of the tool we decided to use logging statements to collect data. The existing ROS logging framework was used to collect data, because no configuration overhead is needed.
-
-** Well you mentioned them above?? In any case, the background section should explain the background to robot debugging, so that we know what it is all about. Did you have more in the proposal; I can't remember? **
+The ROS communication structure is used by ROSDashboard to connect the logging statements in the source code with the visualization on the dashboard. This allows to re-use existing data streams published on topics without introducing changes to the source code. If new data needs to be collected, the source code needs to be modified to publish the data to a topic. The use of ROS topics to collect data for the debugging visualization allows ROSDashboard to access data transparently during runtime. Two scenarios of data collection can be distinguished:
+\begin{description}[\setlabelwidth{Debugging data}]
+\item[Long term] Data that is already published on topics for inter-module communication purposes or logging purposes. This data can be accessed and visualized without the need of source code modifications.
+\item[Debugging data] Data which is only used for debugging purposes. This kind of data is often used by developers to get an overview over the execution steps of an algorithm and is usually removed after a problem has been successfully debugged. This method requires source code modification and is mostly used in early development stages, where the source code is changed constantly anyway.
+\end{description}
 
 \section{ROSDASHBOARD}
 
