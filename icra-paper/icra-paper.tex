@@ -132,6 +132,7 @@ ROSDashboard, the tool presented in this paper, is designed for robot developmen
 %** Goal of the work needs to be stated concretely and specifically; something clear and strong. Did the proposal provide that? Else there is nothing to hang the background and requirements on ** [is this better now?]
 
 \section{ROS - Robot Operating System}
+\label{ros}
 
 %** this next bit is not really relevant to the paper; why not talk about its debugging capabilities **
 %The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and a community of researchers and industry partners has grown that supports and keeps developing the framework.
@@ -217,7 +218,7 @@ The purpose of the tool presented in this paper is to support developers of robo
 
 The requirements for ROSDashboard originated from the special needs a debugging tool for robotics has. When debugging robotic applications it is usually not possible to interrupt the execution of the application and follow a step-through approach. All data must be captured, processed and visualized live. The tool is designed for mobile robots, which means the communication is usually distributed on a network. % --> gather data through messages on existing and new topics (point out that ros logging cannot be used due to the text only data. Future work should fix this with regex parsing.)
 
-In order to allow the use of this tool in many different scenarios and use cases flexibility has a high priority. Flexibility not only means the tool can be adapted easily to fit different problems, it also means the tool can be adapted for different developers. Each developer might prefer a different set of widgets to visualize the collected data, thus loose coupling of the collected data and the visualization widgets is necessary. % --> this is solved by using ros topics, they decouple sender and receiver
+In order to allow the use of this tool in many different scenarios and use cases flexibility has a high priority. Flexibility not only means the tool can be adapted easily to fit different problems, it also means the tool can be adapted to suit different developer's preferences. Each developer might prefer a different set of widgets to visualize the collected data, thus loose coupling of the collected data and the visualization widgets is necessary. % --> this is solved by using ros topics, they decouple sender and receiver
 
 Debugging robotic applications is a highly iterative process, where small changes are made and immediately deployed to the robot. The debugging tool should keep the configuration overhead as minimal as possible so that the developer is not distracted from the problem analysis task. Adding and removing new widgets to ROSDashboard should not require many steps, otherwise the developer will be too distracted. % --> the topic introspection process should keep configuration to a minimum
 
@@ -243,41 +244,19 @@ Debugging robotic applications is a highly iterative process, where small change
 
 ** needs to be tied to requirements in part and then other decisions. **
 
-Python was chosen for ROSDashboard as target language, because it is a good match for fast prototyping and iterative development. Python's duck typing [reference] turned out to be a big help for topic introspection (see implementation details \ref{topic introspection}). Qt is used for the graphical part of the tool which also reflects the general policy in the ROS community (before Qt wxWidgets was the graphical toolkit of choice). [as of 2012, look for a reference in the wiki?]
+ROS is used to abstract from the robot's hardware and to decouple the collection of debugging data from the visualization. As explained in section \ref{ros}, the ROS publish/subscribe mechanism is able to completely decouple the sender from the receiver. The logging framework implemented in ROS publishes text messages on the special purpose topic /rosout. Because the messages are transmitted as text, valuable information about the type of the data is lost. To collect data in the program a developer has to publish messages to a topic of their choice to which he can then connect the visualization to. To make this as easy as possible ROSDashboard exposes a simple API of convenience methods that can be used to publish data. The API takes care of the ROS specifics to create a message and publish the message on the topic specified by the developer. If the developer chooses not to use the ROSDashboard API due to the new dependency to ROSDashboard, they can also publish the message themselves. % point out in future work that this is not a optimal solution, because all projects that want to use rosdashboards API would need to add it as a dependency.
+
+Python was chosen for ROSDashboard as target language, because it is a good match for fast prototyping and iterative development. Python's duck typing (``If it walks like a duck and quacks like a duck, it must be a duck''\cite{Rozsnyai2007}) was used to minimize the configuration overhead when new widgets are added to the dashboard. Usually a datatype must be chosen, but through topic introspection the type was chosen dynamically (see implementation details \ref{topic introspection}). Qt is used as graphical toolkit for ROSDashboard, which also reflects the general policy in the ROS community (before Qt, wxWidgets was recommended as graphical toolkit for ROS).
 
 Although the current software does not support third party widgets (in form of plugins) yet, the structure of the internal widgets is aligned to allow easy integration of such a feature in the near future. For now if a third party wants to have specialized widgets, it needs to modify the source code and add the code for widgets directly to the source tree.
 
-ROSDashboard was developed as Open Source from the very beginning to allow external contributions and feedback. The source code is hosted on Github\footnote{http://github.com/kaserf/rosdashboard}. A prototype was announced to the ROS community and valuable feedback was gathered and documented. One of the most valuable feedback was to make ROSDashboard more generic and allow to visualize topics that publish String messages which are parsed to get the data for the visualization. This would make it possible to use ROSDashboard with existing projects that already contain extensive logging (but in text form). [move the feedback to future work section, it is not really something for the design section]
+ROSDashboard was developed as Open Source project to allow external contributions and feedback. The source code is hosted on Github\footnote{http://github.com/kaserf/rosdashboard}. An early prototype was announced to the ROS community and valuable feedback has been collected and has been taken into consideration: small changes have already been implemented and bigger changes are documented as future work.
 
 [paragraph that explains how data can be transmitted to ROSDashboard. Point out the existing problem with /rosout (text only) and how this could be fixed in future (by extending the logging mechanism to contain type information) --> future work?]
 
 \subsection{Implementation details}
 
-** Jumps in to details that the reader cannot see relevance for completely. The details looks good and I think this could be a strong section; just needs to be related to the sections above, goal, requirements etc. Should be derived from the design section. You could have an architecture diagram, and tie it together with that. Probably start above with the ROS model, and discuss how the debugging tool requirements fit with it. Currently these things are not clear. **
-
-\subsubsection{Topic introspection}
-\label{topic introspection}
-ROS topics were originally not designed and developed as something the user or developer chooses graphically. Topics are usually set up in the code. ROSDashboard exposes the topic setup in a graphical user interface and this turned out to become a challenge since one of the requirements is to have a low configuration overhead (see requirements section [add reference]). Normally you have to select a topic name and a message data type. The data type can be one of the standard message types (wrapping the basic types like Float, Integer, String and Boolean) or a more complex message type. To access one data element of a message the "datafield" field was introduced in the graphical interface. Figure \ref{topic setup screenshot} shows an exemplary topic setup configuration to access the linear velocity of the \emph{/turtlesim/Velocity} message published to the topic \emph{/turtle1/command\_velocity}. Using Pythons duck typing and the \emph{rostopic} module it was possible to avoid the complexity of dynamically binding message types during runtime and detect the message type automatically. If a topic is not yet published (and thus the message type is not defined yet) the call to \emph{rostopic} blocks until the message type becomes known. To avoid blocking of the user interface a listener thread was implemented to wait until a topic (message type) becomes available. Avoiding to manually ask the user for a message type makes the configuration of widgets easier and faster for the user and also keeps the implementation simpler (no dynamic binding of message type classes during runtime).
-
-\begin{figure}[thpb]
-  \centering
-  \framebox{
-    \includegraphics[scale=0.5]{images/topic_setup.png}
-  }  
-  \caption{Screenshot of the topic setup dialog.}
-  \label{topic setup screenshot}
-\end{figure}
-
-The initial prototype implementation of the topic selection mechanism was developed to allow a fast and easy setup of widgets on the dashboard. In future the topic selection needs a better user interface to make it simpler to choose a topic and a datafield (and maybe the topic message type, if the topic introspection becomes to complicated). One possible solution could be a drop-down list with type-ahead auto completion and a visual representation of the message type and which fields are available to select. [highly opinionated paragraph. not sure if it makes sense to mention this]
-
-\begin{figure}[thpb]
-  \centering
-  \framebox{
-    \includegraphics[scale=0.28]{diagrams/topic_subscription.pdf}
-  }  
-  \caption{Exemplary flow of events for updating the topic setting of a widget.}
-  \label{topic subscription}
-\end{figure}
+This section presents important implementation details. First the object model is presented, it has been designed to allow easy integration of a plugin framework in the future (see \ref{future}). Topic introspection is used to keep the configuration overhead low, which is one of the requirements. The ROSDashboard API shows how data can be published and connected to the visualization, it is a set of convenience methods which can be used as a reference implementation for developers who decide to publish the data themselves.
 
 \subsubsection{Object model}
 The object model was designed to make it easy to extend ROSDashboard with more widgets. The abstract \texttt{DashboardWidget} class covers the general tasks that are the same for every widget. It provides hooks to overwrite some methods in the subclass if a widget needs to be more specific. This should allow easy integration of a plugin framework at [at? in? on?] a later stage, where third party widget developers only need to implement the specific parts of a new widget and the common tasks can be handled by the default implementation in \texttt{DashboardWidget}.
@@ -293,16 +272,45 @@ The object model was designed to make it easy to extend ROSDashboard with more w
 
 The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class as well. The main reason is to hide the technical details away from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget needs and needs to implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the whole properties part and not re-use the default implementation from \texttt{DashboardWidget}.
 
+\subsubsection{Topic introspection}
+\label{topic introspection}
+ROS topics were originally not designed and developed as something the user or developer chooses graphically. Topics are usually set up in the code. ROSDashboard exposes the topic setup in a graphical user interface and this turned out to become a challenge since one of the requirements is to have a low configuration overhead (see requirements section [add reference]). Normally you have to select a topic name and a message data type. The data type can be one of the standard message types (wrapping the basic types like Float, Integer, String and Boolean) or a more complex message type. To access one data element of a message the "datafield" field was introduced in the graphical interface. Figure \ref{topic setup screenshot} shows an exemplary topic setup configuration to access the linear velocity of the \emph{/turtlesim/Velocity} message published to the topic \emph{/turtle1/command\_velocity}. Using Pythons duck typing and the \emph{rostopic} module it was possible to avoid the complexity of dynamically binding message types during runtime and detect the message type automatically. If a topic is not yet published (and thus the message type is not defined yet) the call to \emph{rostopic} blocks until the message type becomes known. To avoid blocking of the user interface a listener thread was implemented to wait until a topic (message type) becomes available. Avoiding to manually ask the user for a message type makes the configuration of widgets easier and faster for the user and also keeps the implementation simpler (no dynamic binding of message type classes during runtime).
+
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.5]{images/topic_setup.png}
+  }  
+  \caption{Screenshot of the topic setup dialog.}
+  \label{topic setup screenshot}
+\end{figure}
+
+%The initial prototype implementation of the topic selection mechanism was developed to allow a fast and easy setup of widgets on the dashboard. In future the topic selection needs a better user interface to make it simpler to choose a topic and a datafield (and maybe the topic message type, if the topic introspection becomes to complicated). One possible solution could be a drop-down list with type-ahead auto completion and a visual representation of the message type and which fields are available to select. [highly opinionated paragraph. not sure if it makes sense to mention this]
+
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.28]{diagrams/topic_subscription.pdf}
+  }  
+  \caption{Exemplary flow of events for updating the topic setting of a widget.}
+  \label{topic subscription}
+\end{figure}
+
+\subsubsection{ROSDashboard API}
+
+[needed because of the text only representation of /rosout, convenience methods, reference implementation, could become part of ros core to prevent new dependencies, might be obsolete when a regex parser is introduced]
 
 \section{CONCLUSION AND FUTURE WORK}
-
+\label{future}
 % conclusion
 ROSDashboard, the tool presented in this paper is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging or robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
 
 The modular design and open source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process. The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
 
 % future work
-The presented tool is fully functional and is ready to be released. On a software side of things further work can be done to improve the number of available widgets. Ultimately this should be done through a plugin engine where third party developers can easily add widgets for new and more complex kind of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine. A more long term plan for the project is to implement a parser that can extract data which is embedded in text-based messages through regular expressions. Another long term plan is to generalize the widgets to have both subscription widgets and publisher widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
+The presented tool is fully functional and is ready to be released. On a software side of things further work can be done to improve the number of available widgets. Ultimately this should be done through a plugin engine where third party developers can easily add widgets for new and more complex kind of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine.
+
+Since the current logging mechanism in ROS transmits data as text, existing logging statements cannot be used as data source for the visualization. This can be resolved either by extending the logging mechanism to keep the type information of data or by implementing a parsing mechanism that can extract data which is embedded in text-based messages through regular expressions. This has been mentioned by the ROS community after the first prototype was announced. Another suggestion from the ROS community was to change the widgets to be more general and thus make it possible to have both visualization widgets and control widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
 
 RQT is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
 
