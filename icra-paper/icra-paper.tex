@@ -2,9 +2,9 @@
 %2345678901234567890123456789012345678901234567890123456789012345678901234567890
 %        1         2         3         4         5         6         7         8
 
-%\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out
                                                           % if you need a4paper
-\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
+%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4
                                                           % paper
 %\documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts                              % This command is only
@@ -13,8 +13,6 @@
 \overrideIEEEmargins
 % See the \addtolength command later in the file to balance the column lengths
 % on the last page of the document
-
-
 
 % The following packages can be found on http:\\www.ctan.org
 %\usepackage{graphics} % for pdf, bitmapped graphics files
@@ -71,7 +69,6 @@ The special application field of robotics faces problems with this approach, sin
 %Debugging robotic systems is particularly complex due to the nature of data that is debugged. There is a gap between a high level data visualization tool like rviz and a low level message logging tool like rosconsole. The high level rviz tool is specialized for 3d visualization of complex data like robot arm movement, laser range data and point cloud data. rviz was not designed to visualize abstract data that is handled during the execution of a robot. Such data is often used to debug algorithms. To capture the data most developers use a printf-debugging style, often also logging frameworks. In ROS this can be achieved by using the core logging API, which sends messages containing the data to the special /rosout topic. Tools like rosconsole or rxconsole can be used to display those messages. While this data does not need complex 3d visualizations, it can still be useful to visualize the data in some way.
 
 \end{abstract}
-
 
 %** I put my comments with double asterisks. 
 
