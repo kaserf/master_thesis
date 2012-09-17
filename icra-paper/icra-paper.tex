@@ -85,7 +85,7 @@ Data collected during debugging is traditionally rendered as text. For object or
 Current debugging tools for robotics are mostly based on debugging techniques and interfaces developed for traditional non-robotic applications. Those techniques and interfaces were developed specifically to suit the requirements of traditional systems: First they assume that a program can be interrupted in its execution, which in a robotic environment is not possible most of the time. Second the data handled in traditional applications is usually discrete and based on user input, as opposed to the sensory data a robot handles. The data a robot handles is in general closely related to the real world environment of the robot and comes from sensors that provide a continuous data stream of readings. Although the computing world has changed in recent years, most tools have not. Robot developers often still use tools which were developed under different circumstances and based on different requirements. The application field of robotics has special requirements for debugging tools which are often not met by current debugging tools.
 
 %We need better debugging tools to handle the special kind of data in robotics.
-Traditional debugging tools usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the nature of the application: Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and the situation in which the application was debugged would change ** WHAT changes in the situation? Apart from the environment?**. It is necessary to collect data during debugging without interrupting the execution of the program. Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The data collected this way is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that often contain more complex content such as numeric data.
+Traditional debugging tools usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the nature of the application: Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robots behaviour would change, which is an example of the "probe effect" and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. It is necessary to collect data during debugging without interrupting the execution of the program. Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The data collected this way is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that often contain more complex content such as numeric data.
 
 ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages.
 While most of the currently available visualization tools in robotics focus on spacial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon.
@@ -172,7 +172,7 @@ ARDev is an augmented reality (AR) debugging system based on Player/Stage \cite{
 
 \subsection{LabVIEW}
 
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{www.ni.com}. It features \emph{Front Panels} which allow a developer to add widgets to a graphical interface. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on a panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined visualization widgets such as text displays, sliders and progress bars, which can be used to create a dedicated user interface for a application. This user interface can be used to control the application as well as monitor and debug the application.
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{http://www.ni.com}. It features \emph{Front Panels} which allow a developer to add widgets to a graphical interface. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on a panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined visualization widgets such as text displays, sliders and progress bars, which can be used to create a dedicated user interface for a application. This user interface can be used to control the application as well as monitor and debug the application.
 %LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
 
 %LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
@@ -258,7 +258,8 @@ An early prototype was announced to the ROS community and valuable feedback has 
 
 \subsection{Implementation details}
 
-This section presents important implementation details. First the object model is presented: it has been designed to allow easy integration of a plugin framework in the future (see section \ref{future}). Topic introspection is used to keep the configuration overhead low, which has been identified as a core requirement. The ROSDashboard API shows how data can be published and connected to the visualization, it is a set of convenience methods which can be used as a reference implementation for developers who decide to publish the data themselves.
+This section presents important implementation details. First the object model is presented: it has been designed to allow easy integration of a plugin framework in the future (see section \ref{future}). Topic introspection is used to keep the configuration overhead low, which has been identified as a core requirement.
+%The ROSDashboard API shows how data can be published and connected to the visualization, it is a set of convenience methods which can be used as a reference implementation for developers who decide to publish the data themselves.
 
 \subsubsection{Object model}
 
@@ -299,13 +300,41 @@ While the initial prototype's implementation features simple text fields where t
   \label{topic subscription}
 \end{figure}
 
-\subsubsection{ROSDashboard API}
+\section{Showcase}
 
-[this section is under construction ;)]
+Although the current implementation should still be considered as a prototype, it has all the features that were initially planned. The implementation is running stable and first attempts to use it as a debugging tool have been made. ROSDashboard is ready to be used for the development of robot applications and can be used for further evaluations (see \ref{future}).
 
-[needed because of the text only representation of /rosout, convenience methods, reference implementation, could become part of ros core to prevent new dependencies, might be obsolete when a regex parser is introduced]
+Figure \ref{showcase} shows a simple showcase scenario: ROSDashboard is running alongside the turtlesim\_node which is used in many examples in the ROS tutorials\footnote{http://www.ros.org/wiki/ROS/Tutorials}. It monitors the values for linear and angular speed which are published by the turtle\_teleop\_key node to control the turtle simulation. The String widget is configured to display messages from \emph{/rosout}, which in this example shows a warning when the turtle hits a wall.
+For the purpose of this small showcase, there was no need to modify the turtlesim source code. The only topics used by the showcase scenario are topics that are already used to control the turtle in the simulation and to display warnings.
 
-** NEED SOMETHING HERE ABOUT EVALUATION. DOES IT WORK. EXAMPLES. IS THERE A WAY TO SHOW IT MEETS REQUIREMENTS? WHAT ARE LIMITATIONS. Even if it is not a full evaluation. **
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.26]{images/showcase2.png}
+  }  
+  \caption{ROSDashboard running alongside turtlesim\_node.}
+  \label{showcase}
+\end{figure}
+
+Figure \ref{rosgraph} shows the ROS computation graph during the execution of the showcase scenario. It shows how ROSDashboard is connected to the nodes which are debugged. The topics needed for the showcase are \emph{/turtle1/command\_velocity} for the linear and angular velocity and \emph{/rosout} for warnings when the turtle hit the wall.
+
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.23]{images/rosgraph.png}
+  }  
+  \caption{ROS computation graph with ROSDashboard.}
+  \label{rosgraph}
+\end{figure}
+
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[scale=0.3]{diagrams/rosgraph}
+  }  
+  \caption{Simplified ROS computation graph with ROSDashboard.}
+  \label{rosgraph_simple}
+\end{figure}
 
 \section{CONCLUSION AND FUTURE WORK}
 \label{future}
@@ -316,11 +345,11 @@ The modular design and Open Source approach followed during the development of t
 % The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
 
 % future work
-The presented tool is fully functional and is ready to be released. ** SEEMS A BIT STRONG GIVEN THERE IS NO EVALUATION OR SHOWING IT WORKS! Say more? ** Further work can be done to increase the number of available widgets. Ultimately there should be a plugin engine where third party developers can easily add widgets for new and more complex kinds of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine.
+The presented tool is a first prototype to evaluate the use of a simple visualization tool during debugging. Further work can be done to increase the number of available widgets. Ultimately there should be a plugin engine where third party developers can easily add widgets for new and more complex kinds of data. The extendibility of the tool was one of the initial requirements and the structure of the program allows easy integration of such a plugin engine.
 
 Since the current logging mechanism in ROS transmits data as text, existing logging statements cannot be used as data source for the visualization. This can be resolved either by extending the logging mechanism to keep the type information of data or by implementing a parsing mechanism that can extract data which is embedded in text-based messages through regular expressions. This has been mentioned by the ROS community after the first prototype was announced. Another suggestion from the ROS community was to change the widgets to be more general and thus make it possible to have both visualization widgets and control widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
 
-RQT ** is not mentioned yet; should be in the related work section above? and certainly should be cited** is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
+RQT\footnote{http://www.ros.org/wiki/rqt} is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
 
 ROSDashboard provides a good base to conduct research on the impact of visualizations during debugging of robotic applications. Future research can evaluate how visualizations affect the developer during debugging, especially if it decreases the cognitive load and thus makes debugging with visualizations faster and more productive.
 
@@ -341,9 +370,9 @@ ROSDashboard provides a good base to conduct research on the impact of visualiza
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{ACKNOWLEDGMENT}
+																																																																																																																															\section*{ACKNOWLEDGMENT}
 
-This work is part of the final project in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München\footnote{www.studieren.se}. It was conducted at the Department of Electrical and Computer Engineering, University of Auckland, New Zealand.
+																																																																																																																															This work is part of the final project in the Software Engineering Elite Graduate Program at Universität Augsburg, TU München and LMU München\footnote{http://www.studieren.se}. It was conducted at the Department of Electrical and Computer Engineering, University of Auckland, New Zealand.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -351,11 +380,5 @@ This work is part of the final project in the Software Engineering Elite Graduat
 %%%%% references %%%%%
 \bibliographystyle{IEEEtranBST/IEEEtran}
 \bibliography{bibtex/Master_Thesis,bibtex/manual}
-
-** NEED TO REPLACE THE \ldots IN THE BIBTEX FILE WITH THE CORRECT CONTENT
-
-** I think you only need to refer to the one journal paper of Toby Collett, unless there is something specific in other papers?
-
-
 
 \end{document}
