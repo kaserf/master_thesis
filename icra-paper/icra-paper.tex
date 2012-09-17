@@ -85,7 +85,7 @@ Data collected during debugging is traditionally rendered as text. For object or
 Current debugging tools for robotics are mostly based on debugging techniques and interfaces developed for traditional non-robotic applications. Those techniques and interfaces were developed specifically to suit the requirements of traditional systems: First they assume that a program can be interrupted in its execution, which in a robotic environment is not possible most of the time. Second the data handled in traditional applications is usually discrete and based on user input, as opposed to the sensory data a robot handles. The data a robot handles is in general closely related to the real world environment of the robot and comes from sensors that provide a continuous data stream of readings. Although the computing world has changed in recent years, most tools have not. Robot developers often still use tools which were developed under different circumstances and based on different requirements. The application field of robotics has special requirements for debugging tools which are often not met by current debugging tools.
 
 %We need better debugging tools to handle the special kind of data in robotics.
-Traditional debugging tools usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the nature of the application: Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robots behaviour would change, which is an example of the "probe effect" and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. It is necessary to collect data during debugging without interrupting the execution of the program. Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The data collected this way is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that often contain more complex content such as numeric data.
+Traditional debugging tools usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the nature of the application: Robotic applications usually can not be interrupted in their execution, because robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robot's behaviour would change, which is an example of the ``probe effect'' and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. It is necessary to collect data during debugging without interrupting the execution of the program. Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The data collected this way is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that often contain more complex content such as numeric data.
 
 ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages.
 While most of the currently available visualization tools in robotics focus on spacial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon.
@@ -272,13 +272,13 @@ This section presents important implementation details. First the object model i
   \label{class overview}
 \end{figure}
 
-The object model (see figure \ref{class overview}) was designed to make it easy to extend ROSDashboard with more widgets. The abstract \texttt{DashboardWidget} class covers the general tasks that are the same for every widget. Its internal method structure allows subclasses to overwrite only the parts of functionality, without the need to rewrite most of the other methods. This should allow easy integration of a plugin framework at a later stage, where third party widget developers only need to implement the specific parts of the new widget they want to provide and the common tasks are still handled by the default implementation in \texttt{DashboardWidget}.
+The object model (see Fig.~\ref{class overview}) was designed to make it easy to extend ROSDashboard with more widgets. The abstract \texttt{DashboardWidget} class covers the general tasks that are the same for every widget. Its internal method structure allows subclasses to overwrite only the parts of functionality, without the need to rewrite most of the other methods. This should allow easy integration of a plugin framework at a later stage, where third party widget developers only need to implement the specific parts of the new widget they want to provide and the common tasks are still handled by the default implementation in \texttt{DashboardWidget}.
 
 The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class, because they will be the the same for most widgets. The main reason is to hide the technical details from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget has and must implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the properties-specific methods to provide a tailored implementation for this specific widget.
 
 \subsubsection{Topic introspection}
 \label{topic introspection}
-ROS topics were originally not designed and developed as something the user or developer chooses graphically: They are usually created, configured and used in the source code. ROSDashboard exposes the topic setup in a graphical user interface every time a new widget is added to the dashboard. To make this as easy as possible and without much overhead, a technical solution was chosen to reduce the number of fields to be set during the topic subscription setup. Normally you have to select a topic name and a message data type. The data type can be one of the standard message types like Float, Integer, String and Boolean or a more complex message type which contains more information in a structured message. To access one data element of a message the ``datafield'' field was introduced in the graphical interface. Figure \ref{topic setup screenshot} shows an exemplary topic setup configuration to access the linear velocity of the \emph{/turtlesim/Velocity} message published to the topic \emph{/turtle1/command\_velocity}. Using Pythons duck typing and the \emph{rostopic} module it was possible to avoid the complexity of dynamically binding message types during runtime and detect the message type automatically. If a topic is not yet published and thus the message type of this topic is not defined yet, the method call to \emph{rostopic} will block until the message type becomes available. To avoid blocking of the user interface a listener thread was implemented to wait until the message type for a topic becomes available. Avoiding to manually ask the user for a message type makes the configuration of widgets easier and faster for the user, it also keeps the implementation significantly simpler, because no dynamic binding of message type classes during runtime is needed.
+ROS topics were originally not designed and developed as something the user or developer chooses graphically: They are usually created, configured and used in the source code. ROSDashboard exposes the topic setup in a graphical user interface every time a new widget is added to the dashboard. To make this as easy as possible and without much overhead, a technical solution was chosen to reduce the number of fields to be set during the topic subscription setup. Normally you have to select a topic name and a message data type. The data type can be one of the standard message types like Float, Integer, String and Boolean or a more complex message type which contains more information in a structured message. To access one data element of a message the ``datafield'' field was introduced in the graphical interface. Fig.~\ref{topic setup screenshot} shows an exemplary topic setup configuration to access the linear velocity of the \emph{/turtlesim/Velocity} message published to the topic \emph{/turtle1/command\_velocity}. Using Python's duck typing and the \emph{rostopic} module it was possible to avoid the complexity of dynamically binding message types during runtime and detect the message type automatically. If a topic is not yet published and thus the message type of this topic is not defined yet, the method call to \emph{rostopic} will block until the message type becomes available. To avoid blocking of the user interface a listener thread was implemented to wait until the message type for a topic becomes available. Avoiding to manually ask the user for a message type makes the configuration of widgets easier and faster for the user, it also keeps the implementation significantly simpler, because no dynamic binding of message type classes during runtime is needed.
 
 \begin{figure}[thpb]
   \centering
@@ -302,30 +302,30 @@ While the initial prototype's implementation features simple text fields where t
 
 \section{Showcase}
 
-Although the current implementation should still be considered as a prototype, it has all the features that were initially planned. The implementation is running stable and first attempts to use it as a debugging tool have been made. ROSDashboard is ready to be used for the development of robot applications and can be used for further evaluations (see \ref{future}).
+Although the current implementation is a prototype, it has all the features that were initially planned. The implementation is running stably and first attempts to use it as a debugging tool have been made. ROSDashboard is ready to be used for the development of robot applications and can be used for further evaluations (see Section~\ref{future}).
 
-Figure \ref{showcase} shows a simple showcase scenario: ROSDashboard is running alongside the turtlesim\_node which is used in many examples in the ROS tutorials\footnote{http://www.ros.org/wiki/ROS/Tutorials}. It monitors the values for linear and angular speed which are published by the turtle\_teleop\_key node to control the turtle simulation. The String widget is configured to display messages from \emph{/rosout}, which in this example shows a warning when the turtle hits a wall.
+Fig.~\ref{showcase} shows a simple showcase scenario: ROSDashboard is running alongside the turtlesim\_node which is used in many examples in the ROS tutorials\footnote{http://www.ros.org/wiki/ROS/Tutorials}. It monitors the values for linear and angular speed which are published by the turtle\_teleop\_key node to control the turtle simulation. The String widget is configured to display messages from \emph{/rosout}, which in this example shows a warning when the turtle hits a wall.
 For the purpose of this small showcase, there was no need to modify the turtlesim source code. The only topics used by the showcase scenario are topics that are already used to control the turtle in the simulation and to display warnings.
 
 \begin{figure}[thpb]
   \centering
-  \framebox{
-    \includegraphics[scale=0.26]{images/showcase2.png}
-  }  
+%  \framebox{
+    \includegraphics[scale=0.32]{images/showcase2.png} % Scale was 0.26
+%  }  
   \caption{ROSDashboard running alongside turtlesim\_node.}
   \label{showcase}
 \end{figure}
 
-Figure \ref{rosgraph} shows the ROS computation graph during the execution of the showcase scenario. It shows how ROSDashboard is connected to the nodes which are debugged. The topics needed for the showcase are \emph{/turtle1/command\_velocity} for the linear and angular velocity and \emph{/rosout} for warnings when the turtle hit the wall.
+Fig.~\ref{rosgraph_simple} shows the ROS computation graph during the execution of the showcase scenario. It shows how ROSDashboard is connected to the nodes which are debugged. The topics needed for the showcase are \emph{/turtle1/command\_velocity} for the linear and angular velocity and \emph{/rosout} for warnings when the turtle hit the wall.
 
-\begin{figure}[thpb]
-  \centering
-  \framebox{
-    \includegraphics[scale=0.23]{images/rosgraph.png}
-  }  
-  \caption{ROS computation graph with ROSDashboard.}
-  \label{rosgraph}
-\end{figure}
+%% \begin{figure}[thpb]
+%%   \centering
+%%   \framebox{
+%%     \includegraphics[scale=0.23]{images/rosgraph.png}
+%%   }  
+%%   \caption{ROS computation graph with ROSDashboard.}
+%%   \label{rosgraph}
+%% \end{figure}
 
 \begin{figure}[thpb]
   \centering
