@@ -1,0 +1,28 @@
+\chapter{ROSDashboard}
+
+Write about rosdashboard (overview)
+
+\section{Requirements}
+Mostly due to the special requirements of the robotics field.
+\subsection{Live Debugging}
+Cannot interrupt execution.
+\subsection{Adaptable Tool}
+Many different applications require an adaptable tool, developers preferences need an adaptable tool as well (especially in visualization, where the mental model of the data and preferences CAN have an impact).
+\subsection{Low Configuration Overhead}
+Iterative development, small changes are deployed during development, setting up must be fast and easy and should not distract from the problem analysis task.
+
+\section{System Design}
+\subsection{Computation Model}
+How ROS was used to achieve decoupled monitoring of data (topics)?
+\subsection{API}
+ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
+
+\section{Implementation Details}
+\subsection{Object Model}
+As in the ICRA paper. Should this be part of system design and not implementation detail? Maybe skip the impl detail section and put everything in system design?
+\subsection{Topic Introspection}
+As in the ICRA paper.
+\subsection{Plugin Framework?}
+I would need to implement that first...
+\subsection{Example Plugin?}
+Which methods need to be overwritten and how are callbacks implemented.

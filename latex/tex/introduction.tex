@@ -3,26 +3,10 @@
 This will become the glorious introduction section. Make sure to write it in
 the end and not in the beginning.
 
-\section{Motivation}
-
-\section{Problem Development}
-[\textbf{write about how the problem statement was formed, initial attemt to go with tracepoints, final decision to do graphical debugging}]
-
 \section{Problem Statement}
+\label{problem_statement}
 [\textbf{problems with robotic software, many different environments, not interruptable, ...}]
 Debugging robotic systems can prove to be much more complicated then normal software systems. 
-
-[\textbf{cite one of bruces papers?}]
-
-When it comes to debugging robotic applications many developers still rely on printf-debugging. Adding printf statements to the code is a flexible way to keep track of the execution of an algorithm and the change of certain variables over time. In ROS (Robot Operating System) as well as in other robot middleware a logging framework was added to facilitate the logging of program state, warnings, errors and debugging messages through log statements. These frameworks allow filtering according to different log levels (debug, info, warning, error, fatal) and different logger instances. The most quoted downside of debugging through logger frameworks is that the code has to be manipulated. Another downside is the nature of logging messages. They are only text-based and need to be interpreted by the developer reading the logs on a console.
-
-\label{problem_statement}
-This is the \textbf{problem statement} section and it has some items:
-\begin{itemize}
-\item What should I write here?
-\item So many bullets.
-\item Or items?
-\end{itemize}
 
 \section{ROS}
 The Robot Operating System (ROS) is an Open Source framework for complex robotic systems. The first work on ROS was done as part of the STanford Artificial Intelligence Robot (STAIR) in 2007 \cite{Quigley2007}. The original software library was called \emph{Switchyard} and had been developed at Stanford. Later the library was refined and generalized to also suit the requirements of the Personal Robot Program at Willow Garage\footnote{www.willowgarage.com} \cite{Quigley2009}. The resulting general framework has been released as Open Source \cite{Quigley2009} and this section gives a short overview over the most important principles in ROS.
@@ -47,6 +31,8 @@ A variety of tools have been built around the ROS core to facilitate the develop
 
 The latest stable version of the ROS framework was released in April 2012 (ROS Fuerte). Previous releases of stable versions have been in August 2011 (ROS Electric), March 2011 (ROS Diamondback), August 2010 (ROS C Turtle) and March 2010 (ROS Box Turtle). There are currently many institutions, companies and individuals involved in the ROS community, contributing in many different ways. This makes ROS a god target platform, since we want to reach as many developers as possible (see \ref{availability_developers}).
 
+\section{Visualization}
+This is problably too much literature review to go through...
+
 \section{Outline}
-Explain all the chapters and sections of this work. For example explain the problem statement
-\ref{problem_statement} chapter.
+Explain all the chapters and sections of this work.
