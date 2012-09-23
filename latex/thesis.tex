@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper,headsepline,footsepline,DIV13,BCOR12mm]{scrbook}
+\documentclass[12pt,a4paper,headsepline,footsepline,DIV13,BCOR12mm]{scrbook}
 \usepackage[english,ngerman]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
@@ -12,13 +12,15 @@
 \hypersetup{colorlinks=false}
 
 \begin{document}
+\renewcommand{\baselinestretch}{2} % 1.5 zeilenabstand
+
 \input{tex/preface}
 
 \include{tex/introduction}
 \include{tex/related}
 
 \include{tex/rosdashboard}
-\include{tex/showcase}
+\include{tex/casestudy}
 
 \include{tex/conclusion}
 
