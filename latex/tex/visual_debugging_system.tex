@@ -1,0 +1,29 @@
+\chapter{Visual Debugging System}
+\label{visual_debugging_system}
+
+Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
+
+Point out that ROS was targeted early on and affected many decisions, but the requirements and the system design is applicable in general. [Andreas: not sure if this is the right place, might be better in the introduction, since it explains the dominance of ROS tools in related work / debugging in robotics]
+
+\section{Requirements}
+Mostly due to the special requirements of the robotics field.
+\subsection{Live Debugging}
+Cannot interrupt execution.
+\subsection{Adaptable Tool}
+Many different applications require an adaptable tool, developers preferences need an adaptable tool as well (especially in visualization, where the mental model of the data and preferences CAN have an impact).
+\subsection{Low Configuration Overhead}
+Iterative development, small changes are deployed during development, setting up must be fast and easy and should not distract from the problem analysis task.
+
+\section{System Design}
+Discuss architecture and how it interacts with an eventual robot framework. All of them probably have some sort of inter process communication or a communication middleware in general, which can be accessed by the visualization tool.
+
+\subsection{Computation Model / Architecture}
+How ROS was used to achieve decoupled monitoring of data (topics)?
+
+--> this would need to be separated from ros, but probably a general strategy for decoupling the collection and visualization of data can be found (worst case: listener thread?)
+\subsection{API}
+ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
+
+--> too implementation specific, this is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.
+\subsection{Graphical User Interface}
+The user interface design is not ROS specific and can be discussed in detail here.
