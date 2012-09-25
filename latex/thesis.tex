@@ -12,9 +12,26 @@
 \hypersetup{colorlinks=false}
 
 \begin{document}
-\renewcommand{\baselinestretch}{2} % 1.5 zeilenabstand
 
-\input{tex/preface}
+% begin preface
+\selectlanguage{ngerman}
+\input{tex/titlepage} 
+\newpage
+
+\renewcommand{\baselinestretch}{2} % zeilenabstand
+
+%select english as language!
+\selectlanguage{english}
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\listoffigures
+\newpage
+\listoftables
+
+\pagenumbering{arabic}
+%end preface
 
 \include{tex/introduction}
 \include{tex/related}
