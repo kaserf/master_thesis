@@ -15,20 +15,40 @@ This chapter gives an overview of tools and practices currently in use to debug 
 
 %%%% INSTRUMENTED TOOLS %%%%
 \section{Instrumented Debugging Tools}
-This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification and can be used for every robotic framework or middleware [check if thats true for tracepoints and gdb]. Although gdb is a highly sophisticated tool with many features, this section will focus only on the features that are most important for robotics.
-\subsection{gdb}
-[explain gdb tracepoints and gdbserver, introduce (gdb) tracepoints and their downside (postmortem).]
+This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification, they use special operating system hooks to control the execution of an application and collect data during the runtime. These kind of tools are usually external tools and are not associated with a robotics framework or middleware, they can be used independent of the framework or middleware. Although GDB\footnote{http://www.gnu.org/software/gdb/} is a highly sophisticated tool with many features, this section will summarize only the features that are most important for robotics. A more detailed overview of GDB's features can be found on their website and in the book ``Debugging with GDB: The GNU Source-Level Debugger'' \cite{Stallman2002}.
+
+\subsection{GDB}
+%[overview, general introduction to gdb]
+The GNU Project Debugger (GDB) is a general purpose debugger, originally designed to debug C and C++ programs, but other languages have been added later on. The debugger ``allows you to see what is going on `inside' another program while it executes'' \cite{Stallman2002}. GDB is open source and free software, released under the GNU General Public License (GPL).
+
+The emerging market of embedded systems and robotics triggered the development of new features like the support for debugging remote targets and collecting data with tracepoints instead of breakpoints. These features are particularly important for robotics, since robotic applications are in general not interruptible and often mobile, which means the source code is executed on a different machine from where it is developed.
 
 \subsubsection{Remote Debugging}
+Some times it is impossible or infeasible to run GDB on the target platform itself. In robotics this might be due to limited processing power on the target machine or due to a special operating system on the target machine which does not support debugging. GDB can connect to remote targets running on different machines, if the program on the remote machine has been executed with \verb+gdbserver+. \verb+gdbserver+ is an auxiliary program which implements a debugging stub. The debugging stub contains a set of subroutines which take care of the communication with the GDB host through a GDB specific remote serial protocol \cite{Stallman2002}. Once the remote target is connected to the host, it can be controlled remotely: the developer can use GDB to specify breakpoints and control the execution of the program.
 
-\subsubsection{gdb Tracepoints}
+The debugging stub is specific to the architecture of the remote target. GDB distributes a couple of already implemented debugging stubs for certain architectures, but if another target platform is used the stub needs to be implemented.
 
-\subsubsection{gdb and ROS}
---> how to start ros nodes with gdbserver?
+\subsubsection{GDB Tracepoints}
+%[introduce gdb tracepoints and their downside (postmortem analysis)]
+As already mentioned, in some occasions it can be impractical to interrupt a program during its execution. Especially in robotics it is important to have a way to collect data during debugging without interrupting the execution of the program. GDB's \verb+trace+ and \verb+collect+ commands can be used to specify locations in the program code where data should be collected \cite{Stallman2002}. These locations are called tracepoints and are similar to breakpoints: they mark a location in the source code which is important to the developer. The data can be collected with arbitrary expressions which are evaluated when a tracepoint is hit, without interrupting the execution.
+
+The collected data can be analysed after the program has stopped its execution. The collected data is stored in a buffer on the remote target and represents snapshots of the data values that have been specified when the tracepoint was created. Each snapshot can be analysed closely using the normal GDB commands (e.g. \verb+backtrace+ and \verb+print+) as if the target would still be running \cite{Stallman2002}.
+
+GDB tracepoints are currently only available for remote targets. If you want to collect data with tracepoints in a local program, it has to be started with \verb+gdbserver+ and handled like a remote target.
 
 \subsection{Realtime Debugging Tracepoints}
-[Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
-\cite{Gumbley2009}
+%[Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
+The tracepoints approach presented above has one major downside: data can only be accessed and analysed after the program has stopped. This might be necessary for some systems, where transmitting the data over the network is too much overhead and can cause the system to fail. On the other hand there are systems that take a long time to properly start up and shut down. In such systems the GDB tracepoints approach will make development cumbersome and slow.
+
+To counter this problem, a realtime debugging framework for robotics was developed \cite{Gumbley2009}. It uses GDB to collect data when a tracepoint is hit, but transmits the data immediately to the user interface. The data can be accessed live during a debugging session and the developer does not need to wait for the application to stop to evaluate the data. The system uses plugins to visualize the data collected during debugging. The first plugins created for this tool rendered laser and ultrasonic rangefinder data \cite{Gumbley2009}.
+
+[significant configuration overhead]
+
+[modules need to be compiled with debugging symbols]
+
+\subsubsection{GDB and ROS}
+[show how to start ros nodes with gdbserver?]
+
 
 %%%% LOGGING FRAMEWORKS %%%%
 \section{Logging Frameworks}
@@ -40,9 +60,16 @@ This section introduces some of the most instrumented  debugging tools used for 
 
 %%%% GRAPHICAL DEBUGGING AIDS %%%%
 \section{Graphical Debugging Systems}
-\subsection{LabView}
-[\textbf{work out the importance of 6.2. Non-Visual Theme: Front Panel (GUI) Setup}]
-\cite{Whitley2001}
+\subsection{LabVIEW}
+
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{http://www.ni.com}. It features \emph{Front Panels} which allow a developer to add widgets to a graphical interface. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on a panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined visualization widgets such as text displays, sliders and progress bars, which can be used to create a dedicated user interface for an application. This user interface can be used to control the application as well as monitor and debug the application.
+%LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
+
+%LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
+
+[from icra paper, adapt?]
+The front panel feature was described as ``LabVIEW's biggest advantage,'' its ``best feature,'' or its ``main power'' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. It would be possible to design concrete front panels also for the purpose of debugging a specific application. This however requires integrating each front panel element directly into the visual program and is thus highly intrusive. Though a more transparent debugging possibility would be desirable, LabVIEW shows the potential of a flexible tool for visualization of abstract data in form of graphical widgets.
+
 \subsection{Augmented Reality Debugging System}
 \cite{Collett2010}
 \subsection{Microsoft Robotics Studio}
