@@ -1,4 +1,4 @@
-\chapter{ROSDashboard}
+\chapter{ROSDashboard: A Visual Debugging System for ROS}
 
 [should the chapter be renamed to "prototype" or "prototypical implementation"?]
 
@@ -8,12 +8,15 @@ rosdashboard is a prototypical implementation of the system presented in \ref{vi
 
 [Not sure if this is possible in other frameworks, if not it could be stated that more work is needed for those frameworks in order to make communication transparent. In general I can argue that ROS fits the requierements best, the system design was not intended to fit every framework but was developed without compromises current systems might have]
 
-[I'm not sure how to write this chapter: can I have a section "why ROS?", "how the requirements are met?", ...?]
+[I'm not sure how to write this chapter: can I have a section "why ROS?", "how the requirements are met?", ...?] ---> this should be written in the introduction for this chapter: ROS was used because it has many users, an easily accesible communication structure, a tool landscape (?) where such a tool would fit in well (recent surge of graphical tools like rxdeveloper, rqt, other dashboards).
+
+\parbox{.8\linewidth}{
+[from icra paper, needs some changes]
+
+ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages. While most of the currently available visualization tools in robotics focus on spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize all kinds of data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he or she thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}.
+}
 
 \section{Implementation Details}
-
-\subsection{Object Model}
-As in the ICRA paper. Should this be part of system design and not implementation detail? Maybe skip the impl detail section and put everything in system design?
 
 \subsection{Topic Introspection}
 
@@ -37,7 +40,5 @@ ROS topics were originally not designed and developed as something the user or d
   \label{topic subscription}
 \end{figure}
 
-\subsection{Plugin Framework?}
-I would need to implement that first...
-\subsection{Example Plugin?}
-Which methods need to be overwritten and how are callbacks implemented.
+\subsection{Plugins}
+Reference to the plugin framework section in \ref{visual_debugging_system} and that such a system was not yet implemented in ROSDashboard [can I say: due to the time constraints of this work?], but the necessary measures have been taken to allow this in the future. Show some details about an example widget and what methods it overwrites.

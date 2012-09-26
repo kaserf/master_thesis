@@ -1,9 +1,11 @@
-\chapter{Visual Debugging System}
+\chapter{Design of a Visual Debugging System}
 \label{visual_debugging_system}
 
 Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
 Point out that ROS was targeted early on and affected many decisions, but the requirements and the system design is applicable in general. [Andreas: not sure if this is the right place, might be better in the introduction, since it explains the dominance of ROS tools in related work / debugging in robotics]
+
+--> Generalize design decisions, if they apply for other robot frameworks as well.
 
 \section{Requirements}
 Mostly due to the special requirements of the robotics field.
@@ -21,6 +23,10 @@ Discuss architecture and how it interacts with an eventual robot framework. All 
 How ROS was used to achieve decoupled monitoring of data (topics)?
 
 --> this would need to be separated from ros, but probably a general strategy for decoupling the collection and visualization of data can be found (worst case: listener thread?)
+
+\subsection{Object Model}
+As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspecific (like Subscription).
+
 \subsection{API}
 ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
 

@@ -1,24 +1,54 @@
 \chapter{Debugging in Robotics}
 
-[Write about the difficulties in robot debugging in general as a short introduction]
+%[Write about the difficulties in robot debugging in general as a short introduction]
 
-Debugging robotic applications is even more difficult then debugging normal systems. This is due to the nature of robotic applications: they run in a real environment and handle data that has been collected from the real world through sensors. Robotic applications often run on a distributed network and thus on many different processors at the same time.
+% excerpt from icra paper
+Traditional debugging tools mostly rely on breakpoints, a mechanism to interrupt the execution of a program at a specific place in the program code. This can be a problem for robotic applications since they usually can not be interrupted in their execution, because the robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robot's behaviour would change, which is an example of the ``probe effect'' and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. This makes it necessary to collect data during debugging without interrupting the execution of the program.
+Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The ad-hoc logging approach is much simpler and does not require knowledge of external tools, but the source code must be modified. Source code modification can be a problem with so called "Heisenbugs", software faults that disappear because the observation affected the bug \cite{Grottke2005}.
 
-The distributed, close to the real world and often real time constrained application field of robotics stresses currently available debugging tools.
+%[write about text only problem here]
+Another problem with traditional debugging tools is that they usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the uninterruptible nature of the application. In order to help the developer understand the data faster, graphical tools have been developed to support the developer. Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
 
-Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
+This chapter gives an overview of tools and practices currently in use to debug robotic applications. The first section covers some instrumented tools which do not require source code modifications, instead they rely on more technical solutions. The second section summarizes logging mechanisms which are also often used for debugging. Although not all of the logging mechanisms presented in section two are related to robotic systems they represent a class of debugging tools which are often used in robotics. The tools presented in the first two sections mainly focus on debugging without interrupting the execution of a robotic application. Section three introduces graphical systems that aim to support the developer during the debugging task. The last section focuses on tools for the development with ROS. Section three and four both present tools which have been developed to bridge the gap between the robots' perception of the world and the developer's understanding of the collected data.
 
-The special application field of robotics faces problems with this approach, since a typical robotic system constantly gathers and processes data from the surrounding environment through sensors. Robotic applications are also hard to interrupt during debugging, since robots generally don't run in a deterministic and suspendable environment. Developers of robotic applications are confronted with high amounts of data during debugging, which becomes hard to interpret if the data is represented as text and high amounts of data need to be interpreted at once. This paper introduces a new tool to support debugging of robotic applications: It takes into account the special requirements for a debugging tool in a robotic development environment, especially the uninterrupted rendering of debugging data and the need for better visualization of data to support a faster interpretation of data. The tool's goal is to help developers understand the data during debugging more quickly and improve overall productivity during robot development. A graphical user interface was developed where developers can choose how they want to visualize data collected during debugging.
+%Imagine a robot is developed which is supposed to follow people through the house.  It is impossible to interrupt the execution of the robot to debug a specific problem, because the environment in which the robot is tested will change while the robot is interrupted and thus not sensing anything. The situation in which the robot should be debugged changes 
 
+%%%% INSTRUMENTED TOOLS %%%%
 \section{Instrumented Debugging Tools}
 This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification and can be used for every robotic framework or middleware [check if thats true for tracepoints and gdb]. Although gdb is a highly sophisticated tool with many features, this section will focus only on the features that are most important for robotics.
 \subsection{gdb}
 [explain gdb tracepoints and gdbserver, introduce (gdb) tracepoints and their downside (postmortem).]
 
+\subsubsection{Remote Debugging}
+
+\subsubsection{gdb Tracepoints}
+
+\subsubsection{gdb and ROS}
+--> how to start ros nodes with gdbserver?
+
 \subsection{Realtime Debugging Tracepoints}
 [Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
 \cite{Gumbley2009}
 
+%%%% LOGGING FRAMEWORKS %%%%
+\section{Logging Frameworks}
+
+[probably unrelated to debugging in robotics? maybe have a section "other debugging tools?" or summarize this in the ROS logging as other logging frameworks]
+\subsection{Android LogCat}
+\subsection{Java Log4j}
+\subsection{ROS Logging}
+
+%%%% GRAPHICAL DEBUGGING AIDS %%%%
+\section{Graphical Debugging Systems}
+\subsection{LabView}
+[\textbf{work out the importance of 6.2. Non-Visual Theme: Front Panel (GUI) Setup}]
+\cite{Whitley2001}
+\subsection{Augmented Reality Debugging System}
+\cite{Collett2010}
+\subsection{Microsoft Robotics Studio}
+\cite{Jackson2007}
+
+%%%% DEBUGGING IN ROS %%%%
 \section{Visual Debugging in ROS}
 \label{debugging_ros}
 
@@ -75,26 +105,12 @@ While rxbag mostly focuses on replaying recorded messages from a bag file, it ca
 rxplot is a graphical tool which can plot values from topics on a Cartesian coordinate system. 
 
 \subsection{RQT - ROS GUI}
-\subsection{gdb and ROS}
+--> remove, not related to debugging. can be introduced in rosdashboard when reasons for the choice of ros are presented (rosdashboard integrates well with other tools in the ros environment and recently many graphical tools were developed)
 \subsection{rxDeveloper}
 [\textbf{outline, results of the survey, importance for this work}]
 \cite{Muellers2012}
 
 [Not really debugging, this might go somewhere else? Maybe not a full subsecion but only a couple of sentences that summarize the results and why it is important for this work]
 
-\section{Graphical Debugging Systems}
-\subsection{LabView}
-[\textbf{work out the importance of 6.2. Non-Visual Theme: Front Panel (GUI) Setup}]
-\cite{Whitley2001}
-\subsection{Augmented Reality Debugging System}
-\cite{Collett2010}
-\subsection{Microsoft Robotics Studio}
-\cite{Jackson2007}
-
-\section{Logging Frameworks}
-
-[probably unrelated to debugging in robotics? maybe have a section "other debugging tools?" or summarize this in the ROS logging as other logging frameworks]
-\subsection{Android LogCat}
-\subsection{Java Log4j}
-\subsection{ROS Logging}
+--> same as RQT: put into rosdashboard as a reference to other graphical tools recently developed.
 
