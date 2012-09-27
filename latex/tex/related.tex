@@ -4,10 +4,9 @@
 
 % excerpt from icra paper
 Traditional debugging tools mostly rely on breakpoints, a mechanism to interrupt the execution of a program at a specific place in the program code. This can be a problem for robotic applications since they usually can not be interrupted in their execution, because the robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robot's behaviour would change, which is an example of the ``probe effect'' and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. This makes it necessary to collect data during debugging without interrupting the execution of the program.
-Although some technical solutions have been presented in recent years \cite{Gumbley2009}, many developers still rely on printf-style debugging or other logging mechanisms. The ad-hoc logging approach is much simpler and does not require knowledge of external tools, but the source code must be modified. Source code modification can be a problem with so called "Heisenbugs", software faults that disappear because the observation affected the bug \cite{Grottke2005}.
 
 %[write about text only problem here]
-Another problem with traditional debugging tools is that they usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the uninterruptible nature of the application. In order to help the developer understand the data faster, graphical tools have been developed to support the developer. Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
+Another problem with traditional debugging tools is that they usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the uninterruptible nature of the application. The data in robotic applications is usually too complex to understand in its raw representation, for example quaternions to specify 3D positions. In order to help the developer understand the data faster, graphical tools have been developed to support the developer. Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
 
 This chapter gives an overview of tools and practices currently in use to debug robotic applications. The first section covers some instrumented tools which do not require source code modifications, instead they rely on more technical solutions. The second section summarizes logging mechanisms which are also often used for debugging. Although not all of the logging mechanisms presented in section two are related to robotic systems they represent a class of debugging tools which are often used in robotics. The tools presented in the first two sections mainly focus on debugging without interrupting the execution of a robotic application. Section three introduces graphical systems that aim to support the developer during the debugging task. The last section focuses on tools for the development with ROS. Section three and four both present tools which have been developed to bridge the gap between the robots' perception of the world and the developer's understanding of the collected data.
 
@@ -40,23 +39,43 @@ GDB tracepoints are currently only available for remote targets. If you want to 
 %[Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
 The tracepoints approach presented above has one major downside: data can only be accessed and analysed after the program has stopped. This might be necessary for some systems, where transmitting the data over the network is too much overhead and can cause the system to fail. On the other hand there are systems that take a long time to properly start up and shut down. In such systems the GDB tracepoints approach will make development cumbersome and slow.
 
-To counter this problem, a realtime debugging framework for robotics was developed \cite{Gumbley2009}. It uses GDB to collect data when a tracepoint is hit, but transmits the data immediately to the user interface. The data can be accessed live during a debugging session and the developer does not need to wait for the application to stop to evaluate the data. The system uses plugins to visualize the data collected during debugging. The first plugins created for this tool rendered laser and ultrasonic rangefinder data \cite{Gumbley2009}.
+To counter this problem, a realtime debugging framework for robotics was developed \cite{Gumbley2009}. It uses GDB to collect data when a tracepoint is hit, but transmits the data immediately to the user interface. The data can be accessed live during a debugging session and the developer does not need to wait for the application to stop to evaluate the data.
 
-[significant configuration overhead]
+A plugin for the NetBeans IDE\footnote{http://netbeans.org/} integrated the novel debugging tool to make it easier to use. The user interface to set traditional breakpoints was re-used for tracepoints and presents a well known interface for developers. The user interface can be extended with further plugins to visualize the data collected during debugging. The first plugins created for this tool rendered laser and ultrasonic rangefinder data \cite{Gumbley2009}.
 
-[modules need to be compiled with debugging symbols]
+%[significant configuration overhead]
 
-\subsubsection{GDB and ROS}
-[show how to start ros nodes with gdbserver?]
+%[modules need to be compiled with debugging symbols]
 
 
 %%%% LOGGING FRAMEWORKS %%%%
 \section{Logging Frameworks}
 
-[probably unrelated to debugging in robotics? maybe have a section "other debugging tools?" or summarize this in the ROS logging as other logging frameworks]
-\subsection{Android LogCat}
-\subsection{Java Log4j}
-\subsection{ROS Logging}
+The previous section presented tools to collect data without the need to modify the source code. This section presents tools from the other end of the spectrum: Using logging and print statements is a popular method to collect data during debugging. Although logging frameworks originally were developed for long term collection of data, they can also be used excessively during the development of a particular feature or module. Logging statements help developers to understand the flow of execution in a program and can be used flexibly to output data values during the execution of the program.
+
+[double check]: 
+This section presents logging facilities from various robotic frameworks and summarizes where the differences are and what points they have in common.
+
+
+\subsection{Logging in ROS}
+\label{ros_logging}
+
+\subsection{Logging in Player/Stage}
+
+\subsection{Logging in Orca}
+
+\subsection{Print Statements}
+Although print statements are not part of a "logging framework", they are often used in the same way as other logging statements. Print statements are quite popular amongst developers because no additional knowledge is required to use them and they are a core part of every major programming language and thus don't require to link external libraries. Print messages are simpler then logging statements, they print a String message to a console and have no feature to filter or visualize the printed data.
+
+The use of print statements is a really flexible way of collecting data during debugging. The major downside of print statements is that it is easy to loose the overview where print statements have been used. If they are not excluded from the build before the software is released, this can lead to a weaker performance of the software.
+
+The text only representation of messages printed on the console restricts the use of print statements to the most basic types of data, since more complex data would be too hard to understand in its raw representation. This is especially true in robotics, since the data in robotics usually comes from sensors and complex algorithms. Despite the text only limitation, developers can pre select what they want to print and can use the full power of the programming language they are using to aggregate values or compute simple metrics and properties for complex data which might be useful during debugging.
+
+%[point out that it is flexible but can become a problem in bigger projects because the logging statements for debugging are often forgotten and not removed. managing where such statements are in the code can be a problem.]
+
+%[probably unrelated to debugging in robotics? maybe have a section "other debugging tools?" or summarize this in the ROS logging as other logging frameworks]
+%\subsection{Android LogCat}
+%\subsection{Java Log4j}
 
 %%%% GRAPHICAL DEBUGGING AIDS %%%%
 \section{Graphical Debugging Systems}
@@ -80,7 +99,7 @@ The front panel feature was described as ``LabVIEW's biggest advantage,'' its ``
 ARDev is an augmented reality (AR) debugging system based on Player/Stage \cite{Collett2010}. The AR approach to debugging helps the developer to understand the global state of the robot by augmenting a video feed of the robot with information of the robots' perception. Like the tools presented above, it focuses on pre-defined data such as laser and sonar sensors. The visualization of abstract data has been identified as possible future work \cite{Collett2010}. Initial evaluation studies were promising that the visualization can help developers significantly during debugging \cite{Collett2010}.
 
 \subsection{Microsoft Robotics Studio}
-\cite{Jackson2007}
+\cite{Jackson2007} ---> I'll probably drop this. MS robotics studio has not much relevance for my work...
 
 %%%% DEBUGGING IN ROS %%%%
 \section{Visual Debugging in ROS}
@@ -90,7 +109,6 @@ ARDev is an augmented reality (AR) debugging system based on Player/Stage \cite{
 ROS (Robot Operating System) \cite{Quigley2009} is an Open Source framework for complex robotic systems which has grown significantly in the last years, has an active community backing the project and supports many of the currently available robots \cite{Foote2012}. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier, because the work can be divided amongst different developers or development teams. This also allows the developer to change only small parts of a complex system, without the need to build and re-deploy the whole system.
 The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that their software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
 
-%** again, state the relevance to debugging **
 The communication between ROS nodes is either asynchronous through a publish/subscribe mechanism or synchronous through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The communication between nodes is one of the main sources for debugging data when debugging a ROS application. The same communication framework is also used for the logging mechanism in ROS, which publishes messages to the special purpose topic \emph{/rosout}.
 
 This section gives an overview of the ROS tools that can be used to monitor the ROS communication channels and thus debug ROS applications. ROS has both command line tools and tools with a graphical interface. Often there is a graphical interface based on the command line tool, in which case this section will focus on the graphical part, since it basically has the same functionality as the command line interface.
@@ -105,12 +123,16 @@ This section gives an overview of the ROS tools that can be used to monitor the 
 %\end{description}
 
 \subsection{RViz}
+[maybe I should move RViz to graphical debugging tools and rename this section to "other debugging tools in ROS" or drop? rxbag can be moved to the graphical section as well and the rest is pretty basic (not sure what to do with rxplot, but rxconsole can be merged with ROS logging)]
+
+Most of the currently available robot frameworks have their own tools for data visualization, this section presents RViz as representative for the class of visualization tools in robotics. Other visualization tools with similar features are playerv from the Player/stage framework \cite{Gerkey2003}, OrcaView2d and OrcaView3d from ORCA \cite{Makarenko2006} and robotgui from CARMEN \cite{Montemerlo2003} which is a more general user interface.
+
 RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical interface to render 3-dimensional data. The tool visualizes a 3d model of the robot (Figure~\ref{rviz_model}) and can visualize additional data like point clouds (Figure~\ref{rviz_pcl}), maps, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
 
 % source: CC image from http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.2]{img/RVizRobotModel.png}
+  \includegraphics[scale=0.3]{img/RVizRobotModel.png}
   \caption{3D model of a PR2 robot in RViz. Source: \url{http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel}, License: Creative Commons Attribution 3.0}
   \label{rviz_model}
 \end{figure}
@@ -118,8 +140,8 @@ RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical 
 % source: CC image from http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel
 \begin{figure}[htbp]
   \centering
-  \includegraphics[scale=0.2]{img/RVizPointCloud.png}
-  \caption{Point cloud visualization in RViz. Source: http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud, License: Creative Commons Attribution 3.0}
+  \includegraphics[scale=0.3]{img/RVizPointCloud.png}
+  \caption{Point cloud visualization in RViz.\\Source: http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud, License: Creative Commons Attribution 3.0}
   \label{rviz_pcl}
 \end{figure}
 
@@ -180,4 +202,14 @@ rxplot is a graphical tool which can plot values from topics on a Cartesian coor
 [Not really debugging, this might go somewhere else? Maybe not a full subsecion but only a couple of sentences that summarize the results and why it is important for this work]
 
 --> same as RQT: put into rosdashboard as a reference to other graphical tools recently developed.
+
+\section{Summary}
+
+The tools presented in this chapter cover a wide range of topics and can be categorized into two families: tools to collect data during debugging and tools to analyse and visualize data during debugging. While GDB collects data for later post-mortem analysis, the tracepoints approach in the realtime debugging system can collect data and display it live. GDB has no visualization tools to visualize the data collected, developers have to examine the data manually. Although the tracepoints approach from the realtime debugging system \cite{Gumbley2009} could be used, many developers still rely on printf-style debugging or other logging mechanisms. The ad-hoc logging approach is much simpler and does not require knowledge of external tools, but the source code must be modified. Source code modification can be a problem with so called "Heisenbugs", software faults that disappear because the observation affected the bug \cite{Grottke2005}.
+
+The data collected with print or logging statements is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that sometimes contain more complex content such as quaternions for 3d coordinates, laser scans and point clouds. Because a lot of data is collected and the data is too complex to understand in its raw representation, visualization tools have been developed for specific purposes to bridge the gap between the collection of data and the developer's comprehension of data.
+
+The visualization tools available for robotics usually visualize pre-defined data collected from known interfaces like laser sensors, mapping algorithms and computer vision modules. Most of them can be extended with plugins for more visualizations, but the user interfaces are rather static and difficult to adapt to different scenarios. The tools were not developed to visualize arbitrary and abstract data which is often used for debugging.
+
+ROS has a number of different tools to collect and visualize data. They all use the publish/subscribe communication which is used throughout ROS. The ROS visualization tools specialize in pre-defined data as well, but some smaller tools for general data visualizations are available as well. The ROS communication infrastructure allows to connect visualization tools transparently to the running applications without them knowing about the visualizations.
 
