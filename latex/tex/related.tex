@@ -15,11 +15,11 @@ This chapter gives an overview of tools and practices currently in use to debug 
 
 %%%% INSTRUMENTED TOOLS %%%%
 \section{Instrumented Debugging Tools}
-This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification, they use special operating system hooks to control the execution of an application and collect data during the runtime. These kind of tools are usually external tools and are not associated with a robotics framework or middleware, they can be used independent of the framework or middleware. Although GDB\footnote{http://www.gnu.org/software/gdb/} is a highly sophisticated tool with many features, this section will summarize only the features that are most important for robotics. A more detailed overview of GDB's features can be found on their website and in the book ``Debugging with GDB: The GNU Source-Level Debugger'' \cite{Stallman2002}.
+This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification, they use special operating system hooks to control the execution of an application and collect data during the runtime. These kind of tools are usually external tools and are not associated with a robotics framework or middleware, they can be used independent of the framework or middleware.
 
 \subsection{GDB}
 %[overview, general introduction to gdb]
-The GNU Project Debugger (GDB) is a general purpose debugger, originally designed to debug C and C++ programs, but other languages have been added later on. The debugger ``allows you to see what is going on `inside' another program while it executes'' \cite{Stallman2002}. GDB is open source and free software, released under the GNU General Public License (GPL).
+The GNU Project Debugger (GDB) is a general purpose debugger, originally designed to debug C and C++ programs, but other languages have been added later on. The debugger ``allows you to see what is going on `inside' another program while it executes'' \cite{Stallman2002}. GDB is open source and free software, released under the GNU General Public License (GPL). Although GDB is a highly sophisticated tool with many features, this section will summarize only the features that are most important for robotics. A more detailed overview of GDB's features can be found on the project website\footnote{http://www.gnu.org/software/gdb/} and in the book ``Debugging with GDB: The GNU Source-Level Debugger'' \cite{Stallman2002}.
 
 The emerging market of embedded systems and robotics triggered the development of new features like the support for debugging remote targets and collecting data with tracepoints instead of breakpoints. These features are particularly important for robotics, since robotic applications are in general not interruptible and often mobile, which means the source code is executed on a different machine from where it is developed.
 
@@ -60,18 +60,25 @@ To counter this problem, a realtime debugging framework for robotics was develop
 
 %%%% GRAPHICAL DEBUGGING AIDS %%%%
 \section{Graphical Debugging Systems}
+This section gives an overview of the graphical tools to support debugging in robotics. Those graphical tools are often used to get a better understanding of the robots position in the real world and to visualize sensor readings and control values. Visualization is an important factor in robotics, because developers usually cannot interrupt the execution of a robot and take as much time as they need to understand data. They need to get as much information out of the data stream as possible in a very short time to detect problems and their causes.
+
 \subsection{LabVIEW}
 
-LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{http://www.ni.com}. It features \emph{Front Panels} which allow a developer to add widgets to a graphical interface. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on a panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined visualization widgets such as text displays, sliders and progress bars, which can be used to create a dedicated user interface for an application. This user interface can be used to control the application as well as monitor and debug the application.
-%LabVIEW is released under a closed source license and does not allow developers to create their own widgets, which makes it hard to adapt to more complex use cases where specialized graphical widgets are required.
+LabVIEW (Laboratory Virtual Instrumentation Engineering Workbench) is a graphical programming environment developed by National Instruments\footnote{http://www.ni.com}. It features \emph{Front Panels} which allow a developer to add widgets to a graphical interface. These widgets can display the status of the graphical program or act as control interface (button, knobs, etc.) for the program. For each widget on a panel an element is created in the block diagram of the program which can be connected to other parts in the block diagram. LabVIEW delivers a high number of pre-defined visualization widgets such as text displays, sliders and progress bars, which can be used to create a dedicated user interface for an application. This user interface can be used to control the application as well as monitor and debug the application. Fig.~\ref{labview_screenshot} shows the LabVIEW user interface with a front panel in the background.
 
-%LabVIEW integrates dedicated debugging tools that allow e.g. single-stepping through program execution and at the same time visualizing textual values of data flowing through the graphical program in each execution step. This single-step execution relies on the suspendability of programs, which is not always given for robot systems. Furthermore, data values can usually only be observed using a textual representation, which requires correct interpretation by the user.
+% source: public domain image from http://en.wikipedia.org/wiki/File:WikipediaFPandBD.png
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.45]{img/labview_frontpanel.png}
+  \caption{Screenshot of the LabVIEW user interface with front panels in the top right.}
+  \label{labview_screenshot}
+\end{figure}
 
-[from icra paper, adapt?]
 The front panel feature was described as ``LabVIEW's biggest advantage,'' its ``best feature,'' or its ``main power'' in the open-format answers of a survey of LabVIEW programmers \cite{Whitley2001}. It would be possible to design concrete front panels also for the purpose of debugging a specific application. This however requires integrating each front panel element directly into the visual program and is thus highly intrusive. Though a more transparent debugging possibility would be desirable, LabVIEW shows the potential of a flexible tool for visualization of abstract data in form of graphical widgets.
 
 \subsection{Augmented Reality Debugging System}
-\cite{Collett2010}
+ARDev is an augmented reality (AR) debugging system based on Player/Stage \cite{Collett2010}. The AR approach to debugging helps the developer to understand the global state of the robot by augmenting a video feed of the robot with information of the robots' perception. Like the tools presented above, it focuses on pre-defined data such as laser and sonar sensors. The visualization of abstract data has been identified as possible future work \cite{Collett2010}. Initial evaluation studies were promising that the visualization can help developers significantly during debugging \cite{Collett2010}.
+
 \subsection{Microsoft Robotics Studio}
 \cite{Jackson2007}
 
@@ -98,13 +105,46 @@ This section gives an overview of the ROS tools that can be used to monitor the 
 %\end{description}
 
 \subsection{RViz}
-RViz is a highly sophisticated graphical interface to render 3-dimensional data\footnote{http://www.ros.org/wiki/rviz}. The tool visualizes a 3d model of the robot an can visualize additional data like point clouds, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
+RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical interface to render 3-dimensional data. The tool visualizes a 3d model of the robot (Figure~\ref{rviz_model}) and can visualize additional data like point clouds (Figure~\ref{rviz_pcl}), maps, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
 
-[screenshots from the wiki?]
+% source: CC image from http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.2]{img/RVizRobotModel.png}
+  \caption{3D model of a PR2 robot in RViz. Source: \url{http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel}, License: Creative Commons Attribution 3.0}
+  \label{rviz_model}
+\end{figure}
+
+% source: CC image from http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[scale=0.2]{img/RVizPointCloud.png}
+  \caption{Point cloud visualization in RViz. Source: http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud, License: Creative Commons Attribution 3.0}
+  \label{rviz_pcl}
+\end{figure}
+
+%\begin{figure}[htbp]
+%  \centering
+%	\begin{minipage}{\textwidth}%
+%		\subfigure[3D model of a PR2 robot in RViz. Source: \url{http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel}, License: Creative Commons Attribution 3.0]{
+%				%\rule{4cm}{3cm}
+%				\includegraphics[scale=0.1]{img/RVizRobotModel.png}
+%				\label{rviz_model}
+%		}
+
+%		\subfigure[Point cloud visualization in RViz. Source: http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud, License: Creative Commons Attribution 3.0]{
+%				%\rule{4cm}{3cm}
+%				\includegraphics[scale=0.1]{img/RVizPointCloud.png}
+%				\label{rviz_pcl}
+%		}
+%	\end{minipage}%
+
+%	\caption{Screenshots of different visualization types in RViz.}
+%\end{figure}
 
 RViz requires a 3d model with the exact proportions of the robot to visualize the robot and its movement correctly. The data visualized in RViz is mostly pre-defined and collected from known interfaces such as laser sensors, mapping algorithms and computer vision modules. Although it is possible to visualize arbitrary data in RViz, it is hard to find a good place to visualize the data, because the data does not have to be directly related to the real world, it can also be intermediate values from a computation algorithm.
 
-[write about rviz plugins]
+The plugin funcionality in RViz can be used to extend RViz with further visualizations and modules. The current plugin interface is not not documented yet, since it is under active development and the plugin API is expected to change significantly before it will be released with the next major ROS release \cite{rvizPlugin}.
 
 \subsection{rxconsole}
 rxconsole is a graphical user interface to display messages that have been published on the special purpose topic \emph{/rosout}. The special purpose topic \emph{/rosout} is used by the ROS logging framework (see \ref{ros_logging}). rxconsole keeps a list of messages with additional information like the severity of the message, the node which published the message and the timestamp when the message was published. The tool also allows filtering by severity and text.
