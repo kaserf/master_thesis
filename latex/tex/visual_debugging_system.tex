@@ -5,6 +5,8 @@ Debugging in robotics has unique requirements which are often not met by traditi
 
 This chapter introduces a new system for debugging in robotics, tailored to tackle the challanges developers face when debugging robotic systems. The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two will state the goals of the work, which leads to specific requirements for this system. The system design section presents the design for a flexible visual debugging system.
 
+[----> where should I introduce the word dashboard and widget? goals? user interface?]
+
 %Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
 %Point out that ROS was targeted early on and affected many decisions, but the requirements and the system design is applicable in general. [Andreas: not sure if this is the right place, might be better in the introduction, since it explains the dominance of ROS tools in related work / debugging in robotics]
@@ -59,5 +61,24 @@ As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspec
 ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
 
 --> too implementation specific, this is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.
+
 \subsection{Graphical User Interface}
-The user interface design is not ROS specific and can be discussed in detail here.
+The user interface for the debugging tool should allow to add and remove visualizations easily and arrange them however the developer wants. Thus a central dashboard approach was chosen, where visualizations can be positioned freely in form of widgets. Adding new visualizations to the dashboard can be done through a "Drag \& Drop" mechanism, once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in figure~\ref{gui_mockup}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{img/initial_gui_mockup.jpg}
+  \caption{Paper mockup for the graphical interface.}
+  \label{gui_mockup}
+\end{figure}
+
+Each widget represents one type of visiualization, this can be as simple as a dial for numberic values or more complex visualizations for more concrete data like a map visualization. Although the design of the user interface does not restrict the types of visualizations, it is intended for simple data, since other tools like RViz (see~\ref{rviz}) are more specialized for those use cases.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.5\textwidth]{img/initial_widget_mockup.jpg}
+  \caption{Paper mockup for a visualization widget.}
+  \label{widget_mockup}
+\end{figure}
+
+Figure~\ref{widget_mockup} shows an early mockup of a widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized.
