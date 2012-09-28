@@ -141,7 +141,7 @@ RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical 
 \begin{figure}[htbp]
   \centering
   \includegraphics[scale=0.3]{img/RVizPointCloud.png}
-  \caption{Point cloud visualization in RViz.\\Source: http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud, License: Creative Commons Attribution 3.0}
+  \caption{Point cloud visualization in RViz.\\Source: \url{http://www.ros.org/wiki/rviz/DisplayTypes/PointCloud}, License: Creative Commons Attribution 3.0}
   \label{rviz_pcl}
 \end{figure}
 
@@ -209,7 +209,7 @@ The tools presented in this chapter cover a wide range of topics and can be cate
 
 The data collected with print or logging statements is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that sometimes contain more complex content such as quaternions for 3d coordinates, laser scans and point clouds. Because a lot of data is collected and the data is too complex to understand in its raw representation, visualization tools have been developed for specific purposes to bridge the gap between the collection of data and the developer's comprehension of data.
 
-The visualization tools available for robotics usually visualize pre-defined data collected from known interfaces like laser sensors, mapping algorithms and computer vision modules. Most of them can be extended with plugins for more visualizations, but the user interfaces are rather static and difficult to adapt to different scenarios. The tools were not developed to visualize arbitrary and abstract data which is often used for debugging.
+The visualization tools available for robotics usually visualize pre-defined spatial data collected from known interfaces like laser sensors, mapping algorithms and computer vision modules. Most of them can be extended with plugins for more visualizations, but the user interfaces are rather static and difficult to adapt to different scenarios. The tools were not developed to visualize arbitrary and abstract data which is often used for debugging.
 
 ROS has a number of different tools to collect and visualize data. They all use the publish/subscribe communication which is used throughout ROS. The ROS visualization tools specialize in pre-defined data as well, but some smaller tools for general data visualizations are available as well. The ROS communication infrastructure allows to connect visualization tools transparently to the running applications without them knowing about the visualizations.
 
