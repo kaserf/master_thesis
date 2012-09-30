@@ -8,6 +8,7 @@ Traditional debugging tools mostly rely on breakpoints, a mechanism to interrupt
 %[write about text only problem here]
 Another problem with traditional debugging tools is that they usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the uninterruptible nature of the application. The data in robotic applications is usually too complex to understand in its raw representation, for example quaternions to specify 3D positions. In order to help the developer understand the data faster, graphical tools have been developed to support the developer. Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
 
+[review and update]
 This chapter gives an overview of tools and practices currently in use to debug robotic applications. The first section covers some instrumented tools which do not require source code modifications, instead they rely on more technical solutions. The second section summarizes logging mechanisms which are also often used for debugging. Although not all of the logging mechanisms presented in section two are related to robotic systems they represent a class of debugging tools which are often used in robotics. The tools presented in the first two sections mainly focus on debugging without interrupting the execution of a robotic application. Section three introduces graphical systems that aim to support the developer during the debugging task. The last section focuses on tools for the development with ROS. Section three and four both present tools which have been developed to bridge the gap between the robots' perception of the world and the developer's understanding of the collected data.
 
 %Imagine a robot is developed which is supposed to follow people through the house.  It is impossible to interrupt the execution of the robot to debug a specific problem, because the environment in which the robot is tested will change while the robot is interrupted and thus not sensing anything. The situation in which the robot should be debugged changes 
@@ -31,21 +32,73 @@ The debugging stub is specific to the architecture of the remote target. GDB dis
 %[introduce gdb tracepoints and their downside (postmortem analysis)]
 As already mentioned, in some occasions it can be impractical to interrupt a program during its execution. Especially in robotics it is important to have a way to collect data during debugging without interrupting the execution of the program. GDB's \verb+trace+ and \verb+collect+ commands can be used to specify locations in the program code where data should be collected \cite{Stallman2002}. These locations are called tracepoints and are similar to breakpoints: they mark a location in the source code which is important to the developer. The data can be collected with arbitrary expressions which are evaluated when a tracepoint is hit, without interrupting the execution.
 
-The collected data can be analysed after the program has stopped its execution. The collected data is stored in a buffer on the remote target and represents snapshots of the data values that have been specified when the tracepoint was created. Each snapshot can be analysed closely using the normal GDB commands (e.g. \verb+backtrace+ and \verb+print+) as if the target would still be running \cite{Stallman2002}.
+The collected data can be analysed after the program has stopped its execution. The data is stored in a buffer on the remote target and represents snapshots of the data values that have been specified when the tracepoint was created. Each snapshot can be analysed closely using the normal GDB commands (e.g. \verb+backtrace+ and \verb+print+) as if the target would still be running \cite{Stallman2002}.
 
 GDB tracepoints are currently only available for remote targets. If you want to collect data with tracepoints in a local program, it has to be started with \verb+gdbserver+ and handled like a remote target.
 
 \subsection{Realtime Debugging Tracepoints}
 %[Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
-The tracepoints approach presented above has one major downside: data can only be accessed and analysed after the program has stopped. This might be necessary for some systems, where transmitting the data over the network is too much overhead and can cause the system to fail. On the other hand there are systems that take a long time to properly start up and shut down. In such systems the GDB tracepoints approach will make development cumbersome and slow.
+The GDB tracepoints approach presented above has one major downside: data can only be accessed and analysed after the program has stopped. This might be necessary for some systems, where transmitting the data over the network is too much overhead and can cause the system to misbehave. On the other hand there are systems that take a long time to properly start up and shut down. In such systems the GDB tracepoints approach will make development cumbersome and slow.
 
-To counter this problem, a realtime debugging framework for robotics was developed \cite{Gumbley2009}. It uses GDB to collect data when a tracepoint is hit, but transmits the data immediately to the user interface. The data can be accessed live during a debugging session and the developer does not need to wait for the application to stop to evaluate the data.
+To counter this problem, a realtime debugging framework for robotics was developed \cite{Gumbley2009}. The framework is originally based on the Player/Stage robotic middleware but can be used with other robotic frameworks as well, since it operates on a low level and does not rely on specific features of a robotic framework or middleware. It uses GDB to collect data when a tracepoint is hit, but transmits the data immediately to the user interface. The data can be accessed live during a debugging session and the developer does not need to wait for the application to stop to evaluate the data.
 
 A plugin for the NetBeans IDE\footnote{http://netbeans.org/} integrated the novel debugging tool to make it easier to use. The user interface to set traditional breakpoints was re-used for tracepoints and presents a well known interface for developers. The user interface can be extended with further plugins to visualize the data collected during debugging. The first plugins created for this tool rendered laser and ultrasonic rangefinder data \cite{Gumbley2009}.
 
 %[significant configuration overhead]
 
 %[modules need to be compiled with debugging symbols]
+
+
+%%%% DEBUGGING IN ROS %%%%
+\section{Debugging in ROS}
+\label{debugging_ros}
+
+%[summarize what ros is]
+ROS (Robot Operating System) \cite{Quigley2009} is an Open Source framework for complex robotic systems which has grown significantly in the last years, has an active community backing the project and supports many of the currently available robots \cite{Foote2012}. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier, because the work can be divided amongst different developers or development teams. This also allows the developer to change only small parts of a complex system, without the need to build and re-deploy the whole system.
+The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that their software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
+
+The communication between ROS nodes is either asynchronous through a publish/subscribe mechanism or synchronous through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The communication between nodes is one of the main sources for debugging data when debugging a ROS application. The same communication framework is also used for the logging mechanism in ROS, which publishes messages to the special purpose topic \emph{/rosout}.
+
+[update and list some tools that are mentioned later?]
+This section gives an overview of the ROS tools that can be used to monitor the ROS communication channels and thus debug ROS applications. ROS has both command line tools and tools with a graphical interface. Often there is a graphical interface based on the command line tool, in which case this section will focus on the graphical part, since it basically has the same functionality as the command line interface.
+
+[this needs to come before RVIZ. Maybe introduction, maybe put the whole debugging in ros before the graphical tools. explain the computation model because it is important for the tools: pub/sub]
+
+%[skip next paragraph]
+%ROS comes with several tools to assist the developers during the development and debugging of a robot. The tools most relevant to this work are:
+%\begin{description}[\setlabelwidth{rxconsole}]
+%\item[rostopic] a command line tool to monitor topics and publish messages on topics.
+%\item[rxplot] a graphical tool which plots data from one or more topic fields on a cartesian coordinate system.
+%\item[rxconsole] displays logging messages that have been published on the special purpose topic \emph{/rosout}.
+%\item[rviz] renders models of the robot in 3D and visualizes spatial data like point clouds, robot poses, trajectories, etc. \cite{Quigley2009}.
+%\end{description}
+
+\subsection{rxconsole}
+rxconsole is a graphical user interface to display messages that have been published on the special purpose topic \emph{/rosout}. The special purpose topic \emph{/rosout} is used by the ROS logging framework (see \ref{ros_logging}). rxconsole keeps a list of messages with additional information like the severity of the message, the node which published the message and the timestamp when the message was published. The tool also allows filtering by severity and text.
+
+[screenshot?]
+
+rxconsole is designed to only display text messages since the logging framework converts everything to a text message before publishing. Important information about the type of data is not preserved. rxconsole is thus a very simple tool to monitor logging messages, it does not offer any special visualization for data, which would be hard since the messages are text based and don't contain type information.
+
+\subsection{rxbag}
+In a complex robotic system there is usually a lot of communication happening at once. Trying to keep track of the different topics and messages is not an easy task and recording the messages for analysis at a later stage is necessary. rosbag is a tool to dump communication data from selected topics to a file for later use or to analyse the communication after the application has terminated. The data is stored in a so called bag-file, which contains all the messages published to selected topics during the runtime of the application. rosbag can also be used to play back the recorded messages in the same order and with the same time offset as they were recorded. This can be used to examine the behaviour of one particular subsystem without the need of running the full stack of subsystems in a real environment.
+
+[example use of rosbag?]
+
+The bag-file can also be used to examine a flow of events in the system after the execution has terminated. rxbag is a graphical tool to analyse bag-files, it visualizes the content of a bag-file on a timeline. The tool has controls to play back, pause and rewind the stream of messages, which allows to have a closer look at some events on the timeline. rxbag visualizes image messages as thumbnails on the timeline which makes it easier to understand what the robot was facing when the messages were recorded. Developers can use rxbag to inspect messages in more detail, since the raw messages were recorded and can be accessed from the tool.
+
+[rxbag screenshot?]
+
+While rxbag mostly focuses on replaying recorded messages from a bag file, it can also be used to visualize the data stream while it records it. This can be done with the command line option \emph{--record}. rxbag can be extended with more visualizations through a plugin API. The plugin API is still experimental and under development, but it should become more stable in future versions of ROS \cite{rxbag}.
+
+[epiphany: difference between rosdashboard and rxbag: rxbag focuses on recorded data, but can also do live visualization. The biggest difference is that rxbag needs a static configuration (what topics should be recorded) and does not allow ad-hoc addition of new topics which might only be used for debugging reasons. This makes the configuration more time consuming because after adding a new logging statement the whole capturing process needs to be adapted and restarted to get the new data. rosdashboard can be left untouched, only a new widget needs to be added]
+
+%rxbag does something similiar we do: visualize data. It visualizes data from a bag file: you can see image data in a picture-stream way, plot numerical data and look at raw messages. You can also write plugins for more visualizations. The downside is that it only operates on pre-collected data sets (bags) and not on live data. This would be interesting to explore further, to visualize data live and collect the data for later analysis (combining rxbag with rosdashboard). This would not be a big problem, because collecting the bag file while we are visualizing is not a problem.
+
+\subsection{rxplot}
+rxplot is a graphical tool which can plot values from topics on a Cartesian coordinate system. The tool takes data from a published ROS topic and prints it on a time graph. The tool can be configured to visualize several graphs in one go, which makes it easy to compare values and data streams.
+
+[rxplot screenshot, there is not much more to say]
 
 
 %%%% LOGGING FRAMEWORKS %%%%
@@ -98,37 +151,15 @@ The front panel feature was described as ``LabVIEW's biggest advantage,'' its ``
 \subsection{Augmented Reality Debugging System}
 ARDev is an augmented reality (AR) debugging system based on Player/Stage \cite{Collett2010}. The AR approach to debugging helps the developer to understand the global state of the robot by augmenting a video feed of the robot with information of the robots' perception. Like the tools presented above, it focuses on pre-defined data such as laser and sonar sensors. The visualization of abstract data has been identified as possible future work \cite{Collett2010}. Initial evaluation studies were promising that the visualization can help developers significantly during debugging \cite{Collett2010}.
 
-\subsection{Microsoft Robotics Studio}
-\cite{Jackson2007} ---> I'll probably drop this. MS robotics studio has not much relevance for my work...
-
-%%%% DEBUGGING IN ROS %%%%
-\section{Visual Debugging in ROS}
-\label{debugging_ros}
-
-%[summarize what ros is]
-ROS (Robot Operating System) \cite{Quigley2009} is an Open Source framework for complex robotic systems which has grown significantly in the last years, has an active community backing the project and supports many of the currently available robots \cite{Foote2012}. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier, because the work can be divided amongst different developers or development teams. This also allows the developer to change only small parts of a complex system, without the need to build and re-deploy the whole system.
-The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that their software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
-
-The communication between ROS nodes is either asynchronous through a publish/subscribe mechanism or synchronous through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The communication between nodes is one of the main sources for debugging data when debugging a ROS application. The same communication framework is also used for the logging mechanism in ROS, which publishes messages to the special purpose topic \emph{/rosout}.
-
-This section gives an overview of the ROS tools that can be used to monitor the ROS communication channels and thus debug ROS applications. ROS has both command line tools and tools with a graphical interface. Often there is a graphical interface based on the command line tool, in which case this section will focus on the graphical part, since it basically has the same functionality as the command line interface.
-
-%[skip next paragraph]
-%ROS comes with several tools to assist the developers during the development and debugging of a robot. The tools most relevant to this work are:
-%\begin{description}[\setlabelwidth{rxconsole}]
-%\item[rostopic] a command line tool to monitor topics and publish messages on topics.
-%\item[rxplot] a graphical tool which plots data from one or more topic fields on a cartesian coordinate system.
-%\item[rxconsole] displays logging messages that have been published on the special purpose topic \emph{/rosout}.
-%\item[rviz] renders models of the robot in 3D and visualizes spatial data like point clouds, robot poses, trajectories, etc. \cite{Quigley2009}.
-%\end{description}
+As with most AR systems the set up of ARDev is quite complicated. A sophisticated tracking mechanism is required and some form of viewing device needs to be used. For ARDev a fixed viewpoint video see-through solution that tracks the robot with fiducial markers was chosen \cite{Collett2012}. The single camera and viewpoint approach ARDev uses is sufficient for a small room, but might not be sufficient for different application areas. Thus the choice which AR technology is used highly depends on the targeted environment.
 
 \subsection{RViz}
 \label{rviz}
 [maybe I should move RViz to graphical debugging tools and rename this section to "other debugging tools in ROS" or drop? rxbag can be moved to the graphical section as well and the rest is pretty basic (not sure what to do with rxplot, but rxconsole can be merged with ROS logging)]
 
-Most of the currently available robot frameworks have their own tools for data visualization, this section presents RViz as representative for the class of visualization tools in robotics. Other visualization tools with similar features are playerv from the Player/stage framework \cite{Gerkey2003}, OrcaView2d and OrcaView3d from ORCA \cite{Makarenko2006} and robotgui from CARMEN \cite{Montemerlo2003} which is a more general user interface.
+Most of the currently available robot frameworks have their own tools for data visualization, this section presents RViz as representative for the class of visualization tools in robotics. RViz is a 3D visualization tool for ROS. Other visualization tools with similar features are playerv from the Player/stage framework \cite{Gerkey2003}, OrcaView2d and OrcaView3d from ORCA \cite{Makarenko2006} and robotgui from CARMEN \cite{Montemerlo2003} which is a more general user interface.
 
-RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical interface to render 3-dimensional data. The tool visualizes a 3d model of the robot (Figure~\ref{rviz_model}) and can visualize additional data like point clouds (Figure~\ref{rviz_pcl}), maps, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
+RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical interface to render 3-dimensional data. The tool visualizes a 3D model of the robot (Figure~\ref{rviz_model}) and can visualize additional data like point clouds (Figure~\ref{rviz_pcl}), maps, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
 
 % source: CC image from http://www.ros.org/wiki/rviz/DisplayTypes/RobotModel
 \begin{figure}[htbp]
@@ -165,44 +196,9 @@ RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical 
 %	\caption{Screenshots of different visualization types in RViz.}
 %\end{figure}
 
-RViz requires a 3d model with the exact proportions of the robot to visualize the robot and its movement correctly. The data visualized in RViz is mostly pre-defined and collected from known interfaces such as laser sensors, mapping algorithms and computer vision modules. Although it is possible to visualize arbitrary data in RViz, it is hard to find a good place to visualize the data, because the data does not have to be directly related to the real world, it can also be intermediate values from a computation algorithm.
+RViz requires a 3D model with the exact proportions of the robot to visualize the robot and its movement correctly. The data visualized in RViz is mostly pre-defined and collected from known interfaces such as laser sensors, mapping algorithms and computer vision modules. RViz makes extensive use of the existing communication channels in ROS since the same data is also often used as input for other modules in a robotic system and can be re-used. Although it is possible to visualize arbitrary data in RViz, it is hard to find a good place to visualize the data, because the data does not have to be directly related to the real world, it can also be intermediate values from a computation algorithm.
 
 The plugin funcionality in RViz can be used to extend RViz with further visualizations and modules. The current plugin interface is not not documented yet, since it is under active development and the plugin API is expected to change significantly before it will be released with the next major ROS release \cite{rvizPlugin}.
-
-\subsection{rxconsole}
-rxconsole is a graphical user interface to display messages that have been published on the special purpose topic \emph{/rosout}. The special purpose topic \emph{/rosout} is used by the ROS logging framework (see \ref{ros_logging}). rxconsole keeps a list of messages with additional information like the severity of the message, the node which published the message and the timestamp when the message was published. The tool also allows filtering by severity and text.
-
-[screenshot?]
-
-rxconsole is designed to only display text messages since the logging framework converts everything to a text message before publishing. Important information about the type of data is not preserved. rxconsole is thus a very simple tool to monitor logging messages, it does not offer any special visualization for data, which would be hard since the messages are text based and don't contain type information.
-
-\subsection{rxbag}
-In a complex robotic system there is usually a lot of communication happening at once. Trying to keep track of the different topics and messages is not an easy task and recording the messages for analysis at a later stage is necessary. rosbag is a tool to dump communication data from selected topics to a file for later use or to analyse the communication after the application has terminated. The data is stored in a so called bag-file, which contains all the messages published to selected topics during the runtime of the application. rosbag can also be used to play back the recorded messages in the same order and with the same time offset as they were recorded. This can be used to examine the behaviour of one particular subsystem without the need of running the full stack of subsystems in a real environment.
-
-[example use of rosbag?]
-
-The bag-file can also be used to examine a flow of events in the system after the execution has terminated. rxbag is a graphical tool to analyse bag-files, it visualizes the content of a bag-file on a timeline. The tool has controls to play back, pause and rewind the stream of messages, which allows to have a closer look at some events on the timeline. rxbag visualizes image messages as thumbnails on the timeline which makes it easier to understand what the robot was facing when the messages were recorded. Developers can use rxbag to inspect messages in more detail, since the raw messages were recorded and can be accessed from the tool.
-
-[rxbag screenshot?]
-
-While rxbag mostly focuses on replaying recorded messages from a bag file, it can also be used to visualize the data stream while it records it. This can be done with the command line option \emph{--record}. rxbag can be extended with more visualizations through a plugin API. The plugin API is still experimental and under development, but it should become more stable in future versions of ROS \cite{rxbag}.
-
-[epiphany: difference between rosdashboard and rxbag: rxbag focuses on recorded data, but can also do live visualization. The biggest difference is that rxbag needs a static configuration (what topics should be recorded) and does not allow ad-hoc addition of new topics which might only be used for debugging reasons. This makes the configuration more time consuming because after adding a new logging statement the whole capturing process needs to be adapted and restarted to get the new data. rosdashboard can be left untouched, only a new widget needs to be added]
-
-%rxbag does something similiar we do: visualize data. It visualizes data from a bag file: you can see image data in a picture-stream way, plot numerical data and look at raw messages. You can also write plugins for more visualizations. The downside is that it only operates on pre-collected data sets (bags) and not on live data. This would be interesting to explore further, to visualize data live and collect the data for later analysis (combining rxbag with rosdashboard). This would not be a big problem, because collecting the bag file while we are visualizing is not a problem.
-
-\subsection{rxplot}
-rxplot is a graphical tool which can plot values from topics on a Cartesian coordinate system. 
-
-\subsection{RQT - ROS GUI}
---> remove, not related to debugging. can be introduced in rosdashboard when reasons for the choice of ros are presented (rosdashboard integrates well with other tools in the ros environment and recently many graphical tools were developed)
-\subsection{rxDeveloper}
-[\textbf{outline, results of the survey, importance for this work}]
-\cite{Muellers2012}
-
-[Not really debugging, this might go somewhere else? Maybe not a full subsecion but only a couple of sentences that summarize the results and why it is important for this work]
-
---> same as RQT: put into rosdashboard as a reference to other graphical tools recently developed.
 
 \section{Summary}
 
@@ -211,6 +207,8 @@ The tools presented in this chapter cover a wide range of topics and can be cate
 The data collected with print or logging statements is usually text-only, which requires the developer to constantly parse and interpret logging messages. Due to the large amount of data that is processed this often means developer consoles are filled with logging messages that sometimes contain more complex content such as quaternions for 3d coordinates, laser scans and point clouds. Because a lot of data is collected and the data is too complex to understand in its raw representation, visualization tools have been developed for specific purposes to bridge the gap between the collection of data and the developer's comprehension of data.
 
 The visualization tools available for robotics usually visualize pre-defined spatial data collected from known interfaces like laser sensors, mapping algorithms and computer vision modules. Most of them can be extended with plugins for more visualizations, but the user interfaces are rather static and difficult to adapt to different scenarios. The tools were not developed to visualize arbitrary and abstract data which is often used for debugging.
+
+3D visualizations such as rviz and ARDev are used during debugging to understand the robot's view of the world. Both of them require a substantial amount of set up work. For rviz a 3D model of the robot must be created, which has the exact proportions of the real robot. ARDev requires an even more complex setup for AR. During the development of the tool an intelligent debugging space (IDS) was permanently installed in a laboratory, where the robot under development can be constantly tracked with markers and cameras \cite{Collett2010}. This setup is often unavailable, especially in outdoor situations, and is also often not applicable for debugging tasks where only abstract data is available or required. A general problem with 3D visualization tools is that abstract data often does not fit into the 3-dimensional rendering and in the case of AR can hide important information of the real world \cite{Collett2010}.
 
 ROS has a number of different tools to collect and visualize data. They all use the publish/subscribe communication which is used throughout ROS. The ROS visualization tools specialize in pre-defined data as well, but some smaller tools for general data visualizations are available as well. The ROS communication infrastructure allows to connect visualization tools transparently to the running applications without them knowing about the visualizations.
 

@@ -16,6 +16,19 @@ rosdashboard is a prototypical implementation of the system presented in \ref{vi
 ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages. While most of the currently available visualization tools in robotics focus on spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize all kinds of data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he or she thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}.
 }
 
+\section{Related ROS Tools}
+[list some tools and recent projects that have influenced the tool. For example the rxdeveloper tool and the survey in \cite{Muellers2012}, RQT and other dashboards recently developed. Highly related to the choice of makeing a tool for ros.]
+
+\subsection{RQT - ROS GUI}
+--> remove from debugging section, not related to debugging. can be introduced in rosdashboard when reasons for the choice of ros are presented (rosdashboard integrates well with other tools in the ros environment and recently many graphical tools were developed)
+
+\subsection{rxDeveloper}
+[\textbf{outline, results of the survey, importance for this work}]
+\cite{Muellers2012}
+
+[Not really debugging, this might go somewhere else? Maybe not a full subsecion but only a couple of sentences that summarize the results and why it is important for this work]
+
+
 \section{Implementation Details}
 
 \subsection{Topic Introspection}
