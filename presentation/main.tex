@@ -17,8 +17,18 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Definitions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\logotum}{\includegraphics[scale=0.9]{TUMINF.pdf}}
-\newcommand{\logoinf}{\includegraphics[scale=0.5]{IN_schwarz_CMYK.pdf}}
+\newcommand{\logounis}{
+\begin{table}[h]
+\centering
+\begin{tabular}{ccc}
+\includegraphics[width=.3\linewidth]{images/logos/lmu_logo} \hspace{0.3cm} &
+\includegraphics[width=.3\linewidth]{images/logos/Uni_Aug_Logo_Basis_pos_A}
+\hspace{0.3cm} &
+\includegraphics[width=.3\linewidth]{images/logos/tum}
+\end{tabular}
+\end{table}}
+
+\newcommand{\logose}{\includegraphics[width=.2\linewidth]{images/logos/LogoSEengl}\hspace{5mm}}
 
 \newcommand{\hl}[1]{\fcolorbox{red}{white}{#1}}
 \newcommand{\todo}[1]{\hl{TODO: #1...}}
@@ -29,24 +39,25 @@
 
 \newcommand{\scite}[1]{\textsuperscript{\tiny\cite{#1}}}
 
-\bibliographystyle{apalike}
+%\bibliographystyle{apalike}
 
 
-\titlegraphic{\logotum}
-\title[Intelligent Learning Framework]
-{Intelligent Support\\ \strut for non-linear Serious Games}
-\subtitle{\scriptsize{Bachelor's Thesis in Computer Science}}
+\titlegraphic{\logounis}
+\title[Visual Debugging for Robotics]
+{A flexible visual framework\\ \strut for debugging complex robotic systems}
+\subtitle{\scriptsize{Masters's Thesis in the Software Engineering Elite Graduate Program}}
 \author[Felix Kaser]{Felix Kaser\\\tiny{\texttt{kaserf@in.tum.de}}}
-\institute[TUM]
-{Chair for Applied Software Engineering\\
-Faculty of Informatics\\
-Technische Universit\"at M\"unchen}
-\date{July 1, 2010}
-\logo{\logoinf}
+%\institute[ISSE]
+%{Institut für Software \& Systems \\
+%Engineering}
+\date{October 3, 2012}
+
+\logo{\logose}
+
 \additionaltext{\tiny
-{Supervisor: Prof. Bernd Brügge, PhD.\\
-\hspace{7mm}Advisors: Dipl.-Inf. Univ. Dennis Pagano,\\
-\hspace{17.2mm}Dipl.-Inf. Univ. Damir Ismailović}}
+{Supervisors: Prof. Dr. Wolfgang Reif,\\
+\hspace{20mm}Prof. Bruce A.~MacDonald, PhD.\\
+\hspace{2mm}Advisor: M.Sc. Andreas Angerer}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -67,269 +78,233 @@ Technische Universit\"at M\"unchen}
 
 \begin{frame}{Problem Statement}
 \begin{itemize}
-\item Education in general lacks technology
-\item Traditional instruction is not engaging enough for the ``digital natives'' \cite{VanEck2006}
-\item Design for the average user is not always the best solution \cite{Bailey1982}
-%\item Educational software mostly lacks adaptive approaches
-%\item Non linear games give more freedom to the learner
-%\item State of the art technology can enhance learning \cite{Shute2003b}
+\item Debugging in robotics is complex
+\item Traditional debugging tools lack support for robotics
+\item Specialized tools are needed to cope with the requirements of robotics
 \end{itemize}
 \pause
-\textbf{Enabler:}
+\textbf{Key problems:}
 \begin{itemize}
-\item Using games in education solves the lack of motivation in instruction \cite{VanEck2006}
-\item Non linear games give the player a lot of freedom and are thus more engaging (highly immersive) \cite{Seah2008a}
+\item Robotic applications are usually not interruptible
+\item The data handled in robotic systems comes from sensors instead of user-input
+\item Data is hard to understand in its raw form
+\item The robotics field is diverse and tools are often created for really specific use cases and cannot be easily re-used
 \end{itemize}
-\pause
-\begin{block}{Hypothesis:}
-Detecting problems during the learning process (with a non linear serious game) and adapting the game accordingly can enhance learning even more.
+\end{frame}
+
+\begin{frame}{Hypothesis}
+\begin{block}{}
+A visualization tool for robotics that allows developers to choose the visualization they prefer can reduce the cognitive load during debugging and thus improve development speed.
 \end{block}
 \end{frame}
 
-\subsection{Serious Games}
+\subsection{Debugging in Robotics}
 
-\begin{frame}{Serious Games}
-\pause
+\begin{frame}{Related Tools}
 \begin{itemize}
-\item Higher purpose than pure entertainment
-\item First mentioned in Clark Abt's book \cite{Abt1987}, not in the context of computer games
-\item A more up to date (``digitalized'') definition comes from Michael Zyda \cite{Zyda2005}
+\item Realtime Debugging
+\item National Instruments LabVIEW
+\item Augmented Reality (AR) Debugging
 \end{itemize}
-\pause
-\begin{block}{Serious games are ...}
-``a mental
-contest, played \textbf{with a computer} in accordance with specific rules, that uses
-entertainment to further government or corporate training, education, health,
-public policy, and strategic communication objectives.'' \cite{Zyda2005}
-\end{block}
 \end{frame}
 
-\subsection{Non Linear Games}
-
-\begin{frame}{Non Linear Games}
-\pause
+\begin{frame}{Realtime Debugging}
+\begin{columns}
+\begin{column}{.5\textwidth}
 \begin{itemize}
-\item No strict storyboard to follow
-\item The player has more/full freedom
-\item Highly immersive (feeling of ``being there'' \cite{Psotka1995a})
-\item Educational importance: immersion supports learning \cite{Zimmerman2000a, Seah2008a}
+\item Developed by Luke Gumbley at the robotics lab
+\item Extends GDB to support realtime data collection
+\item Integrated into NetBeans IDE
 \end{itemize}
-\pause
-\begin{block}{Other terms:}
-Open-World Games, Open-Ended Games, Sandbox Games or Exploratory Learning Environment
-\end{block}
+\end{column}
+\hfill%
+\begin{column}{.5\textwidth}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.75\textwidth]{images/tracepoints_gumbley.png}
+  \caption{Tracepoints block diagram. \cite{Gumbley2009}}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
-\begin{frame}{Non Linear Serious Games - Examples}
-\begin{block}{Physics}
-%\begin{figure}
-    \centering
-    \includegraphics[width=0.3\textwidth]{images/Bridgependulum.jpg}
-    \hspace{0.5em}
-    \includegraphics[width=0.3\textwidth]{images/Housegolf.jpg}
-    \hspace{0.5em}
-    \includegraphics[width=0.3\textwidth]{images/PhysicsNew3.png}
-%\end{figure}
-\end{block}
-\pause
-\begin{block}{Food Force}
-%\begin{figure}
-    \centering
-    \includegraphics[width=0.3\textwidth]{images/FoodForce2_Setup_Window.png}
-    \hspace{0.5em}
-    \includegraphics[width=0.3\textwidth]{images/FoodForce2_Market.png}
-    \hspace{0.5em}
-    \includegraphics[width=0.3\textwidth]{images/Foodforce-mp.png}
-%\end{figure}
-\end{block}
+\begin{frame}{LabVIEW}
+\begin{itemize}
+\item Graphical programming tool developed by National Instruments
+\item Front panels allow to create specific user interfaces for the program
+\item Front panels are connected in the visual program
+\end{itemize}
 \end{frame}
 
-\subsection{Pedagogical Agents}
-\begin{frame}[allowframebreaks]{Pedagogical Agents}
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../latex/images/pedagogical_agent.jpeg}
-    \caption[Herman the Bug, a Pedagogical Agent]
-    {Herman the Bug, a Pedagogical Agent \cite{Lester1997c}}
+\begin{frame}{LabVIEW}
+% source: public domain image from http://en.wikipedia.org/wiki/File:WikipediaFPandBD.png
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.6\textwidth]{images/labview_frontpanel.png}
+  \caption{Screenshot of the LabVIEW user interface with front panels in the top right.}
 \end{figure}
 \end{frame}
-%\framebreak
 
-\begin{frame}%{Pedagogical Agents}
-\begin{block}{Pedagogical agents are widely researched in terms of:}
+\begin{frame}{AR Dev}
 \begin{itemize}
-\pause
-\item \textbf{appearence} \cite{Johnson2000, Slater2000a, Voerman1997a}
-\pause
-\item \textbf{interaction} \cite{Slater2000a, Baylor2003b}
-\pause
-\item \textbf{learning enhancements} \cite{Conati2004b, Baylor2003b, Blanchard2004b, Voerman1997a}
-\pause
-\item \textbf{support for artificial intelligence} \cite{Nunes2002b}
+\item Realtime Debugging \cite{Gumbley2009}
+\item National Instruments LabVIEW
+\item Augmented Reality (AR) Debugging \cite{Collett2010}
 \end{itemize}
-\end{block}
-
-\pause
-
-\begin{block}{Moreno et al.}
-Pedagogical agents can ``promote constructivist learning in a
-discovery-based learning environment''\cite{Moreno2000a}
-\end{block}
 \end{frame}
 
-\section{Intelligent Learning Framework}
-%%%%%%%%%%%%%%%% ILF section %%%%%%%%%%%%%%%%%%%
+\begin{frame}{Problems of Existing Tools}
+\begin{itemize}
+\item High configuration overhead
+\item Visualization focuses on pre defined data
+\item Arbitrary data is usually rendered as text
+\end{itemize}
+\end{frame}
+
+\section{ROS (Robot Operating System)}
+
 \subsection{Overview}
+\begin{frame}{Overview}
 
-\begin{frame}{Intelligent Learning Framework}
-\pause
-Goals:
+\begin{columns}
+\begin{column}{.6\textwidth}
+%left column
 \begin{itemize}
-\item Collect and analyze the learners actions during gameplay
-\item Detect problems and general behavioral patterns
+\item Developed first at Stanford, now at Willow Garage
+\item Modular robotic middleware
+\item Active open source community
+\item Many ready to use solutions for common problems in robotics (SLAM, transformations, grasping, ...)
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+%right column
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/pr2.png}
+    \caption[The PR2 robot]{The PR2 robot}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+%\subsection{ROS Basics}
+\begin{frame}{ROS Basics}
+\begin{itemize}
+\item Modules are called nodes
+\item Communication infrastructure based on publish/subscribe
+\end{itemize}
 \pause
-\item Give feedback to the learner
-\item ``Support'' the learning process
-\item Allow different pedagogical approaches
+\begin{block}{Publish/Subscribe:}
+explain pubsub
+\end{block}
+\end{frame}
+
+\subsection{Existing ROS Tools}
+\begin{frame}{Existing ROS Tools}
+
+\begin{columns}
+\begin{column}{.3\textwidth}
+%first column
+RViz
+\end{column}%
+\hfill%
+\begin{column}{.3\textwidth}
+%second column
+rxconsole
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/pr2.png}
+    \caption[The PR2 robot]{The PR2 robot}
+\end{figure}
+\end{column}%
+\hfill%
+\begin{column}{.3\textwidth}
+%third column
+rxbag
+\end{column}
+\end{columns}
+\end{frame}
+
+%\subsection{Logging in ROS}
+\begin{frame}{Logging in ROS}
+\begin{itemize}
+\item C++ and Python client libraries contain logging API
+\item Log messages are sent to console, log file and \emph{/rosout}
+\item Can be filtered by severity and text
+\item Log messages are text only with metadata (timestamp)
 \end{itemize}
 \end{frame}
 
-%\begin{frame}{System Overview}
-%how it connects with the game
+\section{ROSDashboard}
+%%%%%%%%%%%%%%%% ROSDashboard section %%%%%%%%%%%%%%%%%%%
+\subsection{Goals}
+
+\begin{frame}{Goals}
+\begin{itemize}
+\item Create a easy to use debugging tool
+\item Visualize simple and abstract data
+\item Allow developers to choose the visualization they prefer
+\item Extendible through plugins
+\item Create a tool to evaluate hypothesis
+\end{itemize}
+\end{frame}
+
+\subsection{Requirements}
+\begin{frame}{Requirements}
+\begin{itemize}
+\item Distributed live debugging
+\item Transparent connection to data collection
+\item Adaptability to different preferences and use cases
+\item Low configuration overhead to keep developer on task
+\end{itemize}
+\end{frame}
+
+\subsection{Design}
+
+\begin{frame}{System Design}
+\begin{itemize}
+\item Make use of ROS topics for transparent access to data
+\item Flexible and configurable user interface
+\item Visualizations wrapped in widgets
+\item Framework that allows easy integration of a plugin system
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Object Design}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{diagrams/class_overview}
+    \caption[Core object model overview]{Core object model overview}
+\end{figure}
+\end{frame}
+
+%\begin{frame}{Global Control Flow}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\textwidth]{../latex/diagrams/global_control_flow_new.pdf}
+%    \caption{The Global Control Flow through the Subsystems (UML sequence diagram)}
+%\end{figure}
 %\end{frame}
-
-\subsection{Analysis}
-
-\begin{frame}{Use Cases}
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.9\textwidth]{diagrams/simple_use_case.pdf}
-    \caption[Main use cases (UML use case diagram)]
-    {Main use cases (UML use case diagram)}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Flow of Events}
-\begin{figure}
-    \centering
-    \includegraphics[height=0.8\textheight]{../latex/diagrams/flow_of_events.pdf}
-    \caption[Exemplary Flow of Events (UML sequence diagram)]
-    {Exemplary Flow of Events (UML sequence diagram)}
-\end{figure}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Action, Interaction and Event}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{diagrams/action_interaction_simple.pdf}
-    \caption{Relation between Interaction and Action (UML class diagram)}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[height=0.6\textheight]{diagrams/action_interaction_complex.pdf}
-    \caption{Different meta levels (UML class diagram)}
-\end{figure}
-\end{frame}
-
-%\begin{frame}{Flow of Events}
-%flow of events through the system
-%\end{frame}
-
-\begin{frame}{Problem Detection}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{../latex/diagrams/problem_detection_process.pdf}
-    \caption{The Process of Problem Detection (UML activity diagram)}
-\end{figure}
-\end{frame}
-
-\subsection{System Design}
-
-\begin{frame}[allowframebreaks]{Subsystem Decomposition}
-\begin{figure}
-    \centering
-    \includegraphics[width=1.05\textwidth]{diagrams/subsystem_decomposition_new.pdf}
-    \caption{Subsystem Decomposition Overview (UML package diagram)}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\textwidth]{diagrams/pedagent_concrete.pdf}
-    \caption{The ConcretePedAgent implements the Abstract Class PedAgent (UML class diagram)}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Global Control Flow}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{../latex/diagrams/global_control_flow_new.pdf}
-    \caption{The Global Control Flow through the Subsystems (UML sequence diagram)}
-\end{figure}
-\end{frame}
 
 \section{Outlook}
 
+\subsection{Conclusion}
+
+\begin{frame}
+\begin{center}
+\huge
+Thanks for the attention
+\end{center}
+\end{frame}
+
 \subsection{Future Work}
 
-\begin{frame}{Future Work}
-\pause
-\begin{itemize}
-\item Define a language to describe interactions and patterns
-\item Use AI / machine learning to learn interactions and patterns automatically
-\item Research how children learn and how they behave during the process (needs interdisciplinary effort with pedagogues and psychologists)
-\item Research and implement pedagogical agents
-\item Evaluate
-\end{itemize}
-\end{frame}
-
-\subsection{OLPC}
-
-\begin{frame}{One Laptop Per Child}
-\begin{itemize}
-\item Non-profit organization
-\item Kicked off at MIT Media Lab
-\item Mission: ``bring education to the poorest children of the world''
-\item Devices deployed until April 2009: 1.625 million
-\item Perfect platform for ILF: open source, specialized software for children, high impact 
-\end{itemize}
-%\vspace{5mm}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.4\textwidth]{images/OLPC_LOGO.png}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Contributors Program}
-\begin{itemize}
-\item Provide development devices (XO's) for contributors
-\item Improve software - hardware usage
-\item Inspire new projects
-\end{itemize}
-\pause
-\begin{itemize}
-\item Devices can be borrowed for a desired period of time
-\item OLPC and developers should keep in touch -- support by a mentor
-\item Publications, press reports, public relations, lending libraries
-\end{itemize}
-\pause
-\begin{center}
-{\color{blue} \footnotesize START A PROJECT THAT WILL CHANGE KIDS' LIVES WORLDWIDE!}
-\end{center}
-%\begin{block}{\tiny \centering START A PROJECT THAT WILL CHANGE KIDS' LIVES WORLDWIDE!}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.3\textwidth]{images/Contributetree1.jpg}
-\end{figure}
-%\end{block}
-\end{frame}
-
-\section{Demo}
-
-\subsection{Demo}
 \begin{frame}
+\begin{center}
 \huge
-enjoy the demo...
+Thanks for the attention
+\end{center}
 \end{frame}
 
 \subsection{Thanks}
@@ -348,86 +323,24 @@ Thanks for the attention
 
 \section{Bibliography}
 \begin{frame}[allowframebreaks]{Literature}
-\tiny{\bibliography{../latex/bibtex/bachelor_thesis,../latex/bibtex/bachelor_thesis_2}}
+\bibliographystyle{unsrt}
+\bibliography{../latex/bibtex/Master_Thesis,../latex/bibtex/manual}
 \end{frame}
 
-\section{Additional Material}
-\begin{frame}{Use Case Overview}
-\begin{figure}
-    \centering
-    \includegraphics[height=0.7\textheight]{../latex/diagrams/use_cases_overall.pdf}
-    \caption{Overall use case diagram (UML use case diagram)}
-\end{figure}
-\end{frame}
+%\section{Additional Material}
+%\begin{frame}{Use Case Overview}
+%\begin{figure}
+%    \centering
+%    \includegraphics[height=0.7\textheight]{../latex/diagrams/use_cases_overall.pdf}
+%    \caption{Overall use case diagram (UML use case diagram)}
+%\end{figure}
+%\end{frame}
 
-\begin{frame}[allowframebreaks]{Object Design}
-\begin{figure}
-    \centering
-    \includegraphics[height=0.5\textheight]{../latex/diagrams/InteractionPatterns.pdf}
-    \caption{Matching Interactions to InteractionPatterns (UML class diagram)}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[height=0.7\textheight]{../latex/diagrams/problemDetection.pdf}
-    \caption{Problem Detection with Strategy Pattern (UML class diagram)}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Taxonomy}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{../latex/diagrams/games_taxonomy.pdf}
-    \caption[Taxonomy of Games (UML class diagram)]
-    {Taxonomy of Games (UML class diagram)}
-    \label{taxonomy_games}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Example}
-\begin{block}{An example from a study in the US \cite{Bailey1982}:}
-Setup: 4063 males, randomly selected from the US population\\
-\vspace{5mm}
-\pause
-\begin{center}
-\begin{tabular}{ r | c | c }
-  Round & Probe size & Body dimension\\
-  \hline
-  0 & 4063 & initial probe \\
-  1 & 1055 & standing height \\
-  2 & 302 & chest circumference \\
-  ... & ... & ... \\
-  9 & 2 & arm length \\
- 10 & 0 & -- \\
-\end{tabular}
-\end{center}
-\end{block}
-\end{frame}
-
-\begin{frame}{Activity}
-\begin{figure}
-    \centering
-    \includegraphics[height=0.6\textheight]{diagrams/activity_motivation.pdf}
-    \caption{Different Activities in a Game (UML class diagram)}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Functional Requirements}
-\begin{itemize}
-\item Learner-Centric
-\item Individual Support
-\item Adaptive Learner Model
-\item Task Independent Problem Detection
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Non Functional Requirements}
-\begin{itemize}
-\item Usability
-\item Reliability
-\item Performance
-\item Supportability
-\end{itemize}
-\end{frame}
+%\begin{frame}[allowframebreaks]{Object Design}
+%\begin{figure}
+%    \centering
+%    \includegraphics[height=0.5\textheight]{../latex/diagrams/InteractionPatterns.pdf}
+%    \caption{Matching Interactions to InteractionPatterns (UML class diagram)}
+%\end{figure}
 
 \end{document}
