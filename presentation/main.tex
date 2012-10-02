@@ -86,14 +86,19 @@
 \textbf{Key problems:}
 \begin{itemize}
 \item Robotic applications are usually not interruptible
-\item The data handled in robotic systems comes from sensors instead of user-input
-\item Data is hard to understand in its raw form
-\item The robotics field is diverse and tools are often created for really specific use cases and cannot be easily re-used
+\item The amount of data a developer is confronted with is huge
+\item Numeric data is represented as text which makes it hard to understand
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Hypothesis}
-\begin{block}{}
+\begin{frame}{Project Idea}
+\begin{itemize}
+\item Create a tool to support debugging with visualization for simple data
+\item Take into account the robotics specific requirements
+\item Fill the gap of existing debugging tools
+\end{itemize}
+\pause
+\begin{block}{Hypothesis}
 A visualization tool for robotics that allows developers to choose the visualization they prefer can reduce the cognitive load during debugging and thus improve development speed.
 \end{block}
 \end{frame}
@@ -164,7 +169,7 @@ A visualization tool for robotics that allows developers to choose the visualiza
 
 \begin{frame}{Problems of Existing Tools}
 \begin{itemize}
-\item High configuration overhead
+\item High configuration and learning overhead
 \item Visualization focuses on pre defined data
 \item Arbitrary data is usually rendered as text
 \item Lack of transparency
@@ -210,8 +215,9 @@ A visualization tool for robotics that allows developers to choose the visualiza
 %\subsection{ROS Basics}
 \begin{frame}{ROS Basics}
 \begin{itemize}
+\item ROS is not a real time operating system
 \item Modules are called nodes
-\item Communication infrastructure based on publish/subscribe and services
+\item Communication infrastructure based on publish/subscribe (async) and services (sync)
 \end{itemize}
 \end{frame}
 
@@ -233,8 +239,18 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \end{frame}
 
 \subsection{Existing ROS Tools}
-\begin{frame}{Existing ROS Tools}
 
+%\subsection{Logging in ROS}
+\begin{frame}{Logging in ROS}
+\begin{itemize}
+\item C++ and Python client libraries contain logging API
+\item Log messages are sent to console, log file and \emph{/rosout}
+\item Can be filtered by severity and text
+\item Log messages are text only with metadata (timestamp)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Existing ROS Tools}
 \begin{columns}
 \begin{column}{.4\textwidth}
 %first column
@@ -265,25 +281,25 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \end{columns}
 \end{frame}
 
-%\subsection{Logging in ROS}
-\begin{frame}{Logging in ROS}
-\begin{itemize}
-\item C++ and Python client libraries contain logging API
-\item Log messages are sent to console, log file and \emph{/rosout}
-\item Can be filtered by severity and text
-\item Log messages are text only with metadata (timestamp)
-\end{itemize}
-\end{frame}
-
 \section{ROSDashboard}
 %%%%%%%%%%%%%%%% ROSDashboard section %%%%%%%%%%%%%%%%%%%
 \subsection{Goals}
 
 \begin{frame}{ROSDashboard}
+\begin{columns}
+\begin{column}{.4\textwidth}
 \begin{figure}[t]
     \centering
-    \includegraphics[height=.7\textheight]{images/rosdashboard_screenshot.png}
+    \includegraphics[width=\textwidth]{images/initial_gui_mockup.jpg}
 \end{figure}
+\end{column}
+\begin{column}{.4\textwidth}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.6\textwidth]{images/initial_widget_mockup.jpg}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}{Goals}
@@ -312,9 +328,16 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \begin{frame}{System Design}
 \begin{itemize}
 \item Make use of ROS topics for transparent access to data
-\item Flexible and configurable user interface dashboard
-\item Wrap visualizations in widgets
-\item Framework that allows easy integration of a plugin system
+	\begin{itemize}
+	\item Use existing communication
+	\item Provide simple API to publish debugging specific data
+	\end{itemize}
+\item Flexible and configurable user interface
+	\begin{itemize}
+	\item Wrap visualizations in widgets
+	\item Widgets can be placed freely on a dashboard
+	\end{itemize}
+\item Object model that allows easy integration of a plugin system
 \end{itemize}
 \end{frame}
 
@@ -331,6 +354,13 @@ A visualization tool for robotics that allows developers to choose the visualiza
     \centering
     \includegraphics[width=0.7\textwidth]{diagrams/class_overview}
     \caption[Core object model overview]{Core object model overview}
+\end{figure}
+\end{frame}
+
+\begin{frame}{User Interface}
+\begin{figure}[t]
+    \centering
+    \includegraphics[height=.7\textheight]{images/rosdashboard_screenshot.png}
 \end{figure}
 \end{frame}
 
