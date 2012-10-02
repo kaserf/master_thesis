@@ -102,9 +102,9 @@ A visualization tool for robotics that allows developers to choose the visualiza
 
 \begin{frame}{Related Tools}
 \begin{itemize}
-\item Realtime Debugging
+\item Realtime Debugging \cite{Gumbley2009}
 \item National Instruments LabVIEW
-\item Augmented Reality (AR) Debugging
+\item Augmented Reality (AR) Debugging \cite{Collett2010}
 \end{itemize}
 \end{frame}
 
@@ -145,12 +145,21 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \end{figure}
 \end{frame}
 
-\begin{frame}{AR Dev}
+\begin{frame}{AR Dev Framework}
 \begin{itemize}
-\item Realtime Debugging \cite{Gumbley2009}
-\item National Instruments LabVIEW
-\item Augmented Reality (AR) Debugging \cite{Collett2010}
+\item Developed by Toby Collett at the robotics lab
+\item Augmented reality visualizations
+\item Helps to understand how the robot perceives the environment
+\item Relies on a (complicated) tracking setup
 \end{itemize}
+\end{frame}
+
+\begin{frame}{AR Dev Framework}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.6\textwidth]{images/ar_view.png}
+  \caption{Screenshot of augmented reality view. \cite{Collett2007}}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Problems of Existing Tools}
@@ -158,12 +167,22 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \item High configuration overhead
 \item Visualization focuses on pre defined data
 \item Arbitrary data is usually rendered as text
+\item Lack of transparency
 \end{itemize}
 \end{frame}
 
 \section{ROS (Robot Operating System)}
 
 \subsection{Overview}
+
+\begin{frame}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.4\textwidth]{images/ros_logo.png}
+  %\caption{Screenshot of augmented reality view. \cite{Collett2007}}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Overview}
 
 \begin{columns}
@@ -173,7 +192,7 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \item Developed first at Stanford, now at Willow Garage
 \item Modular robotic middleware
 \item Active open source community
-\item Many ready to use solutions for common problems in robotics (SLAM, transformations, grasping, ...)
+\item Many ready to use solutions for common problems in robotics (SLAM, joint transformations, grasping, ...)
 \end{itemize}
 \end{column}%
 \hfill%
@@ -192,36 +211,56 @@ A visualization tool for robotics that allows developers to choose the visualiza
 \begin{frame}{ROS Basics}
 \begin{itemize}
 \item Modules are called nodes
-\item Communication infrastructure based on publish/subscribe
+\item Communication infrastructure based on publish/subscribe and services
 \end{itemize}
-\pause
-\begin{block}{Publish/Subscribe:}
-explain pubsub
-\end{block}
+\end{frame}
+
+\begin{frame}{Publish Subscribe Mechanism}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{diagrams/ros_pubsub}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Publish Subscribe Summary}
+\begin{itemize}
+\item Popular message passing method for push messages
+\item Flexible regarding the network topology: routing happens during runtime
+\item Decouples sender from receiver (loose coupling)
+\item Does not guarantee delivery
+\item Is used in ROS to communicate between nodes
+\end{itemize}
 \end{frame}
 
 \subsection{Existing ROS Tools}
 \begin{frame}{Existing ROS Tools}
 
 \begin{columns}
-\begin{column}{.3\textwidth}
+\begin{column}{.4\textwidth}
 %first column
-RViz
-\end{column}%
-\hfill%
-\begin{column}{.3\textwidth}
-%second column
-rxconsole
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/pr2.png}
-    \caption[The PR2 robot]{The PR2 robot}
+    \includegraphics[width=.9\textwidth]{images/RVizRobotModel.png}
+    \caption{RViz}
 \end{figure}
 \end{column}%
 \hfill%
-\begin{column}{.3\textwidth}
+\begin{column}{.4\textwidth}
+%second column
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.9\textwidth]{images/rxconsole.png}
+    \caption{rxconsole}
+\end{figure}
+\end{column}%
+\hfill%
+\begin{column}{.4\textwidth}
 %third column
-rxbag
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.85\textwidth]{images/rxbag_screenshot.png}
+    \caption{rxbag}
+\end{figure}
 \end{column}
 \end{columns}
 \end{frame}
@@ -240,12 +279,20 @@ rxbag
 %%%%%%%%%%%%%%%% ROSDashboard section %%%%%%%%%%%%%%%%%%%
 \subsection{Goals}
 
+\begin{frame}{ROSDashboard}
+\begin{figure}[t]
+    \centering
+    \includegraphics[height=.7\textheight]{images/rosdashboard_screenshot.png}
+\end{figure}
+\end{frame}
+
 \begin{frame}{Goals}
 \begin{itemize}
 \item Create a easy to use debugging tool
 \item Visualize simple and abstract data
 \item Allow developers to choose the visualization they prefer
 \item Extendible through plugins
+\item Data collection inspired by logging statements
 \item Create a tool to evaluate hypothesis
 \end{itemize}
 \end{frame}
@@ -253,8 +300,8 @@ rxbag
 \subsection{Requirements}
 \begin{frame}{Requirements}
 \begin{itemize}
-\item Distributed live debugging
-\item Transparent connection to data collection
+\item Distributed \& live debugging
+\item Transparently connect visualization to data
 \item Adaptability to different preferences and use cases
 \item Low configuration overhead to keep developer on task
 \end{itemize}
@@ -265,10 +312,18 @@ rxbag
 \begin{frame}{System Design}
 \begin{itemize}
 \item Make use of ROS topics for transparent access to data
-\item Flexible and configurable user interface
-\item Visualizations wrapped in widgets
+\item Flexible and configurable user interface dashboard
+\item Wrap visualizations in widgets
 \item Framework that allows easy integration of a plugin system
 \end{itemize}
+\end{frame}
+
+\begin{frame}{System Design}
+\begin{figure}[t]
+    \centering
+    \includegraphics[height=.7\textheight]{diagrams/simple_architecture_overview}
+		\caption{Simple architecture overview}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Object Design}
@@ -279,32 +334,29 @@ rxbag
 \end{figure}
 \end{frame}
 
-%\begin{frame}{Global Control Flow}
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=\textwidth]{../latex/diagrams/global_control_flow_new.pdf}
-%    \caption{The Global Control Flow through the Subsystems (UML sequence diagram)}
-%\end{figure}
-%\end{frame}
-
 \section{Outlook}
 
 \subsection{Conclusion}
 
-\begin{frame}
-\begin{center}
-\huge
-Thanks for the attention
-\end{center}
+\begin{frame}{Conclusion}
+\begin{itemize}
+\item A flexible visual debugging system was designed
+\item ROSDashboard has been implemented as a prototype of such a system
+\item Minimal invasive data collection
+\item It shows the potential of a flexible visualization tool for arbitrary data
+\end{itemize}
 \end{frame}
 
 \subsection{Future Work}
 
-\begin{frame}
-\begin{center}
-\huge
-Thanks for the attention
-\end{center}
+\begin{frame}{Future Work}
+\begin{itemize}
+\item User interface improvements
+\item Plugin framework
+\item Parse existing string log messages with regular expressions
+\item Publish debugging messages only if the ROS node was initialized as debugging node
+\item Evaluate in real life project
+\end{itemize}
 \end{frame}
 
 \subsection{Thanks}
@@ -312,8 +364,28 @@ Thanks for the attention
 \begin{frame}
 \begin{center}
 \huge
-Thanks for the attention
+Thanks for everyone's help and support. It was a great time.
 \end{center}
+\end{frame}
+
+\begin{frame}{Incentive:}
+\begin{columns}
+\begin{column}{.5\textwidth}
+Munich
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.9\textwidth]{images/munich.jpg}
+\end{figure}
+\end{column}
+\begin{column}{.5\textwidth}
+South Tyrol\\
+\tiny{(German speaking part of Italy ;) )}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.9\textwidth]{images/drei_zinnen.jpg}
+\end{figure}
+\end{column}
+\end{columns}
 \end{frame}
 
 \appendix
