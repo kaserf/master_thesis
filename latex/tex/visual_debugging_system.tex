@@ -3,9 +3,11 @@
 
 Debugging in robotics has unique requirements which are often not met by traditional debugging systems. The special requirements lead to a number of different tools to support debugging in robotics. The previous chapter summarized some of those tools and issues of existing solutions were identified: a) The tools either focus on visualization of pre-defined spatial data or render data as text messages. b) The graphical interfaces are rather static and difficult to adapt to different usage scenarios.
 
-This chapter introduces a new system for debugging in robotics, tailored to tackle the challanges developers face when debugging robotic systems. The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two will state the goals of the work, which leads to specific requirements for this system. The system design section presents the design for a flexible visual debugging system.
+This chapter introduces a new system for debugging in robotics, tailored to tackle the challanges developers face when debugging robotic systems. The system tries to combine the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the high amount of data collected during debugging of robotic systems.
 
-[----> where should I introduce the word dashboard and widget? goals? user interface?]
+The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two presents the goals of the work, which leads to specific requirements for this system in section three. The system design section presents the design for a flexible visual debugging system.
+
+\q{where should I introduce the word dashboard and widget? goals? user interface? ---> user interface}
 
 %Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
@@ -15,9 +17,9 @@ This chapter introduces a new system for debugging in robotics, tailored to tack
 
 %%%% HYPOTHESIS %%%%
 \section{Hypothesis}
-A possible reason why many developers still use print or logging statments to debug their programs is because these methods can be immideately used when required. Developers don't need to undergo a lenghty setup and configuration process before they can start debugging and they don't need to gain extensive knowledge about the methodology and tools either. The overhead to set up and configure a debugging system should be reduced to make the system easy to use without extensive knowledge about the debugging methodology and tool.
+A possible reason why many developers still use print or logging statements to debug their programs is because these methods can be immediately used when required. Developers don't need to undergo a lengthy setup and configuration process before they can start debugging and they don't need to gain extensive knowledge about the methodology and tools either. The overhead to set up and configure a debugging system should be reduced to make the system easy to use without extensive knowledge about the debugging methodology and tool.
 
-The main issue with print or logging statements is the text-only representation of data. The system proposed in this chapter aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages. The cognitive effort required during debugging can be further reduced by a flexible system which can be adapted to different preferences of different developers. Every developer can choose a visualization that fits their mental model of the debugged data best.
+The main issue with print or logging statements is the text-only representation of data. The system proposed in this chapter aims to support the developer during debugging by visualizing data in a graphic way and thus eliminate the cognitive effort needed to parse and interpret text based logging messages. The cognitive effort required during debugging can be further reduced by a flexible system which can be adapted to different preferences of different developers. Every developer can choose a visualization that fits their mental model of the debugged data best.
 
 
 %%%% GOALS %%%%
@@ -29,6 +31,7 @@ The system provides a graphical user interface which can be used by developers t
 
 %%%% REQUIREMENTS %%%%
 \section{Requirements}
+\label{requirements}
 The requirements of the flexible visual debugging system are mostly dominated by the special requirements of robotics. Some requirements are derived from the hypothesis and focus more on development performance and speed. This section presents the elicited requirements for a flexible visual debugging system.
 
 \subsection{Distributed Live Debugging}
@@ -39,30 +42,19 @@ Due to many different application scenarios in robotics and the diverse environm
 In order to allow the use of the proposed debugging system in many different scenarios and use cases, flexibility has a high priority. Flexibility not only means the system can be adapted easily to fit different problems, it also means the system can be adapted to suit different developer's preferences. Each developer might prefer a different kind of visualization of the collected data, thus loose coupling of the collected data and the visualization widgets is necessary.
 
 \subsection{Low Configuration Overhead}
-Iterative development, small changes are deployed during development, setting up must be fast and easy and should not distract from the problem analysis task.
-
-Debugging robotic applications is a highly iterative process, where small changes are made and immediately deployed to the robot. The debugging system should keep the configuration overhead as minimal as possible so that the developer is not distracted from the problem analysis task. Adding and removing new visualizations should not require many steps, otherwise the developer will be distracted by the configuration task.
-
-[I'm talking about adding and removing visualizations but I haven't talked about the whole dashboard principle yet. Maybe I should add that to the goals?]
+Debugging robotic applications is a highly iterative process, where small changes are made and immediately deployed to the robot. When the new visualizations are needed or old visualizations need to be updated, the configuration overhead should be as minimal as possible so that the developer is not distracted from the problem analysis task. The configuration task should not distract the developer from the problem analysis task.
 
 %%%% SYSTEM DESIGN %%%%
 \section{System Design}
-Discuss architecture and how it interacts with an eventual robot framework. All of them probably have some sort of inter process communication or a communication middleware in general, which can be accessed by the visualization tool.
+\todo{Discuss architecture and how it interacts with an eventual robot framework. All of them probably have some sort of inter process communication or a communication middleware in general, which can be accessed by the visualization tool.}
 
-\subsection{Computation Model / Architecture}
-How ROS was used to achieve decoupled monitoring of data (topics)?
+The design of the developed system reflects the requirements identified in section \ref{requirements}. The system is designed to run in a distributed environment and visualize data as it is collected. The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process. The system design is not specifically tailored to a robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
+Although the design is robot framework unspecific, it was influenced by the ROS architecture since the documentation of ROS is good and the community was helpful when questions arose. \q
 
---> this would need to be separated from ros, but probably a general strategy for decoupling the collection and visualization of data can be found (worst case: listener thread?)
-
-\subsection{Object Model}
-As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspecific (like Subscription).
-
-\subsection{API}
-ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
-
---> too implementation specific, this is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.
+This section shows how the system is designed according to the requirements: The user interface design, the system architecture and the object design are presented. The user interface is presented first, because the concept of a developer dashboard influenced both the architecture and the object design.
 
 \subsection{Graphical User Interface}
+\label{graphical_user_interface}
 The user interface for the debugging tool should allow to add and remove visualizations easily and arrange them however the developer wants. Thus a central dashboard approach was chosen, where visualizations can be positioned freely in form of widgets. Adding new visualizations to the dashboard can be done through a "Drag \& Drop" mechanism, once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in figure~\ref{gui_mockup}.
 
 \begin{figure}[htbp]
@@ -72,7 +64,7 @@ The user interface for the debugging tool should allow to add and remove visuali
   \label{gui_mockup}
 \end{figure}
 
-Each widget represents one type of visiualization, this can be as simple as a dial for numberic values or more complex visualizations for more concrete data like a map visualization. Although the design of the user interface does not restrict the types of visualizations, it is intended for simple data, since other tools like RViz (see~\ref{rviz}) are more specialized for those use cases.
+Each widget represents one type of visualization, this can be as simple as a dial for numeric values or more complex visualizations for more concrete data like a map visualization. Although the design of the user interface does not restrict the types of visualizations, it is intended for simple data, since other tools like RViz (see~\ref{rviz}) are more specialized for those use cases.
 
 \begin{figure}[htbp]
   \centering
@@ -81,6 +73,41 @@ Each widget represents one type of visiualization, this can be as simple as a di
   \label{widget_mockup}
 \end{figure}
 
-Figure~\ref{widget_mockup} shows an early mockup of a widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. The widgets can be hooked up to data providers and will be updated once a new value is available. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets.
+Figure~\ref{widget_mockup} shows an early mockup of a widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. The widgets can be hooked up to data providers and will be updated once a new value is available. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget could be the laser scan visualization as shown in Figure~7 in \cite{Gumbley2009}.
+\q{Should I copy the screenshot from \cite{Gumbley2009} or only cite it?}
 
-[Introduce data providers in the architecture. In ROS: subscriptions]
+\todo{Write about the communication setup here, since it is referenced in the architecture.}
+
+\subsection{Architecture}
+The currently available robotic frameworks all rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed system to transmit and access data without the need to develop a communication middleware itself.
+
+Since the proposed system should be easy to extend with more visualizations in the future and the choice how data is visualized lies with the developer using the system, a modular approach for visualizations has been developed. Each form of visualization is encapsulated in a visualization widget. The visualization widget handles the graphical part of the visualization and stores information about the data connection and the visualization preferences.
+
+The user interface mockup shown in \q Fig.~\ref{gui_mockup} already indicates the modular design of visualizations that can be added to the dashboard canvas. Although the dashboard needs to know which widgets are currently on the dashboard, the appearance and configuration of the widgets is handled inside the widget. The decentralized approach allows easier integration of a plugin infrastructure since the dashboard itself does not need to be modified to show additional visualization widgets.
+
+The modular visualization widgets encapsulate the connection to an adapter that keeps a connection to the communication middleware and notifies the widget if the data they subscribed to has changed. This makes it easy to exchange the communication adapter if the communication protocol changes or the implementation targets a different robotic framework which has a different communication structure. This reduces the coupling between the visualizations and the data collection.
+
+Figure~\ref{communication_diagram} shows how the modular visualization widgets connect to the communication middleware through the adapter. The robot modules at the bottom of the diagram publish data of some kind: either data which is needed to communicate with other modules or data specifically emitted for debugging. The visualizations can connect to both kinds of data through the middleware.
+In order to tell the visualizations what data they should visualize, a graphical interface for setting up the communication details has been presented in \ref{graphical_user_interface}. \q
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=.7\textwidth]{diagrams/communication_diagram}
+  \caption{Communication diagram}
+  \label{communication_diagram}
+\end{figure}
+
+\todo{write about modular visualizations, wrapped in widgets; the central dashboard component knows about the widgets but all the preferences and subscription details are stored in the widget to reduce the coupling and make the widgets independent; how data is accessed (maybe abstract from pub sub and show a component diagram of the dashboard system with the robot framework, connected on a middleware}
+
+\q
+ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally diffferent in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
+
+\subsection{Object Model}
+As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspecific (like Subscription).
+
+\todo{keep the object model unspecific of visualizations. concreteWidget1, 2, etc subclass dashboardWidget. --> focus on the concept and data acquisition methods}
+
+\subsection{API}
+ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
+
+\todo{too implementation specific, this is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.}

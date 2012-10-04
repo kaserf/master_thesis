@@ -28,7 +28,7 @@ ROS was built to abstract from the hardware of the robot and create modular robo
 
 The communication between ROS nodes can be done asynchronously through a publish/subscribe mechanism and synchronously through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is really flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The core of ROS was kept really slim and only contains the most essential parts of the framework (such as the inter node communication). ROS can run on several machines distributed in a network, the only restriction is that every node needs to know the address of the core (master node) in order to communicate with other nodes.
 
-[\textbf{review this paragraph}]
+\review
 
 A variety of tools have been built around the ROS core to facilitate the development of ROS nodes and robotic software in general. They help you to create packages, nodes and stacks and execute and debug them. The philosophy for those tools is to be small and do one job only but do it good. This results in a really robust tools similar to the toolchain available on Linux. The downside is a big variety of tools in the ROS ecosystem, which can be confusing to new developers. See \ref{related_ros_tools} for a more detailed analysis of current ROS tools.
 
