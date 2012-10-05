@@ -9,15 +9,15 @@
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage{listings}
-\usepackage{soul}
-\usepackage{color}
 
 %create pdf hyperlinks with a color box (will not be printed)
 \usepackage{hyperref}
 \hypersetup{colorlinks=false}
 
 % todo and review commands
-%\newcommand{\hl}[1]{\fcolorbox{red}{white}{#1}}
+\usepackage{soul}
+\usepackage{color}
+%\newcommand{\hl}[1]{\fcolorbox{red}{white}{#1}} %fcolorbox does not break lines properly
 \newcommand{\todo}[1]{{\color{red}{\hl{TODO: #1...}}}}
 \newcommand{\review}[0]{\todo{REVIEW}}
 \newcommand{\comm}[1]{\textsuperscript{\bf \color{red}{\tiny [#1]}}}

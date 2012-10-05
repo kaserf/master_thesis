@@ -48,14 +48,15 @@ Debugging robotic applications is a highly iterative process, where small change
 \section{System Design}
 \todo{Discuss architecture and how it interacts with an eventual robot framework. All of them probably have some sort of inter process communication or a communication middleware in general, which can be accessed by the visualization tool.}
 
-The design of the developed system reflects the requirements identified in section \ref{requirements}. The system is designed to run in a distributed environment and visualize data as it is collected. The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process. The system design is not specifically tailored to a robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
+The design of the developed system reflects the requirements identified in Section~\ref{requirements}. The system is designed to run in a distributed environment and visualize data live, as it is collected and not post-mortem. The system design is not tailored to a specific robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
 Although the design is robot framework unspecific, it was influenced by the ROS architecture since the documentation of ROS is good and the community was helpful when questions arose. \q
+The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process.
 
 This section shows how the system is designed according to the requirements: The user interface design, the system architecture and the object design are presented. The user interface is presented first, because the concept of a developer dashboard influenced both the architecture and the object design.
 
 \subsection{Graphical User Interface}
 \label{graphical_user_interface}
-The user interface for the debugging tool should allow to add and remove visualizations easily and arrange them however the developer wants. Thus a central dashboard approach was chosen, where visualizations can be positioned freely in form of widgets. Adding new visualizations to the dashboard can be done through a "Drag \& Drop" mechanism, once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in figure~\ref{gui_mockup}.
+In order to be adaptable to many different use cases and visualization preferences of developers, a central dashboard approach was chosen for the user interface. The dashboard allows developers to add and remove visualizations easily and arrange them however they want. The visualizations are wrapped in widgets and can thus be positioned freely on the dashboard. Adding new visualizations to the dashboard can be done through a "Drag \& Drop" mechanism, once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in Figure~\ref{gui_mockup}.
 
 \begin{figure}[htbp]
   \centering
@@ -64,7 +65,7 @@ The user interface for the debugging tool should allow to add and remove visuali
   \label{gui_mockup}
 \end{figure}
 
-Each widget represents one type of visualization, this can be as simple as a dial for numeric values or more complex visualizations for more concrete data like a map visualization. Although the design of the user interface does not restrict the types of visualizations, it is intended for simple data, since other tools like RViz (see~\ref{rviz}) are more specialized for those use cases.
+Each item in the list on the left (Figure~\ref{gui_mockup}) represents one type of visualization, this can be as simple as a dial for numeric values or more complex visualizations for more concrete data like a map visualization. Although the design of the user interface does not restrict the types of visualizations, it is intended for simple and abstract data, since other tools like RViz (see Section~\ref{rviz}) are more specialized for complex and spatial data required in other use cases.
 
 \begin{figure}[htbp]
   \centering
@@ -73,22 +74,21 @@ Each widget represents one type of visualization, this can be as simple as a dia
   \label{widget_mockup}
 \end{figure}
 
-Figure~\ref{widget_mockup} shows an early mockup of a widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. The widgets can be hooked up to data providers and will be updated once a new value is available. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget could be the laser scan visualization as shown in Figure~7 in \cite{Gumbley2009}.
-\q{Should I copy the screenshot from \cite{Gumbley2009} or only cite it?}
+Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget is the laser scan visualization as shown in Figure~7 in Luke Gumbley's paper on realtime debugging \cite{Gumbley2009}.
+\comm{Should I copy the screenshot from \cite{Gumbley2009} or only cite it?}
+%The widgets can be hooked up to data providers and will be updated once a new value is available.
 
-\todo{Write about the communication setup here, since it is referenced in the architecture.}
+\todo{Write about the communication setup here, since it is referenced in the architecture. ---> imho this is too implementation specific and should be left out: rewrite the architecture part to be more general}
 
 \subsection{Architecture}
-The currently available robotic frameworks all rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed system to transmit and access data without the need to develop a communication middleware itself.
+The currently available robotic frameworks all rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed debugging system to access data without the need to develop a dedicated communication layer for debugging.
 
-Since the proposed system should be easy to extend with more visualizations in the future and the choice how data is visualized lies with the developer using the system, a modular approach for visualizations has been developed. Each form of visualization is encapsulated in a visualization widget. The visualization widget handles the graphical part of the visualization and stores information about the data connection and the visualization preferences.
-
-The user interface mockup shown in \q Fig.~\ref{gui_mockup} already indicates the modular design of visualizations that can be added to the dashboard canvas. Although the dashboard needs to know which widgets are currently on the dashboard, the appearance and configuration of the widgets is handled inside the widget. The decentralized approach allows easier integration of a plugin infrastructure since the dashboard itself does not need to be modified to show additional visualization widgets.
-
-The modular visualization widgets encapsulate the connection to an adapter that keeps a connection to the communication middleware and notifies the widget if the data they subscribed to has changed. This makes it easy to exchange the communication adapter if the communication protocol changes or the implementation targets a different robotic framework which has a different communication structure. This reduces the coupling between the visualizations and the data collection.
+The user interface mockup shown in Figure~\ref{gui_mockup} already indicates the modular design of visualizations that can be added to the dashboard canvas. The modular approach makes it easy to extend the system with more visualizations in the future and it gives developers the choice how data is visualized. Each visualization widget contains a different form of visualization. This visualization widget handles the graphical part of the visualization, stores information about the data connection and other settings and encapsulates the communication with the middleware. The connection with the communication middleware is established through an adapter which notifies the widget if the data has changed or new data is available. This makes it easy to exchange the communication adapter if the communication protocol changes or the implementation targets a different robotic framework which has a different communication structure. This reduces the coupling between the visualizations and the data collection. Although the dashboard needs to know which widgets are currently on the dashboard, the widgets itself are independent of the dashboard. The decentralized approach allows easier integration of a plugin infrastructure since the dashboard itself does not need to be modified to show additional visualization widgets.
 
 Figure~\ref{communication_diagram} shows how the modular visualization widgets connect to the communication middleware through the adapter. The robot modules at the bottom of the diagram publish data of some kind: either data which is needed to communicate with other modules or data specifically emitted for debugging. The visualizations can connect to both kinds of data through the middleware.
-In order to tell the visualizations what data they should visualize, a graphical interface for setting up the communication details has been presented in \ref{graphical_user_interface}. \q
+
+\q In order to tell the visualizations what data they should visualize, a graphical interface for setting up the communication details has been presented in \ref{graphical_user_interface}. \q
+\todo{make the above more general or drop completely}
 
 \begin{figure}[htbp]
   \centering
@@ -97,10 +97,10 @@ In order to tell the visualizations what data they should visualize, a graphical
   \label{communication_diagram}
 \end{figure}
 
-\todo{write about modular visualizations, wrapped in widgets; the central dashboard component knows about the widgets but all the preferences and subscription details are stored in the widget to reduce the coupling and make the widgets independent; how data is accessed (maybe abstract from pub sub and show a component diagram of the dashboard system with the robot framework, connected on a middleware}
-
 \q
 ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally diffferent in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
+
+\todo{Should I explain pubsub in detail? class diagram and sequence diagram for example}\q
 
 \subsection{Object Model}
 As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspecific (like Subscription).
