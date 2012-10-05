@@ -7,8 +7,6 @@ This chapter introduces a new system for debugging in robotics, tailored to tack
 
 The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two presents the goals of the work, which leads to specific requirements for this system in section three. The system design section presents the design for a flexible visual debugging system.
 
-\q{where should I introduce the word dashboard and widget? goals? user interface? ---> user interface}
-
 %Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
 %Point out that ROS was targeted early on and affected many decisions, but the requirements and the system design is applicable in general. [Andreas: not sure if this is the right place, might be better in the introduction, since it explains the dominance of ROS tools in related work / debugging in robotics]
@@ -46,8 +44,6 @@ Debugging robotic applications is a highly iterative process, where small change
 
 %%%% SYSTEM DESIGN %%%%
 \section{System Design}
-\todo{Discuss architecture and how it interacts with an eventual robot framework. All of them probably have some sort of inter process communication or a communication middleware in general, which can be accessed by the visualization tool.}
-
 The design of the developed system reflects the requirements identified in Section~\ref{requirements}. The system is designed to run in a distributed environment and visualize data live, as it is collected and not post-mortem. The system design is not tailored to a specific robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
 Although the design is robot framework unspecific, it was influenced by the ROS architecture since the documentation of ROS is good and the community was helpful when questions arose. \q
 The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process.
@@ -100,14 +96,23 @@ Figure~\ref{communication_diagram} shows how the modular visualization widgets c
 \q
 ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally diffferent in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
 
-\todo{Should I explain pubsub in detail? class diagram and sequence diagram for example}\q
+\todo{Should I explain pubsub in detail? class diagram and sequence diagram for example... maybe put that into ros debugging}\q
 
 \subsection{Object Model}
-As in the ICRA paper. Maybe some classes should be renamed to be more ROS unspecific (like Subscription).
+\todo{review and generalize, this is straight from the icra paper}
 
 \todo{keep the object model unspecific of visualizations. concreteWidget1, 2, etc subclass dashboardWidget. --> focus on the concept and data acquisition methods}
 
-\subsection{API}
-ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
+\begin{figure}[thpb]
+  \centering
+  \framebox{
+    \includegraphics[width=0.7\textwidth]{diagrams/class_overview.pdf}
+  }  
+  \caption{Overview of the core object model structure.}
+  \label{class overview}
+\end{figure}
 
-\todo{too implementation specific, this is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.}
+The object model (see Fig.~\ref{class overview}) was designed to make it easy to extend ROSDashboard with more widgets. The abstract \texttt{DashboardWidget} class covers the general tasks that are the same for every widget. Its internal method structure allows subclasses to overwrite only some parts of functionality, without the need to rewrite most of the other methods. This should allow easy integration of a plugin framework at a later stage, where third party widget developers only need to implement the specific parts of the new widget they want to provide and the common tasks are still handled by the default implementation in \texttt{DashboardWidget}.
+
+The subscription setup and the properties management are implemented in the \texttt{DashboardWidget} class, because they will be the the same for most widgets. The main reason is to hide the technical details from a third party plugin developer to make his life easier. The plugin developer only needs to specify which properties his widget has and must implement the callback that gets called when the properties have been changed. The \texttt{DashboardWidget} supports numeric, text and float properties. If more specific properties are needed the plugin can overwrite the properties-specific methods to provide an implementation tailored to this specific widget.
+

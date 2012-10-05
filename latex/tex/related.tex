@@ -1,14 +1,10 @@
 \chapter{Debugging in Robotics}
-
-%[Write about the difficulties in robot debugging in general as a short introduction]
-
-% excerpt from icra paper
+\label{debugging_in_robotics}
 Traditional debugging tools mostly rely on breakpoints, a mechanism to interrupt the execution of a program at a specific place in the program code. This can be a problem for robotic applications since they usually can not be interrupted in their execution, because the robots generally don't run in a deterministic and suspendable environment \cite{Gumbley2009}. Interrupting a robotic application would destroy the continuity in which the sensors collect data, the environment of the robot would change substantially and thus the robot's behaviour would change, which is an example of the ``probe effect'' and makes it hard to reproduce a fault unless it has a single cause \cite{Gumbley2009}. This makes it necessary to collect data during debugging without interrupting the execution of the program.
 
-%[write about text only problem here]
 Another problem with traditional debugging tools is that they usually render data collected during debugging as text and it's the developer's task to interpret the data. In a suspendable environment the developer has as much time as they need to interpret and analyse the data. When debugging robotic applications the developer usually has a lot less time, because of the uninterruptible nature of the application. The data in robotic applications is usually too complex to understand in its raw representation, for example quaternions to specify 3D positions. In order to help the developer understand the data faster, graphical tools have been developed to support the developer. Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. This has lead to a high amount of different debugging tools for different purposes.
 
-[review and update]
+\todo{review and update}
 This chapter gives an overview of tools and practices currently in use to debug robotic applications. The first section covers some instrumented tools which do not require source code modifications, instead they rely on more technical solutions. The second section summarizes logging mechanisms which are also often used for debugging. Although not all of the logging mechanisms presented in section two are related to robotic systems they represent a class of debugging tools which are often used in robotics. The tools presented in the first two sections mainly focus on debugging without interrupting the execution of a robotic application. Section three introduces graphical systems that aim to support the developer during the debugging task. The last section focuses on tools for the development with ROS. Section three and four both present tools which have been developed to bridge the gap between the robots' perception of the world and the developer's understanding of the collected data.
 
 %Imagine a robot is developed which is supposed to follow people through the house.  It is impossible to interrupt the execution of the robot to debug a specific problem, because the environment in which the robot is tested will change while the robot is interrupted and thus not sensing anything. The situation in which the robot should be debugged changes 
@@ -49,59 +45,20 @@ A plugin for the NetBeans IDE\footnote{http://netbeans.org/} integrated the nove
 %[modules need to be compiled with debugging symbols]
 
 
-%%%% DEBUGGING IN ROS %%%%
-\section{Debugging in ROS}
-\label{debugging_ros}
-
-%[summarize what ros is]
-ROS (Robot Operating System) \cite{Quigley2009} is an Open Source framework for complex robotic systems which has grown significantly in the last years, has an active community backing the project and supports many of the currently available robots \cite{Foote2012}. It was developed to abstract from the hardware of the robot and make it easier to create modular robot software, which can run on different robots and on different machines. The modular approach makes development easier, because the work can be divided amongst different developers or development teams. This also allows the developer to change only small parts of a complex system, without the need to build and re-deploy the whole system.
-The modules in ROS are called \emph{nodes} and several nodes executed together are called a \emph{stack}. ROS \emph{packages} bundle nodes and stacks and are used to make software modules available to other developers. Everyone can create their own package which can be indexed by ROS so that their software modules can be found, downloaded and used by other developers. There exist many packages, nodes and stacks with implementations of algorithms for some of the most common problems in robotics (e.g. navigation, localization, joint movement, etc.) and they can easily be (re-)used.
-
-The communication between ROS nodes is either asynchronous through a publish/subscribe mechanism or synchronous through services. Nodes can send messages by publishing a message on a topic and receive messages by subscribing to that topic. This mechanism is flexible and decouples the sender from the receiver. A publisher node does not need to know if there are other nodes listening and vice versa. For synchronous communication and guaranteed delivery of messages, services can be invoked. The routing is established during runtime through the ROS core. The communication between nodes is one of the main sources for debugging data when debugging a ROS application. The same communication framework is also used for the logging mechanism in ROS, which publishes messages to the special purpose topic \emph{/rosout}.
-
-[update and list some tools that are mentioned later?]
-This section gives an overview of the ROS tools that can be used to monitor the ROS communication channels and thus debug ROS applications. ROS has both command line tools and tools with a graphical interface. Often there is a graphical interface based on the command line tool, in which case this section will focus on the graphical part, since it basically has the same functionality as the command line interface.
-
-[this needs to come before RVIZ. Maybe introduction, maybe put the whole debugging in ros before the graphical tools. explain the computation model because it is important for the tools: pub/sub]
-
-%[skip next paragraph]
-%ROS comes with several tools to assist the developers during the development and debugging of a robot. The tools most relevant to this work are:
-%\begin{description}[\setlabelwidth{rxconsole}]
-%\item[rostopic] a command line tool to monitor topics and publish messages on topics.
-%\item[rxplot] a graphical tool which plots data from one or more topic fields on a cartesian coordinate system.
-%\item[rxconsole] displays logging messages that have been published on the special purpose topic \emph{/rosout}.
-%\item[rviz] renders models of the robot in 3D and visualizes spatial data like point clouds, robot poses, trajectories, etc. \cite{Quigley2009}.
-%\end{description}
-
-\subsection{rxconsole}
-[drop this. rxconsole is mentioned in roslogging and this section has no additional information]
-
-rxconsole is a graphical user interface to display messages that have been published on the special purpose topic \emph{/rosout}. The special purpose topic \emph{/rosout} is used by the ROS logging framework (see Section~\ref{ros_logging}). rxconsole keeps a list of messages with additional information like the severity of the message, the node which published the message and the timestamp when the message was published. The tool also allows filtering by severity and text.
-
-[screenshot?]
-
-rxconsole is designed to only display text messages since the logging framework converts everything to a text message before publishing. Important information about the type of data is not preserved. rxconsole is thus a very simple tool to monitor logging messages, it does not offer any special visualization for data, which would be hard since the messages are text based and don't contain type information.
-
-
-
-\subsection{rxplot}
-rxplot is a graphical tool which can plot values from topics on a Cartesian coordinate system. The tool takes data from a published ROS topic and prints it on a time graph. The tool can be configured to visualize several graphs in one go, which makes it easy to compare values and data streams.
-
-[rxplot screenshot, there is not much more to say]
-
-
 %%%% LOGGING %%%%
 \section{Logging}
-
+\review
 The previous section presented tools to collect data without the need to modify the source code. This section presents tools and methods from the other end of the spectrum: Using logging and print statements is a popular method to collect data during debugging. Although logging frameworks originally were developed for long term collection of data, they can also be used excessively during the development of a particular feature or module. Logging statements help developers to understand the flow of execution in a program and can be used flexibly to output data values during the execution of the program.
 
-This section presents the logging facilities in ROS, which is similar to many other logging frameworks not only in robotics. Other popular logging frameworks are Apache's Log4j\footnote{\url{http://logging.apache.org/log4j}} for Java and log4cxx\footnote{\url{http://logging.apache.org/log4cxx/}} for C++. This last part of this section presents the most basic form of logging: print statements.
+This section presents the logging facilities in ROS, which is similar to many other logging frameworks not only in robotics. Other popular logging frameworks are Apache's Log4j\footnote{\url{http://logging.apache.org/log4j}} for Java and log4cxx\footnote{\url{http://logging.apache.org/log4cxx/}} for C++. The last part of this section presents the most basic form of logging: print statements.
 
-[Should I go into more detail with log4j and log4cxx?]
-
+\todo{Should I go into more detail with log4j and log4cxx?}
 
 \subsection{Logging in ROS}
 \label{ros_logging}
+
+%The Robot Operating System (ROS) is a framework to develop robotic applications. It offers a communication middleware which can be used to communicate between the various modules of a robot.
+\todo{ROS has not been introduced here yet, the first appearance of ROS is in the rosdashboard chapter. Maybe introduce it at the very beginning of this chapter?}
 
 ROS has a dedicated API for logging purposes, which facilitates the emission of log messages with different severity levels. The severity of a log message defines where the message is displayed: Debug and Info messages usually appear on the console where a node is running (stdout), in the node's log file and on the special purpose topic \emph{/rosout}. Warn, Error and Fatal messages are displayed on stderr, stored in the log file and published to \emph{/rosout}. The log messages are human readable strings intended to to tell the developer about the status of the node. Listing~\ref{python_logging} shows an example how to log a message using Python.
 
@@ -113,13 +70,6 @@ rospy.logerr("The topic %s has no field with the name %s",
 The implementation of the logging mechanism is slightly different in the two target languages C++ and Python. When logging is disabled, the emission of logging messages can be compiled out in C++ to improve the performance. Since Python is a scripted language, this is not possible and a different solution has been chosen: Debug messages in Python are only published on \emph{/rosout} if the node is specifically initialized with the log level set to debug.
 
 Since all log messages are published on the \emph{/rosout} topic if the log level is set to debugging, it is easy to access them even if a node is running on a different machine. The graphical user interface rxconsole can be used to display and filter log messages by severity and full-text search.
-
-\subsection{Logging in Player/Stage}
-[should I really write about player/stage and orca? I don't know much about their logging facilities but it looks more like a "log communication to file" thing...]
-
-\subsection{Logging in Orca}
-[drop?]
-
 
 \subsection{Print Statements}
 Although print statements are not part of a "logging framework", they are often used in the same way as other logging statements. Print statements are quite popular amongst developers because no additional knowledge is required to use them and they are a core part of every major programming language and thus don't require to link external libraries. Print messages are simpler then logging statements, they print a String message to a console and have no feature to filter or visualize the printed data.
@@ -159,8 +109,6 @@ As with most AR systems the set up of ARDev is quite complicated. A sophisticate
 
 \subsection{RViz}
 \label{rviz}
-[maybe I should move RViz to graphical debugging tools and rename this section to "other debugging tools in ROS" or drop? rxbag can be moved to the graphical section as well and the rest is pretty basic (not sure what to do with rxplot, but rxconsole can be merged with ROS logging)]
-
 Most of the currently available robot frameworks have their own tools for data visualization, this section presents RViz as representative for the class of visualization tools in robotics. RViz is a 3D visualization tool for ROS. Other visualization tools with similar features are playerv from the Player/stage framework \cite{Gerkey2003}, OrcaView2d and OrcaView3d from ORCA \cite{Makarenko2006} and robotgui from CARMEN \cite{Montemerlo2003} which is a more general user interface.
 
 RViz\footnote{http://www.ros.org/wiki/rviz} is a highly sophisticated graphical interface to render 3-dimensional data. The tool visualizes a 3D model of the robot (Figure~\ref{rviz_model}) and can visualize additional data like point clouds (Figure~\ref{rviz_pcl}), maps, robot poses, trajectories, etc. \cite{Quigley2009}. During the development of robot applications, it is hard to understand how the robot perceives his surroundings, because the robot is bound by sensor data which might not always collect information accurately enough. This leads to problems during the execution which are hard to identify, reproduce and investigate due to the indeterministic nature of robotic applications. RViz helps developers to understand how the robot sees the world and makes it easier to understand what caused a problem.
@@ -237,5 +185,6 @@ The visualization tools available for robotics usually visualize pre-defined spa
 
 3D visualizations such as rviz and ARDev are used during debugging to understand the robot's view of the world. Both of them require a substantial amount of set up work. For rviz a 3D model of the robot must be created, which has the exact proportions of the real robot. ARDev requires an even more complex setup for AR. During the development of the tool an intelligent debugging space (IDS) was permanently installed in a laboratory, where the robot under development can be constantly tracked with markers and cameras \cite{Collett2010}. This setup is often unavailable, especially in outdoor situations, and is also often not applicable for debugging tasks where only abstract data is available or required. A general problem with 3D visualization tools is that abstract data often does not fit into the 3-dimensional rendering and in the case of AR can hide important information of the real world \cite{Collett2010}.
 
+\review
 ROS has a number of different tools to collect and visualize data. They all use the publish/subscribe communication which is used throughout ROS. Although the ROS visualization tools specialize in pre-defined data, there are some smaller tools for general data visualizations available as well. The ROS communication infrastructure allows to connect visualization tools transparently to the running applications without them knowing about the visualizations.
 
