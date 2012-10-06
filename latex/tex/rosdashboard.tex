@@ -97,6 +97,45 @@ ROS topics were originally not designed and developed as something the user or d
 Reference to the plugin framework section in Chapter~\ref{visual_debugging_system} and that such a system was not yet implemented in ROSDashboard [can I say: due to the time constraints of this work?], but the necessary measures have been taken to allow this in the future. Show some details about an example widget and what methods it overwrites.
 
 \subsection{API}
-ROSDashboard API, think about where to talk alternatives: extend ros logging framework, use tracepoints, etc.
+\begin{lstlisting}[float,frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python]
+# log arbitrary data,
+# try to find the data type with introspection
+api.log(tag, data)
 
-\todo{this is implementation specific, it is all ROS code. I don't know if this could be done in other frameworks as well (since I don't know them really), but in theory it should be possible to create a set of helper methods for every framework that uses the built in communication layer to have one-liner publish statements.}
+# log string message
+api.logstring(tag, msg)
+
+# log integer value
+api.logint(tag, value, msg_type=Int32)
+
+# log float value
+api.logfloat(tag, value, msg_type=Float32)
+
+# log complex data with datatype
+api.logdata(tag, data, msg_type)
+\end{lstlisting}
+
+The current ROS logging framework publishes the log messages on the special purpose topic \emph{/rosout}, but converts everything to a String before the transmission. Since those logging messages are text based, valuable information about the type of the data is lost. To use the data for visualization, the type information must be kept. Thus a set of convenience methods were exposed in the ROSDashboard API (Listing~\ref{api_calls}) to provide a simple interface to publish data for the visualization. The interface is similar to the logging API exposed in the ROS client libraries and basically wraps the ROS specific methods to publish data on a topic. Listing~\ref{api_implementation} shows the simple implementation of the \verb+logint+ API method.
+
+\begin{lstlisting}[float,frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python]
+def logint(tag, value, msg_type=std_msgs.msg.Int32):
+    """
+    publishes a integer value to the /rosdashboard/<tag> topic
+    Be careful to use only valid tags, ROS does not allow
+    dashes and dots in the topic name.
+    
+    The default integer message type is std_msg.msg.Int32
+    """
+    pub = rospy.Publisher('/rosdashboard/' + tag, msg_type)
+    pub.publish(msg_type(value))
+\end{lstlisting}
+
+The API methods shown in Listing~\ref{api_calls} can be used like logging statements to emit data for visualization. The \verb+TAG+ parameter is used to identify the data when the visualization widgets are set up. Internally the data is published as a message on a ROS topic. The topic name consist of the ROSDashboard specific prefix \emph{/rosdashboard/} and the tag given as parameter. Listing~\ref{exapmle_api_call} shows an example use of the API to publish a integer value with the tag "proximity". The value "7" will be published on the ROS topic \emph{/rosdashboard/proximity} and can be visualized with a widget in ROSDashboard that points to the respective topic name and accesses the "data" datafield of the message.
+
+\begin{lstlisting}[float,frame=single,caption={Example API usage.},label=example_api_call,language=Python]
+import rosdashboard
+
+rosdashboard.logint('proximity', 17)
+\end{lstlisting}
+
+Although this solution proved to be a useful way to expose data during debugging, it might not be feasible for a bigger project because it introduces a new dependency to ROSDashboard. Since the API is only a set of convenience methods that publish data on ROS topics, data can also be published using the same ROS methods the API uses directly in the target application. Other possible solutions will be discussed as future work in Chaper~\ref{future_work}.
