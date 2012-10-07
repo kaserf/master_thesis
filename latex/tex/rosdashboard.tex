@@ -155,7 +155,7 @@ Figure~\ref{all_widgets} shows a dashboard with every currently available widget
 \subsection{Data Format}
 To share the configuration of a dashboard a save and restore mechanism was integrated. ROSDashboard can save a current configuration of the dashboard to a file which can be used to save the current work and to provide other developers with the same interface. For the prototype all data is stored in a text-based file in JSON (JavaScript Object Notation) \cite{JSON} format. Listing~\ref{json_example} shows an example dashboard configuration represented as JSON, which can be stored in a file. The example contains one visualization widget which is a thermometer widget and is set up to visualize data from the linear field of the \emph{/turtle1/command\_velocity} topic.
 
-\begin{lstlisting}[float,frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
+\begin{lstlisting}[frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
 {
   "widgets": [
     {
@@ -186,68 +186,6 @@ To share the configuration of a dashboard a save and restore mechanism was integ
 }
 \end{lstlisting}
 
-\begin{comment}
-\begin{lstlisting}[frame=single,caption={XML schema for dashboard configuration files.},label=xml_schema,language=XML]
-<?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-<xs:element name="dashboard">
-  <xs:complexType>
-    <xs:sequence>
-      <xs:element name="widget" type="widget" maxOccurs="unbounded" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:element>
-
-
-<xs:complexType name="widget">
-  <xs:sequence>
-    <xs:element name="type" type="xs:string"/>
-    <xs:element name="posX" type="xs:integer"/>
-    <xs:element name="posY" type="xs:integer"/>
-    <xs:element name="height" type="xs:integer"/>
-    <xs:element name="width" type="xs:integer"/>
-    
-    <xs:element name="name" type="xs:string"/>
-    <xs:element name="subscription" type="subscription"/>
-    <xs:element name="properties" type="properties"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="subscription">
-  <xs:sequence>
-    <xs:element name="topic" type="xs:string"/>
-    <xs:element name="datafield" type="xs:string"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="properties">
-  <xs:sequence>
-      <xs:element name="property" type="property" maxOccurs="unbounded" minOccurs="0"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="property">
-  <xs:sequence>
-      <xs:element name="name" type="xs:string"/>
-
-      <xs:element name="type">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="numeric"/>
-            <xs:enumeration value="text"/>
-            <xs:enumeration value="float"/>
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      
-      <xs:element name="value" type="xs:string"/>
-  </xs:sequence>
-</xs:complexType>
-</xs:schema>
-\end{lstlisting}
-\end{comment}
-
 This feature could also be used by robot software and hardware manufacturers to provide a dashboard for a specific module or piece of robot hardware. The dashboard configuration can be made available as part of the module's documentation and represents a easy way to explore the possibilities of a new hardware or software module.
 
 \subsection{Plugins}
@@ -255,8 +193,9 @@ Reference to the plugin framework section in Chapter~\ref{visual_debugging_syste
 
 \subsection{API}
 \label{api_section}
+The current ROS logging framework publishes the log messages on the special purpose topic \emph{/rosout}, but converts everything to a String before the transmission. Since those logging messages are text based, valuable information about the type of the data is lost. To use the data for visualization, the type information must be kept. Thus a set of convenience methods were exposed in the ROSDashboard API (Listing~\ref{api_calls}) to provide a simple interface to publish data for the visualization. The interface is similar to the logging API exposed in the ROS client libraries and basically wraps the ROS specific methods to publish data on a topic. Listing~\ref{api_implementation} shows the simple implementation of the \verb+logint+ API method.
 
-\begin{lstlisting}[float,frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python]
+\begin{lstlisting}[frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python]
 # log arbitrary data,
 # try to find the data type with introspection
 api.log(tag, data)
@@ -274,9 +213,7 @@ api.logfloat(tag, value, msg_type=Float32)
 api.logdata(tag, data, msg_type)
 \end{lstlisting}
 
-The current ROS logging framework publishes the log messages on the special purpose topic \emph{/rosout}, but converts everything to a String before the transmission. Since those logging messages are text based, valuable information about the type of the data is lost. To use the data for visualization, the type information must be kept. Thus a set of convenience methods were exposed in the ROSDashboard API (Listing~\ref{api_calls}) to provide a simple interface to publish data for the visualization. The interface is similar to the logging API exposed in the ROS client libraries and basically wraps the ROS specific methods to publish data on a topic. Listing~\ref{api_implementation} shows the simple implementation of the \verb+logint+ API method.
-
-\begin{lstlisting}[float,frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python]
+\begin{lstlisting}[frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python]
 def logint(tag, value, msg_type=std_msgs.msg.Int32):
     """
     publishes a integer value to the /rosdashboard/<tag> topic
@@ -289,9 +226,9 @@ def logint(tag, value, msg_type=std_msgs.msg.Int32):
     pub.publish(msg_type(value))
 \end{lstlisting}
 
-The API methods shown in Listing~\ref{api_calls} can be used like logging statements to emit data for visualization. The \verb+TAG+ parameter is used to identify the data when the visualization widgets are set up. Internally the data is published as a message on a ROS topic. The topic name consist of the ROSDashboard specific prefix \emph{/rosdashboard/} and the tag given as parameter. Listing~\ref{exapmle_api_call} shows an example use of the API to publish a integer value with the tag "proximity". The value "7" will be published on the ROS topic \emph{/rosdashboard/proximity} and can be visualized with a widget in ROSDashboard that points to the respective topic name and accesses the "data" datafield of the message.
+The API methods shown in Listing~\ref{api_calls} can be used like logging statements to emit data for visualization. The \verb+TAG+ parameter is used to identify the data when the visualization widgets are set up. Internally the data is published as a message on a ROS topic. The topic name consist of the ROSDashboard specific prefix \emph{/rosdashboard/} and the tag given as parameter. Listing~\ref{example_api_call} shows an example use of the API to publish a integer value with the tag "proximity". The value "7" will be published on the ROS topic \emph{/rosdashboard/proximity} and can be visualized with a widget in ROSDashboard that points to the respective topic name and accesses the "data" datafield of the message.
 
-\begin{lstlisting}[float,frame=single,caption={Example API usage.},label=example_api_call,language=Python]
+\begin{lstlisting}[frame=single,caption={Example API usage.},label=example_api_call,language=Python]
 import rosdashboard
 
 rosdashboard.logint('proximity', 17)
