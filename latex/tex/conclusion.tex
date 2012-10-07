@@ -1,20 +1,52 @@
 \chapter{Future Work and Conclusion}
 \label{future_work}
 
+The visual debugging tool presented in this work and more specifcally the ROSDashboard implementation of such a system is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging of robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
+
+The modular design and Open Source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process.
+% The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
+
+\todo{This chapter ... blablub }
+
+
 \section{Improving ROSDashboard}
-\subsection{Interface Improvements}
+The implemented tool is a first prototype to evaluate the use of a simple visualization tool during debugging. The existing visualization widgets are relatively basic and further work can be done to create more visualization widgets and explore more complex types of visualization. Ultimately there should be a plugin engine where third party developers can easily add widgets for new and more complex kinds of data. The extensibility of the tool was one of the initial requirements and the object structure presented in Section~\ref{object_model_section} allows easy integration of such a plugin engine.
+
+This section gives an overview of the possible improvements for ROSDashboard and the visual debugging system in general which have been identified. First some thoughts how the user interface can be improved are presented. \todo{Then ...}
+
+\subsection{User Interface Improvements}
+Apart from more visualizations, the graphical interface 
+
+\todo{from icra: } While the initial prototype's implementation of the topic setup dialog (Fig.~\ref{topic setup screenshot}) features simple text fields where the developer can enter arbitrary Strings, a more sophisticated solution can be implemented to improve the user interface. Using the existing ROS tools a list of available topics can be accessed, which makes it possible to create smarter interfaces. For example type-ahead completion for the topic name and a drop down list to choose the datafield parameter of a message are possible options.
+
+Another suggestion from the ROS community was to change the widgets to be more general and thus make it possible to have both visualization widgets and control widgets. This would give developers the ability not only to monitor values during execution but also manipulate configuration values and give commands to the robot during a debugging session.
+
 \subsection{Plugin Framework}
+
+
 \subsection{Exchangeable Data Providers}
-Discuss how tracepoints could be used and how this could be adapted to other robot frameworks by encapsulating the data collection part (subscribe to topics and visualize new data).
-\subsection{Transparent Debugging}
-Discuss the possibilities to implement a regex parser that can parse through existing (text) log messages and pick out data or extending the ros logging framework to allow logging with type information. (reference to rosdashboard API section)
+Currently the data for the visualizations is collected by either re-using existing communication between ROS nodes or publishing dedicated data for the visualization. Publishing dedicated visualization data can be done through the ROSDashboard API or directly with the ROS communication API. If the ROSDashboard API is used, a new dependency must be added to the node that is debugged.
+
+While this approach is good enough for a prototype, other ways of collection data should be considered in the future. The realtime debugging approach presented in Section~\ref{realtime_debugging} could be a possible source for visualization data. It can be used to collect data in realtime and publish the data on the communication middleware of the target robotic framework. The system design presented in Section~\ref{system_design_section} makes it relatively easy to exchange the data provider since the communication with the middleware is encapsulated in the \textbf{Adapter} class.
+
+\subsection{Transparent Data Collection}
+Since the current logging mechanism in ROS transmits data as text, existing logging statements cannot be used as data source for the visualization. The current solution in ROSDashboard is to expose a set of API methods (see Section~\ref{api_section}) which allow easy publication of data. This solution makes it neccessary to add ROSDashboard as a dependency to the not that is debugged. A more transparent approach to collect data for debugging could be to extend the current logging framework in ROS to provide methods that allow logging of typed data. The API in ROSDashboard is an example for such methods, but is pretty basic. A more sophisticated solution would allow to exclude the logging statements if the node is not in debugging mode.
+
+Another possibility was suggested by the ROS community after the first version of ROSDashboard was announced to the community: ROSDashboard could implement a mechanism that allows to extract data that can be visualized from existing log messages. The existing subscription setup dialog could be extended to allow developers to enter a regular expression which extracts data from a text-only logging message. This would make it possible to visualize data which is already logged by many nodes for debugging reasons. Those nodes could be debugged using the visual debugging system without changing the existing implementation, the data collection would happen completely transparent.
+
 \subsection{Automatic Dashboards}
-Dashboards that detect automatically when new topics are published and pick a "best fit" widget to visualize the new data. This can be used as suggestion to the devleopers.
+The current dashboard interface offers a flexible canvas where developers can drop the visualizations they need to investigate a problem during debugging. A possible extension of the current system could be to automatically generate debugging dashboards using the data that is currently available on the communication middleware. The dashboard could detect which topics are currently active and contain visualizable data. Based on that information it could recommend visualization widgets to the developer and thus raise the visibility of existing data and visualization possibilities.
+
 \subsection{RQT Integration}
+\todo{from icra: } RQT\footnote{http://www.ros.org/wiki/rqt} is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
 
 \section{Evaluation}
 How could the tool be evaluated: large case study on a big project with fake bugs, use the tool during the development of a real robot and document benefits.
 
+\todo{from icra: } ROSDashboard provides a good base to conduct research on the impact of visualizations during debugging of robotic applications. Future research can evaluate how visualizations affect the developer during debugging, especially if it decreases the cognitive load and thus makes debugging with visualizations faster and more productive.
+
 \section{Conclusion}
 
-[Mention ICRA paper?]
+\todo{Mention ICRA paper?}
+
+\todo{what has been done on the ros side? the source code is available on github, the documentation can be found in the ros wiki and it was announced to the ros community, this could be part of the rosdashboard section}

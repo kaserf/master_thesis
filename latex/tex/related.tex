@@ -33,6 +33,7 @@ The collected data can be analysed after the program has stopped its execution. 
 GDB tracepoints are currently only available for remote targets. If you want to collect data with tracepoints in a local program, it has to be started with \verb+gdbserver+ and handled like a remote target.
 
 \subsection{Realtime Debugging Tracepoints}
+\label{realtime_debugging}
 %[Luke Gumbleys work, tracepoint theory, adaptation in robotics, instrumentation]
 The GDB tracepoints approach presented above has one major downside: data can only be accessed and analysed after the program has stopped. This might be necessary for some systems, where transmitting the data over the network is too much overhead and can cause the system to misbehave. On the other hand there are systems that take a long time to properly start up and shut down. In such systems the GDB tracepoints approach will make development cumbersome and slow.
 

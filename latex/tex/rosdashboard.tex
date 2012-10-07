@@ -1,11 +1,15 @@
 \chapter{ROSDashboard: A Visual Debugging System for ROS}
 \label{rosdashboard}
 
-[should the chapter be renamed to "prototype" or "prototypical implementation"?]
+ROSDashboard is a prototypical implementation of the system design in Chapter~\ref{visual_debugging_system}. The tools target platform is ROS, which provides the communication infrastructure for the tool. The ROS communication middleware is used to connect visualizations in the tool to the respective data published in ROS nodes. The data can be either from existing node-to-node communication or from explicit logging statements that publish data for visualization only.
 
-Write about rosdashboard (overview).
+ROS was chosen as a target platform because it has become a stable and popular robotic framework in recent years \cite{Foote2012}. The publish/subscribe mechanism in ROS provides an easy communication layer that can be accessed using the ROS client API. Since ROS is a modular framework and encourages to encapsulate functionality in several small nodes rather then a single big node, the data on communication channels between existing nodes can be accessed and visualized. The ROSDashboard tool fits good into the existing ROS tool suite and fills the gap between visualization of complex data in RViz (see Section~\ref{rviz}) and text only debugging with ROS logging mechanism and rxconsole.
 
-rosdashboard is a prototypical implementation of the system presented in Chapter~\ref{visual_debugging_system} for the ROS middleware / framework. ROS was chosen as middleware because the simple publish/subscribe mechanism allowed to connect to topics transparently without the other party explicitly knowing about the visualization tool.
+Although the design in Chapter~\ref{visual_debugging_system} does not imply the use of a specific robotic framework, some of the architectural decisions were driven by the ROS architecture which was examined during the initial survey of existing debugging tools and practices in robotics. As a result the implementation of ROSDashboard did not require a lot of glue code to connect to the communication infrastructure. If another robotic framework is chosen as target platform for an implementation, more work might be required to access the data from the robotic application. This highly depends on the existing communication infrastructure of such a robotic framework and whether it can be accessed transparently without the robot module knowing about the visualization.
+
+\todo{This chapter introduces}
+
+%rosdashboard is a prototypical implementation of the system presented in Chapter~\ref{visual_debugging_system} for the ROS middleware / framework. ROS was chosen as middleware because the simple publish/subscribe mechanism allowed to connect to topics transparently without the other party explicitly knowing about the visualization tool.
 
 [Not sure if this is possible in other frameworks, if not it could be stated that more work is needed for those frameworks in order to make communication transparent. In general I can argue that ROS fits the requierements best, the system design was not intended to fit every framework but was developed without compromises current systems might have]
 
@@ -97,6 +101,8 @@ ROS topics were originally not designed and developed as something the user or d
 Reference to the plugin framework section in Chapter~\ref{visual_debugging_system} and that such a system was not yet implemented in ROSDashboard [can I say: due to the time constraints of this work?], but the necessary measures have been taken to allow this in the future. Show some details about an example widget and what methods it overwrites.
 
 \subsection{API}
+\label{api_section}
+
 \begin{lstlisting}[float,frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python]
 # log arbitrary data,
 # try to find the data type with introspection

@@ -27,6 +27,8 @@ While most of the currently available visualization tools in robotics focus on p
 
 The system provides a graphical user interface which can be used by developers to visualize all kinds of data from the robotic application. The developers can customize the visualization according to the current robot hardware, development stage and personal preferences. The system can be adapted to many different use cases and should reduce the cognitive effort during debugging by visualizing the data according to the mental model of the developer and meaning of the data.
 
+\todo{where to put the save and restore functionality? it is shown in the object model and could be a possible requirements: saving and loading dashboards allows to distribute the dashboard amongst developers, all the configuration is stored within the dashboard file. Maybe goals, maybe requirements, maybe user interface}
+
 %%%% REQUIREMENTS %%%%
 \section{Requirements}
 \label{requirements}
@@ -44,6 +46,7 @@ Debugging robotic applications is a highly iterative process, where small change
 
 %%%% SYSTEM DESIGN %%%%
 \section{System Design}
+\label{system_design_section}
 The design of the developed system reflects the requirements identified in Section~\ref{requirements}. The system is designed to run in a distributed environment and visualize data live, as it is collected and not post-mortem. The system design is not tailored to a specific robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
 Although the design is robot framework unspecific, it was influenced by the ROS architecture since the documentation of ROS is good and the community was helpful when questions arose. \q
 The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process.
@@ -99,6 +102,7 @@ ROS has been examined as an example for a robotic framework with a communication
 \todo{Should I explain pubsub in detail? class diagram and sequence diagram for example... maybe put that into ros debugging}\q
 
 \subsection{Object Model}
+\label{object_model_section}
 
 \begin{figure}%[thpb]
   \centering
