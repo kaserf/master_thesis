@@ -38,7 +38,12 @@ Another possibility was suggested by the ROS community after the first version o
 The current dashboard interface offers a flexible canvas where developers can drop the visualizations they need to investigate a problem during debugging. A possible extension of the current system could be to automatically generate debugging dashboards using the data that is currently available on the communication middleware. The dashboard could detect which topics are currently active and contain visualizable data. Based on that information it could recommend visualization widgets to the developer and thus raise the visibility of existing data and visualization possibilities.
 
 \subsection{RQT Integration}
-\todo{from icra: } RQT\footnote{http://www.ros.org/wiki/rqt} is a graphical interface that groups together many different graphical tools for ROS. It was under active development during the time of this project and it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently and ROSDashboard can easily be integrated. This would allow developers to use ROSDashboard amongst other graphical tools in one unified graphical interface that saves the state of all tools when exited and work can be resumed where left of.
+\todo{review, if necessary reference RQT without introducing it, if it was mentioned in the ROS section}
+
+RQT\footnote{http://www.ros.org/wiki/rqt} is a graphical interface that groups together many different graphical tools for ROS. The graphical user interface can be used to display various existing graphical ROS tools grouped together. The developer can choose how to arrange the different tools and save the configuration to file. The tool automatically saves the current configuration and the work can be resumed where left of. To integrate a graphical tool in RQT it must be wrapped as a plugin.
+Since RQT was under active development during the time of this project, it was chosen not to integrate ROSDashboard into RQT yet, but to keep it in mind for future work. The plugin interfaces to integrate a tool into RQT have been finalized recently \comm{citation?} and ROSDashboard can easily be integrated.
+
+RQT not only gives you a way to create your own user interface by combining existing tools, it also raises the visibility of the various tools that can be used to develop robots with ROS.
 
 \section{Evaluation}
 How could the tool be evaluated: large case study on a big project with fake bugs, use the tool during the development of a real robot and document benefits.
