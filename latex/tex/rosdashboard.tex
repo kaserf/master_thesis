@@ -95,7 +95,62 @@ ROS topics were originally not designed and developed as something the user or d
 \end{figure}
 
 \subsection{User Interface}
-[write about the user interface to configure widgets and the feature to delete widgets from the dashboard through drag and drop. should this be in the design?]
+The user interface was implemented based on the early interface designs from Section~\ref{graphical_user_interface}. The main window consists of the dashboard canvas where visualization widgets can be positioned freely and a toolbox where all the available visualization widgets can be selected. The visualization widgets can be positioned on the dashboard by "Drag\&Drop" from the toolbox. Figure~\ref{screenflow} shows a series of screenshots, depicting every step necessary to put a visualization widget on the dashboard: First the desired widget needs to be selected in the toolbox and dragged to the dashboard. When the widget is dropped on the dashboard, the configuration dialog opens automatically where the developer can select to which topic and datafield the visualization widget should connect to. This dialog can be re-opened later from the context menu of the widget, as well as the rename dialog and the properties dialog. It was deliberately chosen to separate the dialog for setting up a topic connection and the dialog for other settings of the widget. This separation of concerns keeps the data provider setup encapsulated in its own dialog, which makes it easier to exchange the data provider if necessary. To remove a widget from the dashboard, simply drag it to the bottom of the dashboard where a special drop zone deletes the widget from the dashboard.
+
+\begin{figure}[ht]
+\centering
+\subfigure[Empty dashboard]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow1.png}
+}
+\subfigure[Dragging widget to dashboard]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow2.png}
+}
+\subfigure[Configure subscription on drop]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow3.png}
+}
+\subfigure[Context menu]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow4.png}
+}
+\subfigure[Properties dialog]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow5.png}
+}
+\subfigure[Drag to bottom to remove]{
+    \includegraphics[width=0.45\textwidth]{img/screenflow6.png}
+}
+\caption{Screenflow when adding and removing widgets from the Dashboard.}
+\label{screenflow}
+\end{figure}
+
+
+The widgets background has two different colours to provide additional feedback to the developer whether the visualization is connected to a topic or not. When the configured topic for a visualization widget is not available yet, the background of the widget is coloured in orange. Once the topic becomes available the widget changes its background colour to green. This mechanism only checks the availability of a topic on the communication middleware, it does not time out if a topic has been without any messages for a while. Figure~\ref{colour_widgets} shows the two different colour states of a widget.
+
+\begin{figure}%[thpb]
+  \centering
+  \framebox{
+    \includegraphics[width=0.9\textwidth]{img/colour_states.png}
+  }  
+  \caption{Different colour cues provide additional information.}
+  \label{colour_widgets}
+\end{figure}
+
+Figure~\ref{all_widgets} shows a dashboard with every currently available widget on it. The currently implemented widgets are:
+\begin{description}\itemsep2pt
+\item[Dial] A dial widget similar to the speedometer on the dashboard of a car or motorbike.
+\item[Knob] The knob is similar to the dial but is usually smaller. While it is originally often used as input widget, we use it only to visualize numeric data.
+\item[Compass] The compass is a 360 degree display which can be used e.g. to visualize orientation.
+\item[Thermo] The thermo is a horizontal progress bar with a scale similar to a thermometer.
+\item[String] The string widget is a text field to show logging messages or other textual information.
+\item[LED] The LED widget can visualize boolean data, the LED is either green or red.
+\end{description}
+
+\begin{figure}%[thpb]
+  \centering
+  \framebox{
+    \includegraphics[width=0.9\textwidth]{img/all_widgets_active_screenshot.png}
+  }  
+  \caption{Dashboard with all currently available widgets.}
+  \label{all_widgets}
+\end{figure}
 
 \subsection{Plugins}
 Reference to the plugin framework section in Chapter~\ref{visual_debugging_system} and that such a system was not yet implemented in ROSDashboard [can I say: due to the time constraints of this work?], but the necessary measures have been taken to allow this in the future. Show some details about an example widget and what methods it overwrites.
