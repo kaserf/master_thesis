@@ -152,6 +152,104 @@ Figure~\ref{all_widgets} shows a dashboard with every currently available widget
   \label{all_widgets}
 \end{figure}
 
+\subsection{Data Format}
+To share the configuration of a dashboard a save and restore mechanism was integrated. ROSDashboard can save a current configuration of the dashboard to a file which can be used to save the current work and to provide other developers with the same interface. For the prototype all data is stored in a text-based file in JSON (JavaScript Object Notation) \cite{JSON} format. Listing~\ref{json_example} shows an example dashboard configuration represented as JSON, which can be stored in a file. The example contains one visualization widget which is a thermometer widget and is set up to visualize data from the linear field of the \emph{/turtle1/command\_velocity} topic.
+
+\begin{lstlisting}[float,frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
+{
+  "widgets": [
+    {
+      "width": 105,
+      "height": 197,
+      "name": "Linear Velocity",
+      "posX": 50,
+      "posY": 25,
+      "subscription": {
+        "topic": "/turtle1/command_velocity",
+        "datafield": "linear"
+      },
+      "type": "DragThermo",
+      "properties": [
+        {
+          "type": "numeric",
+          "name": "minimum",
+          "value": -4
+        },
+        {
+          "type": "numeric",
+          "name": "maximum",
+          "value": 4
+        }
+      ]
+    }
+  ]
+}
+\end{lstlisting}
+
+\begin{comment}
+\begin{lstlisting}[frame=single,caption={XML schema for dashboard configuration files.},label=xml_schema,language=XML]
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="dashboard">
+  <xs:complexType>
+    <xs:sequence>
+      <xs:element name="widget" type="widget" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+
+<xs:complexType name="widget">
+  <xs:sequence>
+    <xs:element name="type" type="xs:string"/>
+    <xs:element name="posX" type="xs:integer"/>
+    <xs:element name="posY" type="xs:integer"/>
+    <xs:element name="height" type="xs:integer"/>
+    <xs:element name="width" type="xs:integer"/>
+    
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="subscription" type="subscription"/>
+    <xs:element name="properties" type="properties"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="subscription">
+  <xs:sequence>
+    <xs:element name="topic" type="xs:string"/>
+    <xs:element name="datafield" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="properties">
+  <xs:sequence>
+      <xs:element name="property" type="property" maxOccurs="unbounded" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="property">
+  <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+
+      <xs:element name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="numeric"/>
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="float"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      
+      <xs:element name="value" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+</xs:schema>
+\end{lstlisting}
+\end{comment}
+
+This feature could also be used by robot software and hardware manufacturers to provide a dashboard for a specific module or piece of robot hardware. The dashboard configuration can be made available as part of the module's documentation and represents a easy way to explore the possibilities of a new hardware or software module.
+
 \subsection{Plugins}
 Reference to the plugin framework section in Chapter~\ref{visual_debugging_system} and that such a system was not yet implemented in ROSDashboard [can I say: due to the time constraints of this work?], but the necessary measures have been taken to allow this in the future. Show some details about an example widget and what methods it overwrites.
 
