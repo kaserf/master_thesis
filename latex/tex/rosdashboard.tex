@@ -9,17 +9,13 @@ Although the design in Chapter~\ref{visual_debugging_system} does not imply the 
 
 \todo{This chapter introduces}
 
-%rosdashboard is a prototypical implementation of the system presented in Chapter~\ref{visual_debugging_system} for the ROS middleware / framework. ROS was chosen as middleware because the simple publish/subscribe mechanism allowed to connect to topics transparently without the other party explicitly knowing about the visualization tool.
+%[Not sure if this is possible in other frameworks, if not it could be stated that more work is needed for those frameworks in order to make communication transparent. In general I can argue that ROS fits the requierements best, the system design was not intended to fit every framework but was developed without compromises current systems might have]
 
-[Not sure if this is possible in other frameworks, if not it could be stated that more work is needed for those frameworks in order to make communication transparent. In general I can argue that ROS fits the requierements best, the system design was not intended to fit every framework but was developed without compromises current systems might have]
+%[I'm not sure how to write this chapter: can I have a section "why ROS?", "how the requirements are met?", ...?] ---> this should be written in the introduction for this chapter: ROS was used because it has many users, an easily accesible communication structure, a tool landscape (?) where such a tool would fit in well (recent surge of graphical tools like rxdeveloper, rqt, other dashboards).
 
-[I'm not sure how to write this chapter: can I have a section "why ROS?", "how the requirements are met?", ...?] ---> this should be written in the introduction for this chapter: ROS was used because it has many users, an easily accesible communication structure, a tool landscape (?) where such a tool would fit in well (recent surge of graphical tools like rxdeveloper, rqt, other dashboards).
+%[from icra]
+%ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages. While most of the currently available visualization tools in robotics focus on spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize all kinds of data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he or she thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}.
 
-\parbox{.8\linewidth}{
-[from icra paper, needs some changes]
-
-ROSDashboard, the tool presented in this work, aims to support the developer during debugging by visualizing data in a graphic way and thus eliminating the cognitive effort needed to parse and interpret text based logging messages. While most of the currently available visualization tools in robotics focus on spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. ROSDashboard provides a dashboard interface to robot developers, which they can populate with graphical widgets to visualize all kinds of data from the robot. The dashboard can be customized to display widgets according to the current robot hardware and development stage. It can be used to visualize data during debugging as well as monitor data during the normal execution of the robot. This means ROSDashboard is a tool that a) can be adapted to many different use cases and b) allows the developer to choose the widgets he or she thinks represent the data best, according to their mental model and the meaning of the data. The tool is based on ROS (Robot Operating System) which abstracts from specific robot hardware and takes care of inter process communication \cite{Quigley2009}.
-}
 
 %%%%% Robot Operating System ROS %%%%%%
 \section{Robot Operating System (ROS)}
@@ -202,21 +198,23 @@ Reference to the plugin framework section in Chapter~\ref{visual_debugging_syste
   \label{plot_widget}
 \end{figure}
 
-Adding new visualization widgets to ROSDashboard is easy. The abstract \textbf{DashboardWidget} class (see Figure~\ref{class overview}) handles most of the generic things a widget should implement. As part of a first evaluation step a new visualization widget was added to the dashboard: A plot widget that plots values on a Cartesian coordinate system (see Figure~\ref{plot_widget}). To implement the widget, a new class called \textbf{DragPlot} was created. The class inherits the basic implementation from \textbf{DashboardWidget} and only needs to implement the plot specific methods. Upon initialization of \textbf{DragPlot} the user interface part of the widget is created. The class implements the two abstract methods \verb+updateValue+ and \verb+initProperties+ from \textbf{DashboardWidget}. \verb+updateValue+ updates the graphical part of the widget and \verb+initProperties+ adds two properties to the widget: plot name and update rate in milliseconds. This requires only two lines of code, see Listing~\ref{init_props}.
+Adding new visualization widgets to ROSDashboard is easy. The abstract \textbf{DashboardWidget} class (see Figure~\ref{class overview}) handles most of the generic things a widget should implement. As part of a first evaluation step a new visualization widget was added to the dashboard: A plot widget that plots values on a Cartesian coordinate system. Figure~\ref{plot_widget} shows a screenshot of the new visualization widget in action and the full implementation is appended in Listing~\ref{drag_plot_implementation}.
 
-\begin{lstlisting}[frame=single,caption={Implementation of initProperties in DragPlot.},label=init_props,language=Python]
+To implement the widget, a new class called \textbf{DragPlot} was created. The class inherits the basic implementation from \textbf{DashboardWidget} and only needs to implement the plot specific methods. Upon initialization of \textbf{DragPlot} the user interface part of the widget is created. The class implements the two abstract methods \verb+updateValue+ and \verb+initProperties+ from \textbf{DashboardWidget}. \verb+updateValue+ updates the graphical part of the widget and \verb+initProperties+ adds two properties to the widget: plot name and update rate in milliseconds. This requires only two lines of code, see Listing~\ref{init_props}.
+
+\begin{lstlisting}[frame=single,caption={Implementation of initProperties in DragPlot.},label=init_props,language=Python,numbers=left,breaklines=true]
 # property keys
 TITLE = 'Plot title'
 RATE = 'Refresh rate (ms)'
 
 def initProps(self):
-  self.props[self.TITLE]=WidgetProperty('text', 'Plot title')
-  self.props[self.RATE]=WidgetProperty('numeric', 500)
+  self.props[self.TITLE] = WidgetProperty('text', 'Plot title')
+  self.props[self.RATE] = WidgetProperty('numeric', 500)
 \end{lstlisting}
 
 The default implementation in \textbf{DashboardWidget} is capable of automatically generating a user interface for those simple properties. When the properties are updated in the properties dialog, a callback is used to notify the \textbf{DragPlot} class. The callback implementation to refresh the widget is shown in Listing~\ref{prop_callback}. It updates the title of the plot and starts a new timer which updates the plot in a given interval.
 
-\begin{lstlisting}[frame=single,caption={Implemented callback in DragPlot.},label=prop_callback,language=Python]
+\begin{lstlisting}[frame=single,caption={Implemented callback in DragPlot.},label=prop_callback,language=Python,numbers=left,breaklines=true]
 def updateWidget(self):
   #update the widget properties
   self.qwtPlot.setTitle(self.props[self.TITLE].value)
@@ -225,8 +223,7 @@ def updateWidget(self):
     self.qwtPlot.killTimer(self.currentTimerId)
     self.currentTimerId = 0
 
-  self.currentTimerId = self.qwtPlot.startTimer(
-                             self.props[self.RATE].value)
+  self.currentTimerId = self.qwtPlot.startTimer(self.props[self.RATE].value)
 \end{lstlisting}
 
 The plot itself is a \textbf{QwtPlot} widget from the popular QWT widget library\footnote{\url{http://qwt.sourceforge.net/}}. To customize the plot widget, \textbf{QwtPlot} was subclassed in \textbf{DataPlot}. The \textbf{DataPlot} class exposes two methods: \verb+addValue(value)+ and \verb+timerEvent()+. The \verb+addValue(value)+ method is used in the implemented abstract method \verb+updateValue(value)+ from \textbf{DashboardWidget} and adds a new value to the plot. \verb+timerEvent()+ is a callback that gets triggered regularly, how often depends on the update rate which can be set in the properties of the widget.
@@ -237,9 +234,8 @@ The last step to add the new visualization widget to ROSDashboard is to add it m
 \label{api_section}
 The current ROS logging framework publishes the log messages on the special purpose topic \emph{/rosout}, but converts everything to a String before the transmission. Since those logging messages are text based, valuable information about the type of the data is lost. To use the data for visualization, the type information must be kept. Thus a set of convenience methods were exposed in the ROSDashboard API (Listing~\ref{api_calls}) to provide a simple interface to publish data for the visualization. The interface is similar to the logging API exposed in the ROS client libraries and basically wraps the ROS specific methods to publish data on a topic. Listing~\ref{api_implementation} shows the simple implementation of the \verb+logint+ API method.
 
-\begin{lstlisting}[frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python]
-# log arbitrary data,
-# try to find the data type with introspection
+\begin{lstlisting}[frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python,numbers=left,breaklines=true]
+# log arbitrary data, try to find the data type with introspection
 api.log(tag, data)
 
 # log string message
@@ -255,7 +251,7 @@ api.logfloat(tag, value, msg_type=Float32)
 api.logdata(tag, data, msg_type)
 \end{lstlisting}
 
-\begin{lstlisting}[frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python]
+\begin{lstlisting}[frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python,numbers=left,breaklines=true]
 def logint(tag, value, msg_type=std_msgs.msg.Int32):
     """
     publishes a integer value to the /rosdashboard/<tag> topic
@@ -270,7 +266,7 @@ def logint(tag, value, msg_type=std_msgs.msg.Int32):
 
 The API methods shown in Listing~\ref{api_calls} can be used like logging statements to emit data for visualization. The \verb+TAG+ parameter is used to identify the data when the visualization widgets are set up. Internally the data is published as a message on a ROS topic. The topic name consist of the ROSDashboard specific prefix \emph{/rosdashboard/} and the tag given as parameter. Listing~\ref{example_api_call} shows an example use of the API to publish a integer value with the tag "proximity". The value "7" will be published on the ROS topic \emph{/rosdashboard/proximity} and can be visualized with a widget in ROSDashboard that points to the respective topic name and accesses the "data" datafield of the message.
 
-\begin{lstlisting}[frame=single,caption={Example API usage.},label=example_api_call,language=Python]
+\begin{lstlisting}[frame=single,caption={Example API usage.},label=example_api_call,language=Python,numbers=left,breaklines=true]
 import rosdashboard
 
 rosdashboard.logint('proximity', 17)
