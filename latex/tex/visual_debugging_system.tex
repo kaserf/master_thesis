@@ -120,3 +120,19 @@ The data provider setup and the properties management are also implemented in th
 
 The \textbf{Adapter} class in Figure~\ref{class overview} can be seen as a black box that takes care of the communication with the communication middleware from the respective robotic framework. The \textbf{Adapter} connects to the communication middleware and waits for new data. If new data is published it notifies the visualization widget to update the value of the widget through \verb+updateValue(value: Any)+.
 
+
+\subsection{Plugin Architecture}
+\todo{mention the design for a plugin system (show uml model). this can be cross referenced in rosdashboard although it has not been implemented}
+
+The architecture and object model presented in the previous sections aim to make it easy to extend the visual debugging system with further widgets. To allow third party developers to add their visualizations a plugin architecture will be presented in this section. The plugin architecture allows to add new visualization widgets in form of plugins, without the need to modify the source code directly.
+
+The diagram in Figure~\ref{plugin_architecture_diagram} shows the object design of the plugin architecture. Plugins can be loaded and unloaded through the \textbf{PluginManager} class. The \textbf{PluginManager} class keeps a list of all plugins and populates the toolbox where plugins can be selected from (see Figure~\ref{gui_mockup}). The plugin itself contains the implementation of a visualization widget which is subclassed from \textbf{DashboardWidget} and some additional meta information about the plugin.
+
+\begin{figure}%[thpb]
+  \centering
+  \framebox{
+    \includegraphics[width=0.9\textwidth]{diagrams/plugin_architecture.pdf}
+  }  
+  \caption{Possible plugin architecture.}
+  \label{plugin_architecture_diagram}
+\end{figure}

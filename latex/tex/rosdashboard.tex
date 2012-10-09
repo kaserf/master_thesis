@@ -72,7 +72,7 @@ rxplot is a graphical tool which can plot values from topics on a Cartesian coor
   \framebox{
     \includegraphics[scale=0.8]{img/topic_setup.png}
   }  
-  \caption{Screenshot of the topic setup dialog. [re-do screenshot with rosdashboard in background]}
+  \caption{Screenshot of the topic setup dialog.}
   \label{topic setup screenshot}
 \end{figure}
 
@@ -246,6 +246,10 @@ api.logint(tag, value, msg_type=Int32)
 
 # log float value
 api.logfloat(tag, value, msg_type=Float32)
+
+# log bool value
+
+api.logbool(tag, value)
 
 # log complex data with datatype
 api.logdata(tag, data, msg_type)
