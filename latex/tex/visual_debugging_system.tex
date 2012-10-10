@@ -77,17 +77,12 @@ Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the
 \comm{Should I copy the screenshot from \cite{Gumbley2009} or only cite it?}
 %The widgets can be hooked up to data providers and will be updated once a new value is available.
 
-\todo{Write about the communication setup here, since it is referenced in the architecture. ---> imho this is too implementation specific and should be left out: rewrite the architecture part to be more general}
-
 \subsection{Architecture}
 The currently available robotic frameworks all rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed debugging system to access data without the need to develop a dedicated communication layer for debugging.
 
 The user interface mockup shown in Figure~\ref{gui_mockup} already indicates the modular design of visualizations that can be added to the dashboard canvas. The modular approach makes it easy to extend the system with more visualizations in the future and it gives developers the choice how data is visualized. Each visualization widget contains a different form of visualization. This visualization widget handles the graphical part of the visualization, stores information about the data connection and other settings and encapsulates the communication with the middleware. The connection with the communication middleware is established through an adapter which notifies the widget if the data has changed or new data is available. This makes it easy to exchange the communication adapter if the communication protocol changes or the implementation targets a different robotic framework which has a different communication structure. This reduces the coupling between the visualizations and the data collection. Although the dashboard needs to know which widgets are currently on the dashboard, the widgets itself are independent of the dashboard. The decentralized approach allows easier integration of a plugin infrastructure since the dashboard itself does not need to be modified to show additional visualization widgets.
 
 Figure~\ref{communication_diagram} shows how the modular visualization widgets connect to the communication middleware through the adapter. The robot modules at the bottom of the diagram publish data of some kind: either data which is needed to communicate with other modules or data specifically emitted for debugging. The visualizations can connect to both kinds of data through the middleware.
-
-\q In order to tell the visualizations what data they should visualize, a graphical interface for setting up the communication details has been presented in \ref{graphical_user_interface}. \q
-\todo{make the above more general or drop completely}
 
 \begin{figure}%[htbp]
   \centering
