@@ -117,7 +117,7 @@ The user interface was implemented based on the early interface designs from Sec
 
 The widgets background has two different colours to provide additional feedback to the developer whether the visualization is connected to a topic or not. When the configured topic for a visualization widget is not available yet, the background of the widget is coloured in orange. Once the topic becomes available the widget changes its background colour to green. This mechanism only checks the availability of a topic on the communication middleware, it does not time out if a topic has been without any messages for a while. Figure~\ref{colour_widgets} shows the two different colour states of a widget.
 
-\begin{figure}%[thpb]
+\begin{figure}[htb]
   \centering
   \framebox{
     \includegraphics[width=0.9\textwidth]{img/colour_states.png}
@@ -136,7 +136,7 @@ Figure~\ref{all_widgets} shows a dashboard with every currently available widget
 \item[LED] The LED widget can visualize boolean data, the LED is either green or red.
 \end{description}
 
-\begin{figure}%[thpb]
+\begin{figure}[htb]
   \centering
   \framebox{
     \includegraphics[width=0.9\textwidth]{img/all_widgets_active_screenshot.png}
@@ -187,7 +187,7 @@ This feature could also be used by robot software and hardware manufacturers to 
 
 \todo{fix inconsistent method names from system design to implementation?}
 
-\begin{figure}%[thpb]
+\begin{figure}[htb]
   \centering
   \framebox{
     \includegraphics[width=0.9\textwidth]{img/plot_widget.png}

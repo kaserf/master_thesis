@@ -122,11 +122,11 @@ The architecture and object model presented in the previous sections aim to make
 
 The diagram in Figure~\ref{plugin_architecture_diagram} shows the object design of the plugin architecture. Plugins can be loaded and unloaded through the \textbf{PluginManager} class. The \textbf{PluginManager} class keeps a list of all plugins and populates the toolbox where plugins can be selected from (see Figure~\ref{gui_mockup}). The plugin itself contains the implementation of a visualization widget which is subclassed from \textbf{DashboardWidget} and some additional meta information about the plugin.
 
-\begin{figure}%[thpb]
+\begin{figure}[htb]
   \centering
   \framebox{
     \includegraphics[width=0.9\textwidth]{diagrams/plugin_architecture.pdf}
   }  
-  \caption{Possible plugin architecture.}
+  \caption{Plugin architecture overview.}
   \label{plugin_architecture_diagram}
 \end{figure}
