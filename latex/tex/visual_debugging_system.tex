@@ -3,7 +3,7 @@
 
 Debugging in robotics has unique requirements which are often not met by traditional debugging systems. The special requirements lead to a number of different tools to support debugging in robotics. The previous chapter summarized some of those tools and issues of existing solutions were identified: a) The tools either focus on visualization of pre-defined spatial data or render data as text messages. b) The graphical interfaces are rather static and difficult to adapt to different usage scenarios.
 
-This chapter introduces a new system for debugging in robotics, tailored to tackle the challanges developers face when debugging robotic systems. The system tries to combine the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the high amount of data collected during debugging of robotic systems.
+This chapter introduces a new system for debugging in robotics, tailored to tackle the challenges developers face when debugging robotic systems. The system tries to combine the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the high amount of data collected during debugging of robotic systems.
 
 The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two presents the goals of the work, which leads to specific requirements for this system in section three. The system design section presents the design for a flexible visual debugging system.
 
@@ -92,7 +92,7 @@ Figure~\ref{communication_diagram} shows how the modular visualization widgets c
 \end{figure}
 
 \q
-ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally diffferent in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
+ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally different in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
 
 \todo{Should I explain pubsub in detail? class diagram and sequence diagram for example... maybe put that into ros debugging}\q
 
