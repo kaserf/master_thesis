@@ -125,6 +125,78 @@ class DragPlot(DashboardWidget):
     self.qwtPlot.addValue(value)
 \end{lstlisting}
 
+\newpage
+
+\begin{lstlisting}[frame=single,caption={Saved dashboard from the NAO case study.},label=nao_dashboard_file,numbers=left, breaklines=true]
+{
+  "widgets":[
+    {
+      "width":200,
+      "name":"Sound Offset (rad)",
+      "posX":394,
+      "posY":56,
+      "subscription":{
+        "topic":"/sound_source",
+        "datafield":"azimuth"
+      },
+      "type":"DragDial",
+      "properties":[
+        {
+          "type":"numeric",
+          "name":"minimum",
+          "value":-4
+        },
+        {
+          "type":"numeric",
+          "name":"maximum",
+          "value":4
+        }
+      ],
+      "height":200
+    },
+    {
+      "width":200,
+      "name":"Sound Offset (deg)",
+      "posX":170,
+      "posY":57,
+      "subscription":{
+        "topic":"/sound_source",
+        "datafield":"azimuth"
+      },
+      "type":"DragCompass",
+      "properties":[
+
+      ],
+      "height":200
+    },
+    {
+      "width":100,
+      "name":"Confidence",
+      "posX":47,
+      "posY":58,
+      "subscription":{
+        "topic":"/sound_source",
+        "datafield":"confidence"
+      },
+      "type":"DragThermo",
+      "properties":[
+        {
+          "type":"numeric",
+          "name":"minimum",
+          "value":0
+        },
+        {
+          "type":"numeric",
+          "name":"maximum",
+          "value":1
+        }
+      ],
+      "height":200
+    }
+  ]
+}
+\end{lstlisting}
+
 \addcontentsline{toc}{chapter}{\protect\numberline{B}{Listings}}
 
 %~\pagebreak

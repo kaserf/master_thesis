@@ -151,28 +151,28 @@ To share the configuration of a dashboard a save and restore mechanism was integ
 
 \begin{lstlisting}[frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
 {
-  "widgets": [
+  "widgets":[
     {
-      "width": 105,
-      "height": 197,
-      "name": "Linear Velocity",
-      "posX": 50,
-      "posY": 25,
-      "subscription": {
-        "topic": "/turtle1/command_velocity",
-        "datafield": "linear"
+      "width":105,
+      "height":197,
+      "name":"Linear Velocity",
+      "posX":50,
+      "posY":25,
+      "subscription":{
+        "topic":"/turtle1/command_velocity",
+        "datafield":"linear"
       },
-      "type": "DragThermo",
-      "properties": [
+      "type":"DragThermo",
+      "properties":[
         {
-          "type": "numeric",
-          "name": "minimum",
-          "value": -4
+          "type":"numeric",
+          "name":"minimum",
+          "value":-4
         },
         {
-          "type": "numeric",
-          "name": "maximum",
-          "value": 4
+          "type":"numeric",
+          "name":"maximum",
+          "value":4
         }
       ]
     }
