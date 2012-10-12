@@ -1,7 +1,7 @@
 \chapter{Case Study}
-\todo{Describe the case study: two different steps, the first one without code modification (monitoring of existing communication channels), the second one where code is actually modified to emit special debugging messages (can be done with rosdashboards api or manually).}
+\todo{I don't like the name case study, since it is not really a study. What about initial evaluation? self evaluation? merge with previous chapter and make it a section?}
 
-\todo{Talk to Jamie Diprose about his Nao work with ROS (probably better than the turtlesim example from the ICRA paper), or see if rosbag data can be found and build showcase on top of the rosbag data.}
+\todo{first general showcase from icra paper (does not have the plot widget in the screenshots), then how to add a new widget --> plot widget. Then the more specific audio source localization / sound localization showcase with nao}
 
 \section{Visualizing Existing Data}
 Although the current implementation is a prototype, it has all the features that were initially planned. The implementation is running stably and first attempts to use it as a debugging tool have been made. ROSDashboard is ready to be used for the development of robot applications and can be used for further evaluations (see Section~\ref{future_work}).
@@ -32,14 +32,36 @@ Figure~\ref{rosgraph_simple} shows the ROS computation graph during the executio
 \section{Adding New Widgets}
 \todo{this could be a good spot for the section from the previous chapter about the plot widget}
 
+\section{Nao Showcase}
+A recent problem during the development of an existing project was chosen as use case \comm{showcase? case study?} to evaluate \q the use of ROSDashboard during the debugging of a robot. The project's goal is to use the Nao Robot \comm{cite} together with ROS to follow people and engage in conversations with people.
+
+\todo{introduce nao and choreograph}
+
+To move the head towards the person talking to the Nao Robot, a sound location algorithm is used. The sound location algorithm is already built in to the Nao Robot and can be accessed using ROS topics. The algorithm publishes the location where the sound comes from as a triplet of the horizontal location, vertical location and confidence. When the algorithm was used in the "Sound Tracker" module in Choreographe \comm{cite} to move the head of the Nao Robot it sometimes oriented the head to a random direction unrelated to the real direction of the sound source.
+
+The developer of this system tried to find out whether the problem lies with the accuracy of the sensor, the implementation of the sound location algorithm or the "Sound Tracker" module moving the head. Since the data from the sound source is published as a triplet of numbers, debugging the problem by looking at numbers in a console was a problem. ROSDashboard was used to visualize the values from the sound location algorithm to determine where the problem of wrong head positions lies.
+
+% case study configuration
+\todo{find out how nao runs ros, describe where the master was, where the visualization was running} \cite{Cousins2010}
+
+\todo{append saved dashboard json in appendix}
+
+
+% Since to Nao Robot sometimes moved the head to a neutral position and looked up, either a error in the sensory input or in the sound location algorithm was suspected.
+
+This showcase \q shows how the sound location algorithm was debugged with and without the use of a visualization tool.
+
+%The first section presents the experimental setup and software configuration.
+\todo{write about the configuration of the experiment: nao running with connection to the router, desktop machine running the clap orientation detection, laptop running with the dashboard}
+
+\todo{Introduce the example: the goal is to track the orientation of a sound with the nao robot. During initial experiments with the shipped programming environment (choreography) some "weird" behaviour was noticed: sometimes the robot could not locate the noise and the head looked straight up. To investigate whether this is a bug in the algorithm or a sensor problem, the data has been visualized in rosdashboard}
+
+\todo{show screenshot of the console with orientation data from print statements, show rxbag with raw message values (???), show rosdashboard with the visualization: compass gives direction of the sound based on the position of the nao, thermo widget gives altitude, thermo with confidence??}
+
 \subsection{Case Study Configuration}
 \todo{is this important? drop}
 \todo{old structure}
 What machines, software versions, robots, etc were used.
 
-\subsection{Without Code Modification}
-\todo{old structure}
-\subsection{With Code Modification}
-\todo{old structure}
 \subsection{Discussion}
 Discuss the results from the case study?

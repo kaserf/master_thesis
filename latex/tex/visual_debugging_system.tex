@@ -27,12 +27,12 @@ While most of the currently available visualization tools in robotics focus on p
 
 The system provides a graphical user interface which can be used by developers to visualize all kinds of data from the robotic application. The developers can customize the visualization according to the current robot hardware, development stage and personal preferences. The system can be adapted to many different use cases and should reduce the cognitive effort during debugging by visualizing the data according to the mental model of the developer and meaning of the data.
 
-\todo{where to put the save and restore functionality? it is shown in the object model and could be a possible requirements: saving and loading dashboards allows to distribute the dashboard amongst developers, all the configuration is stored within the dashboard file. Maybe goals, maybe requirements, maybe user interface}
+To preserve the configuration of visualizations a developer is using, it is possible to save the state of the visual debugging system to file. This file can be used to continue working at the same point where work was stopped previously. It can also be used to share the visualization configuration amongst developers working in the same team.
 
 %%%% REQUIREMENTS %%%%
 \section{Requirements}
 \label{requirements}
-The requirements of the flexible visual debugging system are mostly dominated by the special requirements of robotics. Some requirements are derived from the hypothesis and focus more on development performance and speed. This section presents the elicited requirements for a flexible visual debugging system.
+The requirements for the flexible visual debugging system are mostly dominated by the special requirements of robotics. Some requirements are derived from the hypothesis and focus more on development performance and speed. This section presents the elicited requirements for a flexible visual debugging system.
 
 \subsection{Distributed Live Debugging}
 When debugging robotic applications it is usually not possible to interrupt the execution of the application and follow a step-through approach. All data must be captured, processed and visualized live. Robotic applications are usually distributed systems, because they often run on mobile robots or are so complex that multiple computers are used to make the system faster. This means the system must be able to handle communication distributed across a network.
@@ -92,9 +92,7 @@ Figure~\ref{communication_diagram} shows how the modular visualization widgets c
 \end{figure}
 
 \q
-ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally different in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
-
-\todo{Should I explain pubsub in detail? class diagram and sequence diagram for example... maybe put that into ros debugging}\q
+ROS has been examined as an example for a robotic framework with a communication middleware. The publish/subscribe style communication in ROS successfully decouples the sender from the receiver of messages \cite{Eugster2003}. Since this principle also appears in other frameworks it should be simple to implement an adapter that connects to this communication middleware. If the communication structure is fundamentally different in the target robotic framework, some more work might be required to decouple the visualization from the data collection.
 
 \subsection{Object Model}
 \label{object_model_section}
