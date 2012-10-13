@@ -42,10 +42,6 @@ The communication between ROS nodes is either asynchronous through a publish/sub
 \todo{explain why ros was chosen}
 
 \todo{list some tools and recent projects that have influenced the tool. For example the rxdeveloper tool and the survey in Muellers2012, RQT and other dashboards recently developed. Highly related to the choice of making a tool for ros.}
-
-\subsection{ROS Publish/Subscribe Mechanism}
-\todo{explain the pubsub mechanism in detail? reference here from the system design section which mentiones pub/sub}
-
 \subsection{Related ROS Tools}
 
 \subsubsection{rxplot, rxconsole, rxbag?}
@@ -91,7 +87,7 @@ ROS topics were originally not designed and developed as something the user or d
 \subsection{User Interface}
 The user interface was implemented based on the early interface designs from Section~\ref{graphical_user_interface}. The main window consists of the dashboard canvas where visualization widgets can be positioned freely and a toolbox where all the available visualization widgets can be selected. The visualization widgets can be positioned on the dashboard by "Drag\&Drop" from the toolbox. Figure~\ref{screenflow} shows a series of screenshots, depicting every step necessary to put a visualization widget on the dashboard: First the desired widget needs to be selected in the toolbox and dragged to the dashboard. When the widget is dropped on the dashboard, the configuration dialog opens automatically where the developer can select to which topic and datafield the visualization widget should connect to. This dialog can be re-opened later from the context menu of the widget, as well as the rename dialog and the properties dialog. It was deliberately chosen to separate the dialog for setting up a topic connection and the dialog for other settings of the widget. This separation of concerns keeps the data provider setup encapsulated in its own dialog, which makes it easier to exchange the data provider if necessary. To remove a widget from the dashboard, simply drag it to the bottom of the dashboard where a special drop zone deletes the widget from the dashboard.
 
-\begin{figure}[ht]
+\begin{figure}[p]
 \centering
 \subfigure[Empty dashboard]{
     \includegraphics[width=0.45\textwidth]{img/screenflow1.png}
@@ -128,7 +124,7 @@ The widgets background has two different colours to provide additional feedback 
 \end{figure}
 
 Figure~\ref{all_widgets} shows a dashboard with every currently available widget on it. The currently implemented widgets are:
-\begin{description}\itemsep2pt
+\begin{description}\itemsep1pt \parskip0pt % \parsep0pt \itemsep1pt
 \item[Dial] A dial widget similar to the speedometer on the dashboard of a car or motorbike.
 \item[Knob] The knob is similar to the dial but is usually smaller. While it is originally often used as input widget, we use it only to visualize numeric data.
 \item[Compass] The compass is a 360 degree display which can be used e.g. to visualize orientation.
@@ -149,7 +145,7 @@ Figure~\ref{all_widgets} shows a dashboard with every currently available widget
 \subsection{Data Format}
 To share the configuration of a dashboard a save and restore mechanism was integrated. ROSDashboard can save a current configuration of the dashboard to a file which can be used to save the current work and to provide other developers with the same interface. For the prototype all data is stored in a text-based file in JSON (JavaScript Object Notation) \cite{JSON} format. Listing~\ref{json_example} shows an example dashboard configuration represented as JSON, which can be stored in a file. The example contains one visualization widget which is a thermometer widget and is set up to visualize data from the linear field of the \emph{/turtle1/command\_velocity} topic.
 
-\begin{lstlisting}[frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
+\begin{lstlisting}[float,frame=single,caption={Example dashboard configuration in JSON.},label=json_example]
 {
   "widgets":[
     {
@@ -187,7 +183,7 @@ This feature could also be used by robot software and hardware manufacturers to 
 \label{api_section}
 The current ROS logging framework publishes the log messages on the special purpose topic \emph{/rosout}, but converts everything to a String before the transmission. Since those logging messages are text based, valuable information about the type of the data is lost. To use the data for visualization, the type information must be kept. Thus a set of convenience methods were exposed in the ROSDashboard API (Listing~\ref{api_calls}) to provide a simple interface to publish data for the visualization. The interface is similar to the logging API exposed in the ROS client libraries and basically wraps the ROS specific methods to publish data on a topic. Listing~\ref{api_implementation} shows the simple implementation of the \verb+logint+ API method.
 
-\begin{lstlisting}[frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python,numbers=left,breaklines=true]
+\begin{lstlisting}[float,frame=single,caption={ROSDashboard API methods.},label=api_calls,language=Python,numbers=left,breaklines=true]
 # log arbitrary data, try to find the data type with introspection
 api.log(tag, data)
 
@@ -208,7 +204,7 @@ api.logbool(tag, value)
 api.logdata(tag, data, msg_type)
 \end{lstlisting}
 
-\begin{lstlisting}[frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python,numbers=left,breaklines=true]
+\begin{lstlisting}[float,frame=single,caption={Implemented logint API method.},label=api_implementation,language=Python,numbers=left,breaklines=true]
 def logint(tag, value, msg_type=std_msgs.msg.Int32):
     """
     publishes a integer value to the /rosdashboard/<tag> topic

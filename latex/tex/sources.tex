@@ -5,8 +5,16 @@
 \addcontentsline{toc}{chapter}{\protect\numberline{A}{Bibliography}}
 
 \pagebreak
-\stepcounter{chapter}
 
+
+\pagestyle{myheadings}
+\markright{Listings}
+\markleft{Listings}
+
+\stepcounter{chapter}
+\chapter*{Listings}
+
+\addcontentsline{toc}{chapter}{\protect\numberline{B}{Listings}}
 
 \begin{lstlisting}[frame=single,caption={DragPlot implementation.},label=drag_plot_implementation,language=Python,numbers=left,breaklines=true]
 from python_qt_binding.QtBindingHelper import QT_BINDING, QT_BINDING_VERSION #@UnresolvedImport @UnusedImport
@@ -104,7 +112,7 @@ class DragPlot(DashboardWidget):
     
     self.setLayout(self.layout)
       
-  def initProps(self):
+  def initProperties(self):
     self.props[self.TITLE] = WidgetProperty('text', 'Plot title')
     self.props[self.RATE] = WidgetProperty('numeric', 500)
   
@@ -197,7 +205,6 @@ class DragPlot(DashboardWidget):
 }
 \end{lstlisting}
 
-\addcontentsline{toc}{chapter}{\protect\numberline{B}{Listings}}
 
 %~\pagebreak
 %~\stepcounter{chapter}

@@ -1,6 +1,4 @@
 \chapter{Case Study}
-\todo{better chapter name?}
-
 Although a thorough evaluation of the developed visual debugging system in general and ROSDashboard in particular was not possible during the course of this work, a case study was conducted to demonstrate the possibilities of such a system. The three cases in this case study show how ROSDashboard can be used with a simple example from the ROS tutorials, how it can be extended with further visualization widgets and how it was used in a real life project to investigate a problem during development.
 
 The first case shows how to connect ROSDashboard's visualization widgets to existing topics in a ROS project. The ROS turtlesim tutorial was chosen as a simple scenario which can be easily reproduced. The example requires no in-depth knowledge of robot programming with ROS since it is created on top of one of the initial tutorials that explain the ROS concepts. The second case in this chapter introduces a new visualization widget for ROSDashboard: The plot widget. This widget can be used to plot data on a Cartesian coordinate system, similar to the dedicated ROS tool rxplot. This case shows how easy it is to extend the current dashboard implementation with further visualization widgets, which was one of the initial requirements for the visual debugging system designed in Chapter~\ref{visual_debugging_system}. The last case examines the use of ROSDashboard during the development of a real life robotics project. An existing problem that appeared during the development of a robotic system with the NAO humanoid robot was investigated using ROSDashboard.
@@ -49,14 +47,14 @@ To implement the widget, a new class called \textbf{DragPlot} was created. The c
 TITLE = 'Plot title'
 RATE = 'Refresh rate (ms)'
 
-def initProps(self):
+def initProperties(self):
   self.props[self.TITLE] = WidgetProperty('text', 'Plot title')
   self.props[self.RATE] = WidgetProperty('numeric', 500)
 \end{lstlisting}
 
-The default implementation in \textbf{DashboardWidget} is capable of automatically generating a user interface for those simple properties. When the properties are updated in the properties dialog, a callback is used to notify the \textbf{DragPlot} class. The callback implementation to refresh the widget is shown in Listing~\ref{prop_callback}. It updates the title of the plot and starts a new timer which updates the plot in a given interval.
+The default implementation in \textbf{DashboardWidget} is capable of automatically generating a user interface for those simple properties. When the properties are updated in the properties dialog, a callback is used to notify the \textbf{DragPlot} class. The callback implementation to update the widget is shown in Listing~\ref{prop_callback}. It updates the title of the plot and starts a new timer which updates the plot in a given interval.
 
-\begin{lstlisting}[frame=single,caption={Implemented callback in DragPlot.},label=prop_callback,language=Python,numbers=left,breaklines=true]
+\begin{lstlisting}[frame=single,caption={Implemented updateWidget callback in DragPlot.},label=prop_callback,language=Python,numbers=left,breaklines=true]
 def updateWidget(self):
   #update the widget properties
   self.qwtPlot.setTitle(self.props[self.TITLE].value)

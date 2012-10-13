@@ -3,14 +3,11 @@
 
 The visual debugging tool presented in this work and more specifcally the ROSDashboard implementation of such a system is capable of visualizing simple abstract data that is being published on a topic in the ROS communication middleware. Although the tool presented in this work has not been fully evaluated yet, it shows the possibilities and potential of simple visualizations during debugging of robotic applications. Further evaluations need to be conducted in order to quantify the improvements the tool has on a reduced cognitive effort and thus debugging performance.
 
-The modular design and Open Source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process.
-% The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
-
-\todo{This chapter ... blablub }
+This chapter summarizes the future work that has been identified during this work and some final words conclude the thesis.
 
 
-\section{Improving ROSDashboard}
-The implemented tool is a first prototype to evaluate the use of a simple visualization tool during debugging. The existing visualization widgets are relatively basic and further work can be done to create more visualization widgets and explore more complex types of visualization. Ultimately there should be a plugin engine where third party developers can easily add widgets for new and more complex kinds of data. The extensibility of the tool was one of the initial requirements and the object structure presented in Section~\ref{object_model_section} allows easy integration of such a plugin engine.
+\section{Future work}
+The implemented tool is a first prototype of a simple visualization tool which can be used during debugging. The existing visualization widgets are relatively basic and further work can be done to create more visualization widgets and explore more complex types of visualization. Ultimately there should be a plugin engine where third party developers can easily add widgets for new and more complex kinds of data. The extensibility of the tool was one of the initial requirements and the object structure presented in Section~\ref{object_model_section} allows easy integration of such a plugin engine.
 
 This section gives an overview of the possible improvements for ROSDashboard and the visual debugging system in general which have been identified.
 
@@ -47,17 +44,12 @@ Since RQT was under active development during the time of this project, it was c
 
 RQT not only gives you a way to create your own user interface by combining existing tools, it also raises the visibility of the various tools that can be used to develop robots with ROS.
 
-\section{Evaluation}
-\todo{drop this section? the first words in this chapter already mention that a bigger evaluation should be conducted and the conclusion does as well}
-
-How could the tool be evaluated: large case study on a big project with fake bugs, use the tool during the development of a real robot and document benefits.
-
-\todo{from icra: } ROSDashboard provides a good base to conduct research on the impact of visualizations during debugging of robotic applications. Future research can evaluate how visualizations affect the developer during debugging, especially if it decreases the cognitive load and thus makes debugging with visualizations faster and more productive.
-
 \section{Conclusion}
-
-\todo{more general stuff from the icra paper is already in the beginning of the chapter}
 
 As result of this work, a flexible visual debugging system has been developed and documented. The system itself is not bound to a specific robotic framework but has taken some inspiration from the ROS architecture. ROSDashboard is a first implementation of such a system. The developed prototype has been announced to the ROS community and the source code is available on Github\footnote{\url{http://github.com/kaserf/rosdashboard}}. After the prototype has been announced to the ROS community, valuable feedback has been collected and smaller changes have been made to ROSDashboard already, other suggestions have been documented as future work.
 
-The results of this work have been summarized in a conference paper and submitted to the 2013 IEEE International Conference on Robotics and Automation where it is currently being reviewed.
+The modular design and Open Source approach followed during the development of the tool makes it easy to extend and adapt the tool in the future. It also allows developers to choose a representation of data they find most helpful, with the only restriction being the number of available widgets and the data type compatibility. The simple drag and drop principle to add and remove widgets on the dashboard makes the tool flexible towards changes during the debugging process.
+% The feature to save and restore dashboard configurations makes it easy to distribute dashboards amongst the developers. This feature can also be used to provide monitoring dashboards that can be created by robot hardware manufacturers and given out to developers.
+
+
+The results of this work have been summarized in a conference paper and submitted to the 2013 IEEE International Conference on Robotics and Automation (ICRA) where it is currently being reviewed.
