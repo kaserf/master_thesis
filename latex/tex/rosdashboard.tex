@@ -182,52 +182,6 @@ To share the configuration of a dashboard a save and restore mechanism was integ
 
 This feature could also be used by robot software and hardware manufacturers to provide a dashboard for a specific module or piece of robot hardware. The dashboard configuration can be made available as part of the module's documentation and represents a easy way to explore the possibilities of a new hardware or software module.
 
-\subsection{Adding a Visualization Widget}
-\label{plot_widget_section}
-\todo{move into case study?}
-
-\todo{fix inconsistent method names from system design to implementation}
-
-\begin{figure}[htb]
-  \centering
-  \framebox{
-    \includegraphics[width=0.9\textwidth]{img/plot_widget.png}
-  }  
-  \caption{The newly created plot widget in action.}
-  \label{plot_widget}
-\end{figure}
-
-Adding new visualization widgets to ROSDashboard is easy. The abstract \textbf{DashboardWidget} class (see Figure~\ref{class overview}) handles most of the generic things a widget should implement. As part of a first evaluation step a new visualization widget was added to the dashboard: A plot widget that plots values on a Cartesian coordinate system. Figure~\ref{plot_widget} shows a screenshot of the new visualization widget in action and the full implementation is appended in Listing~\ref{drag_plot_implementation}.
-
-To implement the widget, a new class called \textbf{DragPlot} was created. The class inherits the basic implementation from \textbf{DashboardWidget} and only needs to implement the plot specific methods. Upon initialization of \textbf{DragPlot} the user interface part of the widget is created. The class implements the two abstract methods \verb+updateValue+ and \verb+initProperties+ from \textbf{DashboardWidget}. \verb+updateValue+ updates the graphical part of the widget and \verb+initProperties+ adds two properties to the widget: plot name and update rate in milliseconds. This requires only two lines of code, see Listing~\ref{init_props}.
-
-\begin{lstlisting}[frame=single,caption={Implementation of initProperties in DragPlot.},label=init_props,language=Python,numbers=left,breaklines=true]
-# property keys
-TITLE = 'Plot title'
-RATE = 'Refresh rate (ms)'
-
-def initProps(self):
-  self.props[self.TITLE] = WidgetProperty('text', 'Plot title')
-  self.props[self.RATE] = WidgetProperty('numeric', 500)
-\end{lstlisting}
-
-The default implementation in \textbf{DashboardWidget} is capable of automatically generating a user interface for those simple properties. When the properties are updated in the properties dialog, a callback is used to notify the \textbf{DragPlot} class. The callback implementation to refresh the widget is shown in Listing~\ref{prop_callback}. It updates the title of the plot and starts a new timer which updates the plot in a given interval.
-
-\begin{lstlisting}[frame=single,caption={Implemented callback in DragPlot.},label=prop_callback,language=Python,numbers=left,breaklines=true]
-def updateWidget(self):
-  #update the widget properties
-  self.qwtPlot.setTitle(self.props[self.TITLE].value)
-
-  if (self.currentTimerId != 0):
-    self.qwtPlot.killTimer(self.currentTimerId)
-    self.currentTimerId = 0
-
-  self.currentTimerId = self.qwtPlot.startTimer(self.props[self.RATE].value)
-\end{lstlisting}
-
-The plot itself is a \textbf{QwtPlot} widget from the popular QWT widget library\footnote{\url{http://qwt.sourceforge.net/}}. To customize the plot widget, \textbf{QwtPlot} was subclassed in \textbf{DataPlot}. The \textbf{DataPlot} class exposes two methods: \verb+addValue(value)+ and \verb+timerEvent()+. The \verb+addValue(value)+ method is used in the implemented abstract method \verb+updateValue(value)+ from \textbf{DashboardWidget} and adds a new value to the plot. \verb+timerEvent()+ is a callback that gets triggered regularly, how often depends on the update rate which can be set in the properties of the widget.
-
-The last step to add the new visualization widget to ROSDashboard is to add it manually to the list of available visualization widgets which appears in the toolbox left of the dashboard canvas. This example shows how easy it is to add a new widget to ROSDashboard. A plugin architecture would make it even easier, since the last manual step is not required and widgets could be dynamically loaded as plugins.
 
 \subsection{API}
 \label{api_section}
