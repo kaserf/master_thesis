@@ -45,9 +45,9 @@ While most of the initial tools developed for ROS were mostly command line based
 \begin{figure}[h]
   \centering
   \framebox{
-    \includegraphics[width=0.6\textwidth]{img/rxplot_screenshot.png}
+    \includegraphics[width=0.55\textwidth]{img/rxplot_screenshot.png}
   }  
-  \caption{rxplot screenshot.}
+  \caption{rxplot screenshot. Source: \url{http://www.ros.org/wiki/rxplot}, License: Creative Commons Attribution 3.0}
   \label{rxplot_screenshot}
 \end{figure}
 
@@ -58,7 +58,7 @@ While most of the initial tools developed for ROS were mostly command line based
   \framebox{
     \includegraphics[width=0.8\textwidth]{img/rxconsole_screenshot.png}
   }  
-  \caption{rxconsole screenshot.}
+  \caption{rxconsole screenshot. Source: \url{http://www.ros.org/wiki/rxconsole}, License: Creative Commons Attribution 3.0}
   \label{rxconsole_screenshot}
 \end{figure}
 
@@ -68,7 +68,7 @@ While most of the initial tools developed for ROS were mostly command line based
   \framebox{
     \includegraphics[width=0.8\textwidth]{img/rqt_screenshot.png}
   }  
-  \caption{rqt screenshot.}
+  \caption{rqt screenshot. Source: \url{http://www.ros.org/wiki/rqt}, License: Creative Commons Attribution 3.0}
   \label{rqt_screenshot}
 \end{figure}
 
@@ -242,6 +242,9 @@ def logint(tag, value, msg_type=std_msgs.msg.Int32):
 \end{lstlisting}
 
 The API methods shown in Listing~\ref{api_calls} can be used like logging statements to emit data for visualization. The \verb+TAG+ parameter is used to identify the data when the visualization widgets are set up. Internally the data is published as a message on a ROS topic. The topic name consist of the ROSDashboard specific prefix \emph{/rosdashboard/} and the tag given as parameter. Listing~\ref{example_api_call} shows an example use of the API to publish a integer value with the tag "proximity". The value "7" will be published on the ROS topic \emph{/rosdashboard/proximity} and can be visualized with a widget in ROSDashboard that points to the respective topic name and accesses the "data" datafield of the message.
+
+%fix listing split across pages
+\pagebreak
 
 \begin{lstlisting}[frame=single,caption={Example API usage.},label=example_api_call,language=Python,numbers=left,breaklines=true]
 import rosdashboard
