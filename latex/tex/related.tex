@@ -11,7 +11,7 @@ This chapter gives an overview of tools and practices currently in use to debug 
 
 %%%% INSTRUMENTED TOOLS %%%%
 \section{Instrumented Debugging Tools}
-This section introduces some of the most instrumented  debugging tools used for robotics. The tools presented in this section usually don't require source code modification, they use special operating system hooks to control the execution of an application and collect data during the runtime. These kind of tools are usually external tools and are not associated with a robotics framework or middleware, they can be used independent of the framework or middleware.
+This section introduces some of the most instrumented debugging tools used for robotics. The tools presented in this section usually do not require source code modification, they use special operating system hooks to control the execution of an application and collect data during the runtime. These kind of tools are usually external tools and are not associated with a robotics framework or middleware, they can be used independent of the framework or middleware.
 
 \subsection{GDB}
 %[overview, general introduction to gdb]
@@ -67,7 +67,7 @@ The implementation of the logging mechanism is slightly different in the two tar
 Since all log messages are published on the \emph{/rosout} topic if the log level is set to debugging, it is easy to access them even if a module is running on a different machine. The graphical user interface rxconsole can be used to display and filter log messages by severity and full-text search \cite{rxconsole}.
 
 \subsection{Print Statements}
-Although print statements are not part of a proper logging ``framework'', they are often used in the same way as other logging statements. Print statements are quite popular amongst developers because no additional knowledge is required to use them and they are a core part of every major programming language and thus don't require to link external libraries. Print messages are simpler then logging statements, they print a String message to a console and have no feature to filter or visualize the printed data.
+Although print statements are not part of a proper logging ``framework'', they are often used in the same way as other logging statements. Print statements are quite popular amongst developers because no additional knowledge is required to use them and they are a core part of every major programming language and thus do not require to link external libraries. Print messages are simpler then logging statements, they print a String message to a console and have no feature to filter or visualize the printed data.
 
 The use of print statements is a flexible way of collecting data during debugging. The major downside of print statements is that it is easy to loose the overview where print statements have been used. If they are not excluded from the build before the software is released or deployed, this can lead to a weaker performance of the software.
 
