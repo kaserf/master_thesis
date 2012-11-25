@@ -5,7 +5,14 @@ Debugging in robotics has unique requirements which are often not met by traditi
 
 This chapter introduces a new system for debugging in robotics, tailored to tackle the challenges developers face when debugging robotic systems. The system tries to combine the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the high amount of data collected during debugging of robotic systems.
 
-The first section states the hypothesis behind the ideas that have driven the development of the debugging system. Section two presents the goals of the work, which leads to specific requirements for this system in section three. The system design section presents the design for a flexible visual debugging system.
+%%%% HYPOTHESIS %%%%
+%\section{Hypothesis}
+A possible reason why many developers still use print or logging statements to debug their programs is because these methods can be immediately used when required. Developers do not need to undergo a lengthy setup and configuration process before they can start debugging and they do not need to gain extensive knowledge about the methodology and tools either. The overhead to set up and configure a debugging system should be reduced to make the system easy to use without extensive knowledge about the debugging methodology and tool.
+
+The main issue with print or logging statements is the text-only representation of data. The system proposed in this chapter aims to support the developer during debugging by visualizing data in a graphic way and thus eliminate the cognitive effort needed to parse and interpret text based logging messages. The cognitive effort required during debugging can be further reduced by a flexible system which can be adapted to different preferences of different developers. Every developer can choose a visualization that fits their mental model of the debugged data best.
+
+%The first section states the hypothesis behind the ideas that have driven the development of the debugging system. 
+The chapter introduces the goals of this work in the first section. Based on the goals specific requirements for this system were identified in section two. The system design section presents the design for a flexible visual debugging system in the last section of this chapter.
 
 %Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
@@ -13,21 +20,16 @@ The first section states the hypothesis behind the ideas that have driven the de
 
 %--> Generalize design decisions, if they apply for other robot frameworks as well.
 
-%%%% HYPOTHESIS %%%%
-\section{Hypothesis}
-A possible reason why many developers still use print or logging statements to debug their programs is because these methods can be immediately used when required. Developers do not need to undergo a lengthy setup and configuration process before they can start debugging and they do not need to gain extensive knowledge about the methodology and tools either. The overhead to set up and configure a debugging system should be reduced to make the system easy to use without extensive knowledge about the debugging methodology and tool.
-
-The main issue with print or logging statements is the text-only representation of data. The system proposed in this chapter aims to support the developer during debugging by visualizing data in a graphic way and thus eliminate the cognitive effort needed to parse and interpret text based logging messages. The cognitive effort required during debugging can be further reduced by a flexible system which can be adapted to different preferences of different developers. Every developer can choose a visualization that fits their mental model of the debugged data best.
 
 
 %%%% GOALS %%%%
 \section{Goals}
-The main goal of this work is to design a debugging system which is suitable for debugging in robotics and can be used to evaluate the hypothesis stated above. The design of the system is independent of a specific robotic framework and could be implemented for any available framework.
-While most of the currently available visualization tools in robotics focus on pre-defined and spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. The design of the debugging system should be flexible enough to allow visualization of arbitrary and abstract data. Although abstract data will be the main focus of the debugging system since tools to visualize pre-defined data are already widely available, the designed system is not restricted to abstract data.
+The main goal of this work is to design a debugging system which is suitable for debugging in robotics and can be used to evaluate the hypothesis stated above. The design of the system should be independent of a specific robotic framework so that it can be implemented for any available framework.
+While most of the currently available visualization tools in robotics focus on pre-defined and spatial data to help understand the robot and the environment in which it runs \cite{Collett2010, Quigley2009}, rendering of abstract data is still uncommon. The design of the debugging system should be flexible enough to allow visualization of arbitrary and abstract data. Although abstract data will be the main focus of the debugging system since tools to visualize pre-defined data are already widely available, the designed system should not be restricted to abstract data.
 
-The system provides a graphical user interface which can be used by developers to visualize all kinds of data from the robotic application. The developers can customize the visualization according to the current robot hardware, development stage and personal preferences. The system can be adapted to many different use cases and should reduce the cognitive effort during debugging by visualizing the data according to the mental model of the developer and meaning of the data.
+The system should provide a graphical user interface which can be used by developers to visualize all kinds of data from the robotic application. The developers should be able to customize the visualization according to the current robot hardware, development stage and personal preferences. The system should be adaptable to many different use cases and should reduce the cognitive effort during debugging by visualizing the data according to the mental model of the developer and meaning of the data.
 
-To preserve the configuration of visualizations a developer is using, it is possible to save the state of the visual debugging system to file. This file can be used to continue working at the same point where work was stopped previously. It can also be used to share the visualization configuration amongst developers working in the same team.
+To preserve the configuration of visualizations a developer is using, it should be possible to save the state of the visual debugging system to file. This file could be used to continue working at the same point where work was stopped previously. It could also be used to share the visualization configuration amongst developers working in the same team.
 
 %%%% REQUIREMENTS %%%%
 \section{Requirements}
@@ -39,23 +41,22 @@ When debugging robotic applications it is usually not possible to interrupt the 
 
 \subsection{Adaptable Tool}
 Due to many different application scenarios in robotics and the diverse environment of available frameworks for robot development, many researchers and developers have built their own tools to support them during debugging \cite{Collett2010}. Developing your own debugging tool is extremely time consuming and the developed tools are often one-time-only tools, because they do not fit the use case of other applications and are too hard to adapt to a new project.
-In order to allow the use of the proposed debugging system in many different scenarios and use cases, flexibility has a high priority. Flexibility not only means the system can be adapted easily to fit different problems, it also means the system can be adapted to suit different developer's preferences. Each developer might prefer a different kind of visualization of the collected data, thus loose coupling of the collected data and the visualization widgets is necessary.
+In order to allow the use of the proposed debugging system in many different scenarios and use cases, flexibility has a high priority. Flexibility not only means the system can be adapted easily to fit different problems, it also means the system can be adapted to suit different developer's preferences. Each developer might prefer a different kind of visualization of the collected data, thus loose coupling of the collected data and the visualization realization is necessary.
 
 \subsection{Low Configuration Overhead}
-Debugging robotic applications is a highly iterative process, where small changes are made and immediately deployed to the robot. When the new visualizations are needed or old visualizations need to be updated, the configuration overhead should be as minimal as possible so that the developer is not distracted from the problem analysis task. The configuration task should not distract the developer from the problem analysis task.
+Debugging robotic applications is a highly iterative process, where small changes are made and immediately deployed to the robot. When new visualizations are needed or old visualizations need to be updated, the configuration overhead should be as minimal as possible. The configuration task should not distract the developer from the problem analysis task.
 
 %%%% SYSTEM DESIGN %%%%
 \section{System Design}
 \label{system_design_section}
-The design of the developed system reflects the requirements identified in Section~\ref{requirements}. The system is designed to run in a distributed environment and visualize data live, as it is collected and not post-mortem. The system design is not tailored to a specific robotic framework: Since the underlying communication architecture is similar in most robotic systems, implementing the system for any robotic system is possible.
-Although the design is robot framework unspecific, it was influenced by the ROS architecture since the documentation of ROS is good and the community was helpful when questions arose.
+The design of the developed system reflects the requirements identified in Section~\ref{requirements}. The system is designed to run in a distributed environment and visualize data live, as it is collected and not post-mortem. The system design is not tailored to a specific robotic framework: Since the underlying component based architecture is similar in many modern robotic systems \cite{Quigley2009, Gerkey2003, Makarenko2006, Montemerlo2003}, implementing the system for any robotic system is possible.
 The need for an adaptable system influenced especially the object design, which takes into consideration the future extendibility and adaptability during the debugging process.
 
 This section shows how the system is designed according to the requirements: The user interface design, the system architecture and the object design are presented. The user interface is presented first, because the concept of a developer dashboard influenced both the architecture and the object design.
 
 \subsection{Graphical User Interface}
 \label{graphical_user_interface}
-In order to be adaptable to many different use cases and visualization preferences of developers, a central dashboard approach was chosen for the user interface. The dashboard allows developers to add and remove visualizations easily and arrange them however they want. The visualizations are wrapped in widgets and can thus be positioned freely on the dashboard. Adding new visualizations to the dashboard can be done through a "Drag \& Drop" mechanism, once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in Figure~\ref{gui_mockup}.
+In order to be adaptable to many different use cases and visualization preferences of developers, a central dashboard approach was chosen for the user interface. The dashboard allows developers to add and remove visualizations easily and arrange them however they want. The visualizations are wrapped in widgets and can thus be positioned freely on the dashboard. Adding new visualizations to the dashboard can be done through a ``Drag\&Drop'' mechanism. Once the widget is on the dashboard it can be resized and repositioned on the canvas. The initial mockup of the proposed graphical user interface is shown in Figure~\ref{gui_mockup}.
 
 \begin{figure}[htbp]
   \centering
@@ -73,12 +74,20 @@ Each item in the list on the left (Figure~\ref{gui_mockup}) represents one type 
   \label{widget_mockup}
 \end{figure}
 
-Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget is the laser scan visualization as shown in Figure~7 in Luke Gumbley's paper on realtime debugging \cite{Gumbley2009}.
-\comm{Should I copy the screenshot from \cite{Gumbley2009} or only cite it?}
+Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget is the laser scan visualization as shown in Figure~\ref{laser_viz}.
 %The widgets can be hooked up to data providers and will be updated once a new value is available.
 
+\begin{figure}%[thpb]
+  \centering
+  \framebox{
+    \includegraphics[width=0.4\textwidth]{img/laser_visualization.png}
+  }  
+  \caption{A possible laser visualization, as shown in Luke Gumbley's paper on realtime debugging (Fig.~7). \cite{Gumbley2009}}
+  \label{laser_viz}
+\end{figure}
+
 \subsection{Architecture}
-The currently available robotic frameworks all rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed debugging system to access data without the need to develop a dedicated communication layer for debugging.
+The currently available robotic frameworks mostly rely on a communication middleware that abstracts from the concrete communication channels. This communication infrastructure can be used by the proposed debugging system to access data without the need to develop a dedicated communication layer for debugging.
 
 The user interface mockup shown in Figure~\ref{gui_mockup} already indicates the modular design of visualizations that can be added to the dashboard canvas. The modular approach makes it easy to extend the system with more visualizations in the future and it gives developers the choice how data is visualized. Each visualization widget contains a different form of visualization. This visualization widget handles the graphical part of the visualization, stores information about the data connection and other settings and encapsulates the communication with the middleware. The connection with the communication middleware is established through an adapter which notifies the widget if the data has changed or new data is available. This makes it easy to exchange the communication adapter if the communication protocol changes or the implementation targets a different robotic framework which has a different communication structure. This reduces the coupling between the visualizations and the data collection. Although the dashboard needs to know which widgets are currently on the dashboard, the widgets itself are independent of the dashboard. The decentralized approach allows easier integration of a plugin infrastructure since the dashboard itself does not need to be modified to show additional visualization widgets.
 
