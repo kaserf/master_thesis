@@ -1,9 +1,9 @@
-\chapter{Design of a Flexible Visual Debugging System}
+\chapter[Design of a Flexible Visual Debugging System]{Design of a Flexible Visual\\Debugging System}
 \label{visual_debugging_system}
 
 Debugging in robotics has unique requirements which are often not met by traditional debugging systems. The special requirements lead to a number of different tools to support debugging in robotics. The previous chapter summarized some of those tools and issues of existing solutions were identified: a) The tools either focus on visualization of pre-defined spatial data or render data as text messages. b) The graphical interfaces are rather static and difficult to adapt to different usage scenarios.
 
-This chapter introduces a new system for debugging in robotics, tailored to tackle the challenges developers face when debugging robotic systems. The system tries to combine the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the high amount of data collected during debugging of robotic systems.
+This chapter introduces a new system for debugging in robotics, tailored to tackle the challenges developers face when debugging robotic systems. The system combines the ease of use and flexibility of logging statements with a graphical visualization. The visualization makes it easier to comprehend the large amount of data collected during debugging of robotic systems.
 
 %%%% HYPOTHESIS %%%%
 %\section{Hypothesis}
@@ -12,7 +12,7 @@ A possible reason why many developers still use print or logging statements to d
 The main issue with print or logging statements is the text-only representation of data. The system proposed in this chapter aims to support the developer during debugging by visualizing data in a graphic way and thus eliminate the cognitive effort needed to parse and interpret text based logging messages. The cognitive effort required during debugging can be further reduced by a flexible system which can be adapted to different preferences of different developers. Every developer can choose a visualization that fits their mental model of the debugged data best.
 
 %The first section states the hypothesis behind the ideas that have driven the development of the debugging system. 
-The chapter introduces the goals of this work in the first section. Based on the goals specific requirements for this system were identified in section two. The system design section presents the design for a flexible visual debugging system in the last section of this chapter.
+The chapter introduces the goals of this work in the first section. Based on the goals specific requirements for this system are identified in Section~\ref{requirements}. The system design section presents the design for a flexible visual debugging system in the last section of this chapter.
 
 %Write about the general requirements for a visual debugging system, rosdashboard would be one possible implementation. This basically could explain most of rosdashboard, apart from the ros specific part which is: topic subscription setup (gui), topic introspection to wait for message class types, topic subscription (code) and calling the value update hook. Saving to file saves the topic configuration which is ros specific as well.
 
@@ -74,7 +74,7 @@ Each item in the list on the left (Figure~\ref{gui_mockup}) represents one type 
   \label{widget_mockup}
 \end{figure}
 
-Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget is the laser scan visualization as shown in Figure~\ref{laser_viz}.
+Figure~\ref{widget_mockup} shows an early mockup of a visualization widget on the dashboard. This exemplary visualization widget has the form of a progress bar where numeric values can be visualized. Dials, meters, thresholds, compasses and LEDs could be other simple visualizations widgets. A more complex example for a visualization widget is the laser scan visualization as shown in Figure~\ref{laser_viz}.
 %The widgets can be hooked up to data providers and will be updated once a new value is available.
 
 \begin{figure}%[thpb]
@@ -82,7 +82,7 @@ Figure~\ref{widget_mockup} shows an early mockup of a visualzation widget on the
   \framebox{
     \includegraphics[width=0.4\textwidth]{img/laser_visualization.png}
   }  
-  \caption{A possible laser visualization, as shown in Luke Gumbley's paper on realtime debugging (Fig.~7). \cite{Gumbley2009}}
+  \caption[A possible laser visualization.]{A possible laser visualization, as shown in Luke Gumbley's paper on realtime debugging (Fig.~7). \cite{Gumbley2009}}
   \label{laser_viz}
 \end{figure}
 

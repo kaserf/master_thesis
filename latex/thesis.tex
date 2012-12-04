@@ -11,6 +11,18 @@
 \usepackage{listings}
 \usepackage{comment}
 
+% set spacing in chapter and section titles to single space
+\usepackage{titlesec}
+
+\titleformat{\chapter}%\normalfont\Large\bfseries
+{\onehalfspacing\Huge\sf\bfseries}{\thechapter}{1em}{}%{\thesection}{1em}{}
+%\titleformat{\section}
+%{\onehalfspacing\Large\sf\bfseries}{\thesection}{1em}{}
+%\titleformat{\subsection}
+%{\onehalfspacing\large\sf\bfseries}{\thesubsection}{1em}{}
+%\titleformat{\subsubsection}
+%{\onehalfspacing\sf\bfseries}{\thesubsubsection}{1em}{}
+
 \lstset{ % default settings for listings from http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
   captionpos=b,                   % sets the caption-position to bottom
   breaklines=true                % sets automatic line breaking
@@ -54,9 +66,9 @@ There are so many people who helped me, it is hard to name them all. I thank you
 
 \newpage
 \chapter*{Abstract}
-Data collected during debugging is traditionally rendered as text. The special application field of robotics faces problems with this approach, since a typical robotic system constantly gathers and processes data from the surrounding environment through sensors. Developers of robotic applications are confronted with high amounts of data during debugging, which becomes hard to interpret if the data is represented as text and high amounts of data need to be interpreted at once. Robotic applications are also hard to interrupt during debugging, since robots generally do not run in a deterministic and suspendable environment.
+Data collected during debugging is traditionally rendered as text. The special application field of robotics faces problems with this approach, since a typical robotic system constantly gathers and processes data from the surrounding environment through sensors. Developers of robotic applications are confronted with large amounts of data during debugging, which becomes hard to interpret if the data is represented as text and large amounts of data need to be interpreted at once. Robotic applications are also hard to interrupt during debugging, since robots generally do not run in a deterministic and suspendable environment. This makes it hard to reproduce the situation in which a bug occurred and makes it necessary to support the debugging process without interrupting the robot program.
 
-This thesis tries to solve this problem by introducing a visual debugging system to support debugging of robotic applications: It takes into account the special requirements for a debugging tool in a robotic development environment, especially the uninterrupted rendering and the need for better visualization of debugging data to support a faster interpretation of this data. The goal of the developed system is to help developers understand the data during debugging more quickly and improve overall productivity during robot development. To achieve this goal, a system was designed and developed where developers can choose how they want to visualize data collected during debugging of a robotic application. This work presents the design and a prototypical implementation of the proposed system. Evaluating the hypothesis that the developed system can improve productivity during debugging is out of scope for this work but initial experiments were promising and the developed tool provides a solid base for further evaluations.
+This thesis partially solves this problem by introducing a visual debugging system to support debugging of robotic applications: It takes into account the special requirements for a debugging tool in a robotic development environment, especially the uninterrupted rendering and the need for better visualization of debugging data to support a faster interpretation of this data. The goal of the developed system is to help developers understand the data during debugging more quickly and improve overall productivity during robot development. To achieve this goal, a system was designed and developed where developers can choose how they want to visualize data collected during debugging of a robotic application. This work presents the design and a prototypical implementation of the proposed system. Evaluating the hypothesis that the developed system can improve productivity during debugging is out of scope for this work but initial experiments were promising and the developed tool provides a solid base for further evaluations.
 \newpage
 \chapter*{TODOS}
 \todo{listing positions}\\
