@@ -28,6 +28,7 @@ The ROS computation graph during the execution of this scenario is shown in Figu
 \end{figure}
 
 \section{Adding a New Widget}
+\label{plot_widget_section}
 \begin{figure}[htb]
   \centering
   \framebox{
@@ -70,7 +71,7 @@ The plot itself is a \textbf{QwtPlot} widget from the popular QWT widget library
 The last step to add the new visualization widget to ROSDashboard is to add it manually to the list of available visualization widgets which appears in the toolbox left of the dashboard canvas. This example shows how easy it is to add a new widget to ROSDashboard. A plugin architecture would make it even easier, since the last manual step is not required and widgets could be dynamically loaded as plugins.
 
 \section{Real Life Project}
-\label{plot_widget_section}
+\label{nao_case}
 A recent problem during the development of an existing project was chosen to show how ROSDashboard can be used for debugging in a real life project. The project's goal is to use the NAO humanoid robot together with ROS to follow people and engage in conversations with them.
 
 The NAO is a humanoid robot developed and sold by Aldebaran-Robotics\footnote{\url{http://www.aldebaran-robotics.com/}} \cite{Gouaillier2008}. Figure~\ref{nao_coffee} shows an image of the NAO robot used during this experiment. The robot comes with a comprehensive list of high level software modules that can be used: a text-to-speech module, a voice recognition module, a walking engine, sound localization, etc. Developers also have access to low level sensor information and can control the actuators directly. The robot is shipped with Choreographe, a graphical programming interface to combine the high level modules to behaviours and create new behaviours from scratch.
