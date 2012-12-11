@@ -11,6 +11,9 @@
 \usepackage{listings}
 \usepackage{comment}
 
+\usepackage{natbib}
+\setlength{\bibsep}{7pt}
+
 % set spacing in chapter and section titles to single space
 \usepackage{titlesec}
 
@@ -36,12 +39,12 @@
 % todo and review commands
 \usepackage{soul}
 \usepackage{color}
-%\newcommand{\hl}[1]{\fcolorbox{red}{white}{#1}} %fcolorbox does not break lines properly
-\newcommand{\todo}[1]{{\color{red}{\hl{TODO: #1...}}}}
-\newcommand{\review}[0]{\todo{REVIEW}}
-\newcommand{\comm}[1]{\textsuperscript{\bf \color{red}{\tiny [#1]}}}
-\newcommand{\q}[0]{\comm{?}}
-\newcommand{\s}[0]{\comm{*}}
+
+%\newcommand{\todo}[1]{{\color{red}{\hl{TODO: #1...}}}}
+%\newcommand{\review}[0]{\todo{REVIEW}}
+%\newcommand{\comm}[1]{\textsuperscript{\bf \color{red}{\tiny [#1]}}}
+%\newcommand{\q}[0]{\comm{?}}
+%\newcommand{\s}[0]{\comm{*}}
 
 
 \begin{document}
@@ -70,11 +73,13 @@ Data collected during debugging is traditionally rendered as text. The special a
 
 This thesis partially solves this problem by introducing a visual debugging system to support debugging of robotic applications: It takes into account the special requirements for a debugging tool in a robotic development environment, especially the uninterrupted rendering and the need for better visualization of debugging data to support a faster interpretation of this data. The goal of the developed system is to help developers understand the data during debugging more quickly and improve overall productivity during robot development. To achieve this goal, a system was designed and developed where developers can choose how they want to visualize data collected during debugging of a robotic application. This work presents the design and a prototypical implementation of the proposed system. Evaluating the hypothesis that the developed system can improve productivity during debugging is out of scope for this work but initial experiments were promising and the developed tool provides a solid base for further evaluations.
 \newpage
-\chapter*{TODOS}
-\todo{listing positions}\\
-\todo{dates on title pages}\\
-\todo{general layout}\\
-\newpage
+
+%\chapter*{TODOS}
+%\todo{listing positions}\\
+%\todo{dates on title pages}\\
+%\todo{general layout}\\
+%\newpage
+
 \tableofcontents
 \newpage
 \listoffigures

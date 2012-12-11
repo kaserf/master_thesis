@@ -130,7 +130,7 @@ class DragPlot(DashboardWidget):
     self.currentTimerId = self.qwtPlot.startTimer(self.props[self.RATE].value)
       
   def updateValue(self, value):
-    self.qwtPlot.addValue(value)
+    self.qwtPlot.addValue(float(value))
 \end{lstlisting}
 
 \newpage
@@ -145,7 +145,8 @@ class DragPlot(DashboardWidget):
       "posY":56,
       "subscription":{
         "topic":"/sound_source",
-        "datafield":"azimuth"
+        "datafield":"azimuth",
+        "regex":".*"
       },
       "type":"DragDial",
       "properties":[
@@ -169,7 +170,8 @@ class DragPlot(DashboardWidget):
       "posY":57,
       "subscription":{
         "topic":"/sound_source",
-        "datafield":"azimuth"
+        "datafield":"azimuth",
+        "regex":".*"
       },
       "type":"DragCompass",
       "properties":[
@@ -184,7 +186,8 @@ class DragPlot(DashboardWidget):
       "posY":58,
       "subscription":{
         "topic":"/sound_source",
-        "datafield":"confidence"
+        "datafield":"confidence",
+        "regex":".*"
       },
       "type":"DragThermo",
       "properties":[
