@@ -67,6 +67,7 @@ def updateWidget(self):
 \end{lstlisting}
 
 The plot itself is a \textbf{QwtPlot} widget from the popular QWT widget library\footnote{\url{http://qwt.sourceforge.net/}}. To customize the plot widget, \textbf{QwtPlot} was subclassed in \textbf{DataPlot}. The \textbf{DataPlot} class exposes two methods: \verb+addValue(value)+ and \verb+timerEvent()+. The \verb+addValue(value)+ method is used in the implemented abstract method \verb+updateValue(value)+ from \textbf{DashboardWidget} and adds a new value to the plot. \verb+timerEvent()+ is a callback that gets triggered regularly, how often depends on the update rate which can be set in the properties of the widget.
+\enlargethispage{-4em}
 
 The last step to add the new visualization widget to ROSDashboard is to add it manually to the list of available visualization widgets which appears in the toolbox left of the dashboard canvas. This example shows how easy it is to add a new widget to ROSDashboard. A plugin architecture would make it even easier, since the last manual step is not required and widgets could be dynamically loaded as plugins.
 

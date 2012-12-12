@@ -157,6 +157,7 @@ The plugin functionality in RViz can be used to extend RViz with further visuali
 \subsection{rosbag and rxbag}
 In a complex robotic system there is usually a lot of communication happening at once. Trying to keep track of the different topics and messages is not an easy task and recording the messages for analysis at a later stage is necessary. rosbag is a command line tool to dump communication data from selected topics to a file for later use or to analyse the communication after the application has terminated. Listing~\ref{rosbag_usage} shows an example usage of the rosbag tool to record in this case the two topics \emph{/foo} and \emph{/bar}. The data is stored in a so-called bag-file, which contains all the messages published to selected topics during the runtime of the application. rosbag can be used to play back the recorded messages in the same order and with the same time offset as they were recorded. This can be used to examine the behaviour of one particular subsystem without the need of running the full stack of subsystems in a real environment.
 
+\vspace{1em}
 \begin{lstlisting}[frame=single,caption={Example usage of rosbag.},label=rosbag_usage]
 rosbag record foo bar
 \end{lstlisting}

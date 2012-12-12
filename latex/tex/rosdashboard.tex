@@ -51,7 +51,7 @@ While most of the initial tools developed for ROS were mostly command line based
   \label{rxplot_screenshot}
 \end{figure}
 
-\texttt{rxconsole} provides a graphical interface for logging messages. ROS logging messages are published on the special purpose topic \emph{/rosout} and can be viewed either with a normal console or with the graphical rxconsole interface. The graphical interface can filter logging messages by text and by severity (see Figure~\ref{rxconsole_screenshot}).
+\texttt{rxconsole} provides a graphical interface for logging messages. ROS logging messages are published on the special purpose topic \emph{/rosout} and can be viewed either with a normal console or with the graphical rxconsole interface. The graphical interface can filter logging messages by text and by severity (see Figure~\ref{rxconsole_screenshot}).\enlargethispage{-2em}
 
 \begin{figure}[p]
   \centering
@@ -145,7 +145,7 @@ The user interface was implemented based on the early interface designs from Sec
 \end{figure}
 
 
-The widget's background has two different colours to provide additional feedback to the developer whether the visualization is connected to a topic or not. When the configured topic for a visualization widget is not available yet, the background of the widget is coloured in orange. Once the topic becomes available the widget changes its background colour to green. This mechanism only checks the availability of a topic on the communication middleware, it does not time out if a topic has been without any messages for a while. Figure~\ref{colour_widgets} shows the two different colour states of a widget.
+The widget's background has two different colours to provide additional feedback to the developer whether the visualization is connected to a topic or not. When the configured topic for a visualization widget is not available yet, the background of the widget is coloured in orange. Once the topic becomes available the widget changes its background colour to green. This mechanism only checks the availability of a topic on the communication middleware, it does not time out if a topic has been without any messages for a while. Figure~\ref{colour_widgets} shows the two different colour states of a widget. \enlargethispage{-6em}
 
 \begin{figure}[htb]
   \centering
@@ -156,12 +156,14 @@ The widget's background has two different colours to provide additional feedback
   \label{colour_widgets}
 \end{figure}
 
+\vspace{1em}
 Figure~\ref{all_widgets} shows a dashboard with every currently available widget on it. The currently implemented widgets are:
-\begin{description}\itemsep1pt \parskip0pt % \parsep0pt \itemsep1pt
+
+\begin{description}\itemsep4pt \parskip0pt % \parsep0pt \itemsep1pt
 \item[Dial] A dial widget similar to the speedometer on the dashboard of a car or motorbike.
 \item[Knob] The knob is similar to the dial but is usually smaller. While it is originally often used as input widget, we use it only to visualize numeric data.
 \item[Compass] The compass is a 360 degree display which can be used e.g. to visualize orientation.
-\item[Thermo] The thermo is a horizontal progress bar with a scale similar to a thermometer.
+\item[Thermo] The thermo is a horizontal progress bar with a scale which is similar to a thermometer.
 \item[String] The string widget is a text field to show logging messages or other textual information.
 \item[LED] The LED widget can visualize boolean data, the LED is either green or red.
 \end{description}
@@ -169,7 +171,7 @@ Figure~\ref{all_widgets} shows a dashboard with every currently available widget
 \begin{figure}[htb]
   \centering
   \framebox{
-    \includegraphics[width=0.9\textwidth]{img/all_widgets_active_screenshot.png}
+    \includegraphics[width=0.8\textwidth]{img/all_widgets_active_screenshot.png}
   }  
   \caption{Dashboard with all currently available widgets.}
   \label{all_widgets}
@@ -209,6 +211,7 @@ To share the configuration of a dashboard a save and restore mechanism was integ
   ]
 }
 \end{lstlisting}
+% \enlargethispage{-4em}
 
 This feature could also be used by robot software and hardware manufacturers to provide a dashboard for a specific module or piece of robot hardware. The dashboard configuration can be made available as part of the module's documentation and represents a easy way to explore the possibilities of a new hardware or software module.
 
@@ -254,7 +257,7 @@ The API methods shown in Listing~\ref{api_calls} can be used like logging statem
 
 %fix listing split across pages
 %\pagebreak
-
+\vspace{1em}
 \begin{lstlisting}[frame=single,caption={Example API usage.},label=example_api_call,language=Python,numbers=left,breaklines=true]
 import rosdashboard
 
@@ -262,3 +265,4 @@ rosdashboard.logint('proximity', 17)
 \end{lstlisting}
 
 Although this solution proved to be a useful way to expose data during debugging, it might not be feasible for a bigger project because it introduces a new dependency to ROSDashboard. Since the API is only a set of convenience methods that publish data on ROS topics, data can also be published using the same ROS methods the API uses directly in the target application. Other possible solutions will be discussed as future work in Chaper~\ref{future_work}.
+
